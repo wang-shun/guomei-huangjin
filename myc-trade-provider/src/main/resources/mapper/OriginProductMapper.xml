@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gomemyc.trade.dao.OriginProductDao" >
+  <resultMap id="BaseResultMap" type="com.gomemyc.trade.entity.OriginProduct" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="queue_id" property="queueId" jdbcType="VARCHAR" />
+    <result column="product_name" property="productName" jdbcType="VARCHAR" />
+    <result column="is_new" property="isNew" jdbcType="BIT" />
+    <result column="supplier_id" property="supplierId" jdbcType="VARCHAR" />
+    <result column="assets_id" property="assetsId" jdbcType="VARCHAR" />
+    <result column="subid" property="subid" jdbcType="VARCHAR" />
+    <result column="assetrate" property="assetrate" jdbcType="INTEGER" />
+    <result column="invoiced" property="invoiced" jdbcType="DECIMAL" />
+    <result column="product_term" property="productTerm" jdbcType="INTEGER" />
+    <result column="rele_term" property="releTerm" jdbcType="TIMESTAMP" />
+    <result column="full_term" property="fullTerm" jdbcType="TIMESTAMP" />
+    <result column="value_date" property="valueDate" jdbcType="TIMESTAMP" />
+    <result column="assets_date" property="assetsDate" jdbcType="TIMESTAMP" />
+    <result column="found_date" property="foundDate" jdbcType="TIMESTAMP" />
+    <result column="assets_state" property="assetsState" jdbcType="BIT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, queue_id, product_name, is_new, supplier_id, assets_id, subid, assetrate, invoiced,
+    product_term, rele_term, full_term, value_date, assets_date, found_date, assets_state
+  </sql>
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tbl_origin_product
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 根据queueId,更新状态 -->
+  <update id="updateStatusByQueueId"  >
+    update tbl_origin_product set
+    assets_state = #{assetsState,jdbcType=INTEGER}
+    where queue_id=#{queueId,jdbcType=VARCHAR}
+  </update>
+
+
+</mapper>

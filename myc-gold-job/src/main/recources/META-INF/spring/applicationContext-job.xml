@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:reg="http://www.dangdang.com/schema/ddframe/reg"
+       xmlns:job="http://www.dangdang.com/schema/ddframe/job"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.dangdang.com/schema/ddframe/reg
+                        http://www.dangdang.com/schema/ddframe/reg/reg.xsd
+                        http://www.dangdang.com/schema/ddframe/job
+                        http://www.dangdang.com/schema/ddframe/job/job.xsd
+                        ">
+    <!--配置作业注册中心 -->
+    <reg:zookeeper id="regCenter"  server-lists="10.143.108.77:2181,10.143.108.78:2181,10.143.108.79:2181" namespace="myc-gold-job" base-sleep-time-milliseconds="5000" max-sleep-time-milliseconds="3000" max-retries="3" />
+
+    <!-- 七秒存储一次金价-->
+    <job:simple id="goldSecondsRealPriceSimpleJob" class="com.gomemyc.job.simple.GoldRealPriceSimpleJob" job-exception-handler="com.gomemyc.exception.MycJobExceptionHandler" executor-service-handler="com.dangdang.ddframe.job.executor.handler.impl.DefaultExecutorServiceHandler" registry-center-ref="regCenter" cron="0/7 * * * * ?" sharding-total-count="1"/>
+
+    <!-- 每小时统计一次金价-->
+    <job:simple id="GoldHourRealPriceSimpleJob" class="com.gomemyc.job.simple.GoldRealPriceHourSimpleJob" job-exception-handler="com.gomemyc.exception.MycJobExceptionHandler" executor-service-handler="com.dangdang.ddframe.job.executor.handler.impl.DefaultExecutorServiceHandler" registry-center-ref="regCenter" cron="0/20 * * * * ?" sharding-total-count="1"/>
+
+    <!-- 每个月的1号统一月上个月的平均金价 -->
+    <job:simple id="GoldMonthRealPriceSimpleJob" class="com.gomemyc.job.simple.GoldRealPriceMonthSimpleJob" job-exception-handler="com.gomemyc.exception.MycJobExceptionHandler" executor-service-handler="com.dangdang.ddframe.job.executor.handler.impl.DefaultExecutorServiceHandler" registry-center-ref="regCenter" cron="* * * 1 * ?" sharding-total-count="1"/>
+
+    <!-- 每天凌晨00：10对账前一日的订单 -->
+    <job:simple id="GoldInvestAccountCheckSimpleJob" class="com.gomemyc.job.simple.GoldInvestAccountCheckSimpleJob" job-exception-handler="com.gomemyc.exception.MycJobExceptionHandler" executor-service-handler="com.dangdang.ddframe.job.executor.handler.impl.DefaultExecutorServiceHandler" registry-center-ref="regCenter" cron="*/10 * * * * ?" sharding-total-count="1"/>
+
+    <!-- 2.7.2定期金到期对账文件(测试暂定5s) -->
+    <job:simple id="GoldDueAccountCheckSimpleJob" class="com.gomemyc.job.simple.GoldDueAccountCheckSimpleJob" job-exception-handler="com.gomemyc.exception.MycJobExceptionHandler" executor-service-handler="com.dangdang.ddframe.job.executor.handler.impl.DefaultExecutorServiceHandler" registry-center-ref="regCenter" cron="0/5 * * * * ?" sharding-total-count="1"/>
+
+    <!-- 2.7.3每天利息对账文件(调用黄金钱包返回的数据进行核对后存入平台数据库)  (测试暂定5s) -->
+    <job:simple id="GoldDayInterestAccountCheckSimpleJob" class="com.gomemyc.job.simple.GoldDayInterestAccountCheckSimpleJob" job-exception-handler="com.gomemyc.exception.MycJobExceptionHandler" executor-service-handler="com.dangdang.ddframe.job.executor.handler.impl.DefaultExecutorServiceHandler" registry-center-ref="regCenter" cron="0/5 * * * * ?" sharding-total-count="1"/>
+
+    <!-- 2.7.4定期到期利息汇总对账文件  (测试暂定5s) -->
+    <job:simple id="GoldDueSumAccountCheckSimpleJob" class="com.gomemyc.job.simple.GoldDueSumAccountCheckSimpleJob" job-exception-handler="com.gomemyc.exception.MycJobExceptionHandler" executor-service-handler="com.dangdang.ddframe.job.executor.handler.impl.DefaultExecutorServiceHandler" registry-center-ref="regCenter" cron="0/5 * * * * ?" sharding-total-count="1"/>
+
+    <!-- 查询订单表和产品表，更新订单状态和剩余可投资金额(每隔5min) -->
+    <job:simple id=GoldInvestOrderAndProductSimpleJob class="com.gomemyc.job.simple.GoldInvestOrderAndProductSimpleJob" job-exception-handler="com.gomemyc.exception.MycJobExceptionHandler" executor-service-handler="com.dangdang.ddframe.job.executor.handler.impl.DefaultExecutorServiceHandler" registry-center-ref="regCenter" cron="* 0/5 * * * ?" sharding-total-count="1"/>
+
+    <!-- 更新所有处理中订单状态，调用北京银行投资接口，将用户投资资金放入标的账户(每隔1min) -->
+    <job:simple id=GoldInvestOrderAndAccountSimpleJob class="com.gomemyc.job.simple.GoldInvestOrderAndAccountSimpleJob" job-exception-handler="com.gomemyc.exception.MycJobExceptionHandler" executor-service-handler="com.dangdang.ddframe.job.executor.handler.impl.DefaultExecutorServiceHandler" registry-center-ref="regCenter" cron="* 0/1 * * * ?" sharding-total-count="1"/>
+
+
+</beans>

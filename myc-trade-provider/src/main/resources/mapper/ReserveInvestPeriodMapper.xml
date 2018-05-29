@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.trade.dao.ReserveInvestPeriodDao">
+  <resultMap id="BaseResultMap" type="com.gomemyc.trade.entity.ReserveInvestPeriod">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="min_invest_period" property="minInvestPeriod" />
+    <result column="max_invest_period" property="maxInvestPeriod" />
+    <result column="state" property="state" />
+    <result column="invest_period_desc" property="investPeriodDesc" />
+    <result column="deleted" property="deleted" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, min_invest_period, max_invest_period, state, invest_period_desc,deleted
+  </sql>
+
+  <select id="findById" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tbl_reserve_invest_period
+    where id =#{id}
+  </select>
+  
+  <select id="findByEnableList" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tbl_reserve_invest_period
+    where deleted = 0 and state = 1 order by min_invest_period;
+  </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

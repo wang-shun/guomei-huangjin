@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.invest.dao.LoanTypeDao">
+  <resultMap id="BaseResultMap" type="com.gomemyc.invest.entity.LoanType">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="type_key" jdbcType="VARCHAR" property="key" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type_switch" jdbcType="INTEGER" property="typeSwitch" javaType="int" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, type_key, name, type_switch, description
+  </sql>
+
+  <select id="findById" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tbl_loan_type
+    where id =#{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="findByKey" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tbl_loan_type
+    where type_key =#{key,jdbcType=VARCHAR}
+  </select>
+
+  <select id="findListByTypeSwitch" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tbl_loan_type
+    where type_switch <![CDATA[ & ]]>#{typeSwitch,jdbcType=INTEGER}=#{typeSwitch,jdbcType=INTEGER}
+  </select>
+
+  <insert id="save" parameterType="com.gomemyc.invest.entity.LoanType">
+    insert into tbl_loan_type (<include refid="Base_Column_List"/>) values
+    (<![CDATA[ uuid() ]]>, #{key,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+    #{typeSwitch,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR} )
+  </insert>
+  
+  
+  <select id="listLoanTypeByIds" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tbl_loan_type
+    where id in 
+       <foreach item="item" index="index" collection="typeIds" open="("
+            separator="," close=")">
+            #{item, jdbcType=VARCHAR}  
+         </foreach>
+  </select>
+  
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

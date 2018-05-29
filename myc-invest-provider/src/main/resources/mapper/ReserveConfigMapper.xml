@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.invest.dao.ReserveConfigDao">
+  <resultMap id="BaseResultMap" type="com.gomemyc.invest.entity.ReserveConfig">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="parameter_name" property="parameterName" />
+    <result column="parameter_value" property="parameterValue" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, parameter_name, parameter_value
+  </sql>
+
+  <select id="findById" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tbl_reserve_config
+    where id =#{id}
+  </select>
+  
+  <select id="findByList" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tbl_reserve_config;
+  </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

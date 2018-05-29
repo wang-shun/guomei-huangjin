@@ -1,0 +1,37 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+    http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <dubbo:application name="myc-invest" owner="gome" organization="gome"/>
+
+    <dubbo:registry client="zkclient" protocol="zookeeper" address="${dubbo.registry.address}"
+                    file="myc-invest.properties"
+                    group="${dubbo.registry.group}"/>
+
+    <dubbo:annotation package="com.gomemyc"/>
+
+    <dubbo:consumer check="false" retries="0"/>
+
+    <dubbo:provider threads="500" protocol="dubbo" threadpool="fixed" retries="0" loadbalance="roundrobin" accesslog="true"/>
+
+    <context:property-placeholder
+            ignore-resource-not-found="false" ignore-unresolvable="true"
+            location="file:/opt/config/*.properties,classpath*:*.properties" />
+
+    <import resource="applicationContext-db.xml"/>
+    <import resource="applicationContext-mq.xml"/>
+    <import resource="spring-cache.xml"/>
+    
+    <bean id="agentConfig" class="com.gomemyc.agent.config.AgentConfig">
+       <property name="platNo" value="${deposit.agent.platNo}"/>
+       <property name="host" value="${deposit.agent.host}"/>
+       <property name="cert" value="${deposit.agent.cert}"/>
+       <property name="certPassword" value="${deposit.agent.certPassword}"/>
+       <property name="publicKey" value="${deposit.agent.publicKey}"/>
+    </bean>
+
+</beans>

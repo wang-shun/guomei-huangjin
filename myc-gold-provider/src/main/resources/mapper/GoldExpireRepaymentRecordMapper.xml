@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.gold.dao.GoldExpireRepaymentRecordDao">
+  <resultMap id="BaseResultMap" type="com.gomemyc.gold.entity.GoldExpireRepaymentRecord">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="order_req_no" jdbcType="VARCHAR" property="orderReqNo" />
+    <result column="gold_wallet_order_no" jdbcType="VARCHAR" property="goldWalletOrderNo" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="sale_time" jdbcType="TIMESTAMP" property="saleTime" />
+    <result column="due_time" jdbcType="TIMESTAMP" property="dueTime" />
+    <result column="sale_weight" jdbcType="DECIMAL" property="saleWeight" />
+    <result column="sale_gold_price" jdbcType="DECIMAL" property="saleGoldPrice" />
+    <result column="principal" jdbcType="DECIMAL" property="principal" />
+    <result column="interest" jdbcType="DECIMAL" property="interest" />
+    <result column="receive_status" jdbcType="TINYINT" property="receiveStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, order_req_no, gold_wallet_order_no, mobile, product_name, sale_time,
+    due_time, sale_weight, sale_gold_price, principal, interest, receive_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from expire_repayment_record
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from expire_repayment_record
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gomemyc.gold.entity.GoldExpireRepaymentRecord">
+    insert into expire_repayment_record (id, user_id, order_req_no,
+      gold_wallet_order_no, mobile, product_name, 
+      sale_time, due_time, sale_weight, 
+      sale_gold_price, principal, interest, 
+      receive_status)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{orderReqNo,jdbcType=VARCHAR},
+      #{goldWalletOrderNo,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{productName,jdbcType=VARCHAR}, 
+      #{saleTime,jdbcType=TIMESTAMP}, #{dueTime,jdbcType=TIMESTAMP}, #{saleWeight,jdbcType=DECIMAL}, 
+      #{saleGoldPrice,jdbcType=DECIMAL}, #{principal,jdbcType=DECIMAL}, #{interest,jdbcType=DECIMAL}, 
+      #{receiveStatus,jdbcType=TINYINT})
+  </insert>
+  <!--带判断的插入对象 -->
+  <insert id="insertExpireRepaymentRecord" parameterType="com.gomemyc.gold.entity.GoldExpireRepaymentRecord">
+    insert into expire_repayment_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="orderReqNo != null">
+        order_req_no,
+      </if>
+      <if test="goldWalletOrderNo != null">
+        gold_wallet_order_no,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="saleTime != null">
+        sale_time,
+      </if>
+      <if test="dueTime != null">
+        due_time,
+      </if>
+      <if test="saleWeight != null">
+        sale_weight,
+      </if>
+      <if test="saleGoldPrice != null">
+        sale_gold_price,
+      </if>
+      <if test="principal != null">
+        principal,
+      </if>
+      <if test="interest != null">
+        interest,
+      </if>
+      <if test="receiveStatus != null">
+        receive_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderReqNo != null">
+        #{orderReqNo,jdbcType=VARCHAR},
+      </if>
+      <if test="goldWalletOrderNo != null">
+        #{goldWalletOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="saleTime != null">
+        #{saleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dueTime != null">
+        #{dueTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saleWeight != null">
+        #{saleWeight,jdbcType=DECIMAL},
+      </if>
+      <if test="saleGoldPrice != null">
+        #{saleGoldPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="principal != null">
+        #{principal,jdbcType=DECIMAL},
+      </if>
+      <if test="interest != null">
+        #{interest,jdbcType=DECIMAL},
+      </if>
+      <if test="receiveStatus != null">
+        #{receiveStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gomemyc.gold.entity.GoldExpireRepaymentRecord">
+    update expire_repayment_record
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="orderReqNo != null">
+        order_req_no = #{orderReqNo,jdbcType=VARCHAR},
+      </if>
+      <if test="goldWalletOrderNo != null">
+        gold_wallet_order_no = #{goldWalletOrderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="saleTime != null">
+        sale_time = #{saleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dueTime != null">
+        due_time = #{dueTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="saleWeight != null">
+        sale_weight = #{saleWeight,jdbcType=DECIMAL},
+      </if>
+      <if test="saleGoldPrice != null">
+        sale_gold_price = #{saleGoldPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="principal != null">
+        principal = #{principal,jdbcType=DECIMAL},
+      </if>
+      <if test="interest != null">
+        interest = #{interest,jdbcType=DECIMAL},
+      </if>
+      <if test="receiveStatus != null">
+        receive_status = #{receiveStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gomemyc.gold.entity.GoldExpireRepaymentRecord">
+    update expire_repayment_record
+    set user_id = #{userId,jdbcType=VARCHAR},
+      order_req_no = #{orderReqNo,jdbcType=VARCHAR},
+      gold_wallet_order_no = #{goldWalletOrderNo,jdbcType=VARCHAR},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      sale_time = #{saleTime,jdbcType=TIMESTAMP},
+      due_time = #{dueTime,jdbcType=TIMESTAMP},
+      sale_weight = #{saleWeight,jdbcType=DECIMAL},
+      sale_gold_price = #{saleGoldPrice,jdbcType=DECIMAL},
+      principal = #{principal,jdbcType=DECIMAL},
+      interest = #{interest,jdbcType=DECIMAL},
+      receive_status = #{receiveStatus,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gomemyc.invest.dao.DebtAssignRequestDao">
+<resultMap id="BaseResultMap" type="com.gomemyc.invest.entity.DebtassignRequest">	
+	 <id column="id" property="id" jdbcType="VARCHAR" />
+	<result column="invest_id" property="investId" jdbcType="VARCHAR" />
+    <result column="loan_id" property="loanId" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="VARCHAR" />
+    <result column="debt_plan_id" property="debtPlanId" jdbcType="VARCHAR" />
+    <result column="debt_assign_product_id" property="debtAssignProductId" jdbcType="VARCHAR" />
+    <result column="product_title" property="productTitle" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="original_amount" property="originalAmount" jdbcType="DECIMAL" />
+    <result column="original_rate" property="originalRate" jdbcType="INTEGER" />
+    <result column="debt_amount" property="debtAmount" jdbcType="DECIMAL" />
+    <result column="debt_max_amount" property="debtMaxAmount" jdbcType="DECIMAL" />
+    <result column="counter_fee" property="counterFee" jdbcType="DECIMAL" />
+    <result column="transfer_price" property="transferPrice" jdbcType="DECIMAL" />
+    <result column="back_amount" property="backAmount" jdbcType="DECIMAL" />
+    <result column="pricing_method" property="pricingMethod" jdbcType="TINYINT"  typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler"/>
+    <result column="discount_amount" property="discountAmount" jdbcType="DECIMAL" />
+    <result column="method" property="method" jdbcType="TINYINT"  typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler"/>
+    <result column="expected_return_amount" property="expectedReturnAmount" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="TINYINT"  typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler"/>
+    <result column="debt_deal_rate" property="debtDealRate" jdbcType="INTEGER" />
+    <result column="return_full_amount" property="returnFullAmount" jdbcType="TINYINT" />
+    <result column="request_start_date" property="requestStartDate" jdbcType="TIMESTAMP" />
+    <result column="request_end_date" property="requestEndDate" jdbcType="TIMESTAMP" />
+    <result column="valid_date" property="validDate" jdbcType="INTEGER" />
+    <result column="product_due_date" property="productDueDate" jdbcType="TIMESTAMP" />
+    <result column="last_operation_time" property="lastOperationTime" jdbcType="TIMESTAMP" />
+    <result column="cancel_date" property="cancelDate" jdbcType="TIMESTAMP" />
+    <result column="cancel_type" property="cancelType" jdbcType="TINYINT"  typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler"/>
+    <result column="cancel_count" property="cancelCount" jdbcType="INTEGER" />
+    <result column="original_invest_amount" property="originalInvestAmount" jdbcType="DECIMAL" />
+    <result column="original_total_interest_amount" property="originalTotalInterestAmount" jdbcType="DECIMAL" />
+    <result column="original_dube_interest_amount" property="originalDubeInterestAmount" jdbcType="DECIMAL" />
+    <result column="invest_in_total_scale" property="investInTotalScale" jdbcType="INTEGER" />
+    <result column="original_remain_total_amount" property="originalRemainTotalAmount" jdbcType="DECIMAL" />
+    <result column="original_remain_amount" property="originalRemainAmount" jdbcType="DECIMAL" />
+    <result column="original_remain_interest_amount" property="originalRemainInterestAmount" jdbcType="DECIMAL" />
+    <result column="debt_expected_amount" property="debtExpectedAmount" jdbcType="DECIMAL" />
+    <result column="debt_expected_rate" property="debtExpectedRate" jdbcType="INTEGER" />
+    <result column="user_info" property="userInfo" jdbcType="VARCHAR" />
+    <result column="purchased_rate" property="purchasedRate" jdbcType="INTEGER" />
+    <result column="debt_real_amount" property="debtRealAmount" jdbcType="DECIMAL" />
+    <result column="floating_rate" property="floatingRate" jdbcType="INTEGER" />
+    <result column="root_purchased_rate" property="rootPurchasedRate" jdbcType="INTEGER" />
+    <result column="root_floating_rate" property="rootFloatingRate" jdbcType="INTEGER" />
+    <result column="first_debt_assign_request_id" property="firstDebtAssignRequestId" jdbcType="VARCHAR" />
+    <result column="days" property="days" jdbcType="INTEGER" />
+    <result column="months" property="months" jdbcType="INTEGER" />
+    <result column="years" property="years" jdbcType="INTEGER" />
+    <result column="debt_precise_expected_rate" property="debtPreciseExpectedRate" jdbcType="INTEGER" />
+    <result column="account_apply_id" property="accountApplyId" jdbcType="VARCHAR" />
+    
+    <result column="assign_loan" property="assignLoan" jdbcType="TINYINT" />
+    <result column="product_key" property="productKey" jdbcType="VARCHAR" />
+    <result column="original_duration" property="originalDuration" jdbcType="INTEGER" />
+    <result column="max_cancel_count" property="maxCancelCount" jdbcType="INTEGER" />
+    
+    <result column="strfield1" property="strfield1" jdbcType="VARCHAR" />
+    <result column="strfield2" property="strfield2" jdbcType="VARCHAR" />
+    <result column="strfield3" property="strfield3" jdbcType="VARCHAR" />
+    <result column="intfield1" property="intfield1" jdbcType="INTEGER" />
+    <result column="intfield2" property="intfield2" jdbcType="INTEGER" />
+    <result column="intfield3" property="intfield3" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,invest_id, loan_id, product_id, debt_plan_id, debt_assign_product_id, product_title, user_id, 
+    original_amount, original_rate, debt_amount, debt_max_amount, counter_fee, transfer_price, 
+    back_amount, pricing_method, discount_amount, method, expected_return_amount, status, 
+    debt_deal_rate, return_full_amount, request_start_date, request_end_date, valid_date, 
+    product_due_date, last_operation_time, cancel_date, cancel_type, cancel_count, original_invest_amount, 
+    original_total_interest_amount, original_dube_interest_amount, invest_in_total_scale, 
+    original_remain_total_amount, original_remain_amount, original_remain_interest_amount,
+    debt_expected_amount, debt_expected_rate, user_info, purchased_rate, debt_real_amount, 
+    floating_rate, root_purchased_rate, root_floating_rate, first_debt_assign_request_id, days, 
+    months, years, debt_precise_expected_rate,account_apply_id,assign_loan,product_key,original_duration,max_cancel_count,
+    strfield1, strfield2, strfield3, intfield1, 
+    intfield2, intfield3
+  </sql>
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_debtassign_request
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getByDebtassignProductId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_debtassign_request
+    where debt_assign_product_id = #{debtAssignProductId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="listByInvestIdsAndUserIdAndStatusSection" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_debtassign_request
+    where user_id = #{userId,jdbcType=VARCHAR} and invest_id=#{investId,jdbcType=VARCHAR} 
+     and status &gt;= #{startStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler} 
+     and status &lt;=#{endStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+  </select>
+  
+  <select id="listByInvestIdsAndUserIdAndStatus" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_debtassign_request
+    where user_id = #{userId,jdbcType=VARCHAR} 
+    and invest_id in 
+    <foreach collection="investIds" item="investId" index="index"
+                 open="(" close=")" separator=",">
+            #{investId,jdbcType=VARCHAR}
+    </foreach>
+    and status in 
+    <foreach collection="statusList" item="investStatus" index="index"
+                 open="(" close=")" separator=",">
+            #{investStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+    </foreach>
+  </select>
+  
+  <select id="findByStatusAndEndTime" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_debtassign_request
+    where  request_end_date &lt; #{time,jdbcType=TIMESTAMP} 
+     and status = #{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler} 
+  </select>
+  
+  <update id="updateDebtassignProductId">
+  update tbl_debtassign_request set debt_assign_product_id=#{debtAssignProductId,jdbcType=VARCHAR},
+  last_operation_time=#{lastOperationTime,jdbcType=TIMESTAMP}
+  where  id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateStatusById">
+  update tbl_debtassign_request set status = #{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+  last_operation_time=#{lastOperationTime,jdbcType=TIMESTAMP}
+  where  id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="statistiscDebtRequest" resultType="Map" parameterType="java.lang.String" >
+    select 
+    COUNT(1) as zqshu,SUM(debt_amount) as amount
+    from tbl_debtassign_request
+    where 
+    status &gt;= #{startStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler} 
+    and status &lt;= #{endStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+    and last_operation_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+    and last_operation_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+    GROUP BY user_id 
+  </select>
+  
+  <select id="statistiscDebtSuccess" resultType="java.math.BigDecimal" parameterType="java.lang.String" >
+    select 
+ 	  SUM(invest.amount) amount 
+    from tbl_invest AS invest, tbl_debtassign_request AS request,tbl_product_regular AS product
+    where 
+    request.status &gt;= #{startStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler} 
+    and request.status &lt;= #{endStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+    and request.last_operation_time &gt;=#{startTime,jdbcType=TIMESTAMP}
+    and request.last_operation_time &lt;=#{endTime,jdbcType=TIMESTAMP}
+    and invest.product_id=product.id and product.id=request.debt_assign_product_id
+  </select>
+  
+   <select id="findPageByByUserIdAndStatus" resultMap="BaseResultMap"  >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_debtassign_request
+    where user_id = #{userId,jdbcType=VARCHAR} and status=#{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+    	order by id asc
+    	limit #{startRow,jdbcType=INTEGER} , #{pageSize,jdbcType=INTEGER}
+  </select>
+  <select id="getCountByByUserIdAndStatus" resultType="java.lang.Integer"  >
+    select count(id)
+    from tbl_debtassign_request
+    where user_id = #{userId,jdbcType=VARCHAR} and status=#{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+  </select>
+  
+  <update id="update" parameterType="com.gomemyc.invest.entity.DebtassignRequest">
+    update tbl_debtassign_request
+    <set>
+      <if test="status != null">
+        status = #{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+      </if>
+      <if test="cancelDate != null">
+        cancel_date = #{cancelDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cancelType != null">
+        cancel_type = #{cancelType,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+      </if>
+      <if test="debtAssignProductId != null">
+        debt_assign_product_id=#{debtAssignProductId,jdbcType=VARCHAR},
+      </if>
+      <if test="accountApplyId != null">
+      	account_apply_id=#{accountApplyId,jdbcType=VARCHAR},
+      </if>
+      <if test="backAmount != null">
+      	back_amount=#{backAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="debtRealAmount != null">
+      	debt_real_amount=#{debtRealAmount,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <insert id="add" parameterType="com.gomemyc.invest.entity.DebtassignRequest" useGeneratedKeys="true" keyProperty="id">
+    insert into tbl_debtassign_request
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        id,
+        invest_id,
+        loan_id,
+        product_id,
+        debt_plan_id,
+        debt_assign_product_id,
+        product_title,
+        user_id,
+        original_amount,
+        original_rate,
+        debt_amount,
+        debt_max_amount,
+        counter_fee,
+        transfer_price,
+        back_amount,
+        pricing_method,
+        discount_amount,
+        method,
+        expected_return_amount,
+        status,
+        debt_deal_rate,
+        return_full_amount,
+        request_start_date,
+        request_end_date,
+        valid_date,
+        product_due_date,
+      <if test="lastOperationTime != null" >
+        last_operation_time,
+      </if>
+      <if test="cancelDate != null" >
+        cancel_date,
+      </if>
+      <if test="cancelType != null" >
+        cancel_type,
+      </if>
+      <if test="cancelCount != null" >
+        cancel_count,
+      </if>
+      <if test="accountApplyId != null">
+      	account_apply_id,
+      </if>
+        original_invest_amount,
+        original_total_interest_amount,
+        original_dube_interest_amount,
+        invest_in_total_scale,
+        original_remain_total_amount,
+        original_remain_amount,
+        original_remain_interest_amount,
+        debt_expected_amount,
+        debt_expected_rate,
+        user_info,
+        purchased_rate,
+        debt_real_amount,
+        floating_rate,
+        root_purchased_rate,
+        root_floating_rate,
+      <if test="firstDebtAssignRequestId != null" >
+        first_debt_assign_request_id,
+      </if>
+        days,
+        months,
+        years,
+        debt_precise_expected_rate,
+        assign_loan,product_key,original_duration,max_cancel_count,
+      <if test="strfield1 != null" >
+        strfield1,
+      </if>
+      <if test="strfield2 != null" >
+        strfield2,
+      </if>
+      <if test="strfield3 != null" >
+        strfield3,
+      </if>
+      <if test="intfield1 != null" >
+        intfield1,
+      </if>
+      <if test="intfield2 != null" >
+        intfield2,
+      </if>
+      <if test="intfield3 != null" >
+        intfield3,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{id},
+       #{investId},
+        #{loanId},
+        #{productId},
+        #{debtPlanId},
+        #{debtAssignProductId},
+        #{productTitle},
+        #{userId},
+        #{originalAmount},
+        #{originalRate},
+        #{debtAmount},
+        #{debtMaxAmount},
+        #{counterFee},
+        #{transferPrice},
+        #{backAmount},
+        #{pricingMethod,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+        #{discountAmount},
+        #{method,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+        #{expectedReturnAmount},
+        #{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+        #{debtDealRate},
+        #{returnFullAmount},
+        #{requestStartDate},
+        #{requestEndDate},
+        #{validDate},
+        #{productDueDate},
+      <if test="lastOperationTime != null" >
+        #{lastOperationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cancelDate != null" >
+        #{cancelDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cancelType != null" >
+        #{cancelType,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+      </if>
+      <if test="cancelCount != null" >
+        #{cancelCount,jdbcType=INTEGER},
+      </if>
+      <if test="accountApplyId != null">
+      	#{accountApplyId,jdbcType=VARCHAR},
+      </if>
+        #{originalInvestAmount},
+        #{originalTotalInterestAmount},
+        #{originalDubeInterestAmount},
+        #{investInTotalScale},
+        #{originalRemainTotalAmount},
+        #{originalRemainAmount},
+        #{originalRemainInterestAmount},
+        #{debtExpectedAmount},
+        #{debtExpectedRate},
+        #{userInfo},
+        #{purchasedRate},
+        #{debtRealAmount},
+        #{floatingRate},
+        #{rootPurchasedRate},
+        #{rootFloatingRate},
+      <if test="firstDebtAssignRequestId != null" >
+        #{firstDebtAssignRequestId,jdbcType=VARCHAR},
+      </if>
+        #{days},
+        #{months},
+        #{years},
+        #{debtPreciseExpectedRate},
+       	#{assignLoan},
+        #{productKey},
+        #{originalDuration},
+        #{maxCancelCount},
+      <if test="strfield1 != null" >
+        #{strfield1,jdbcType=VARCHAR},
+      </if>
+      <if test="strfield2 != null" >
+        #{strfield2,jdbcType=VARCHAR},
+      </if>
+      <if test="strfield3 != null" >
+        #{strfield3,jdbcType=VARCHAR},
+      </if>
+      <if test="intfield1 != null" >
+        #{intfield1,jdbcType=INTEGER},
+      </if>
+      <if test="intfield2 != null" >
+        #{intfield2,jdbcType=INTEGER},
+      </if>
+      <if test="intfield3 != null" >
+        #{intfield3,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="countByUserIdAndStatus" resultType="Integer" >
+ 	select count(*)
+    from tbl_debtassign_request
+    where user_id = #{userId} 
+    and status = #{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+  </select>
+</mapper>

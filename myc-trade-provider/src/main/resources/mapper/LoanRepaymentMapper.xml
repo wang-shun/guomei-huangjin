@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gomemyc.trade.dao.LoanRepaymentDao" >
+  <resultMap id="BaseResultMap" type="com.gomemyc.trade.entity.LoanRepayment" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="loan_id" property="loanId" jdbcType="VARCHAR" />
+    <result column="current_period" property="currentPeriod" jdbcType="INTEGER" />
+    <result column="principal_amount" property="principalAmount" jdbcType="DECIMAL" />
+    <result column="interest_amount" property="interestAmount" jdbcType="DECIMAL" />
+    <result column="interest_coupon_amount" property="interestCouponAmount" jdbcType="DECIMAL" />
+    <result column="outstanding_amount" property="outstandingAmount" jdbcType="DECIMAL" />
+    <result column="due_date" property="dueDate" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="TINYINT" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler"/>
+    <result column="repay_amount" property="repayAmount" jdbcType="DECIMAL" />
+    <result column="repay_date" property="repayDate" jdbcType="TIMESTAMP" />
+    <result column="time_creatime" property="timeCreatime" jdbcType="TIMESTAMP" />
+    <result column="account_srl" property="accountSrl" jdbcType="VARCHAR" />
+    <result column="deposit_srl" property="depositSrl" jdbcType="VARCHAR" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="bj_order_no" jdbcType="VARCHAR" property="bjOrderNo" />
+    <result column="local_order_no" jdbcType="VARCHAR" property="localOrderNo" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, loan_id, current_period, principal_amount, interest_amount, interest_coupon_amount, outstanding_amount, 
+    due_date, status, repay_amount, repay_date, time_creatime,account_srl,deposit_srl,user_id,bj_order_no,local_order_no
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_loan_repayment
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="findByLoanId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_loan_repayment
+    where loan_id = #{loanId,jdbcType=VARCHAR}
+  </select>
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_loan_repayment
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="findByStatus" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_loan_repayment
+    where due_date &lt; #{dueDate,jdbcType=TIMESTAMP}
+    <if test="statuss != null">
+      and status in
+        <foreach collection="statuss" item="status" index="index"
+                 open="(" close=")" separator=",">
+            #{status, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+        </foreach>
+    </if>
+  </select> 
+  
+  
+  <insert id="insert" parameterType="com.gomemyc.trade.entity.LoanRepayment" >
+    insert into tbl_loan_repayment (id, loan_id, current_period, 
+      principal_amount, interest_amount, outstanding_amount, 
+      due_date, status, repay_amount, 
+      repay_date, time_creatime, account_srl,deposit_srl,user_id)
+    values (#{id,jdbcType=VARCHAR}, #{loanId,jdbcType=VARCHAR}, #{currentPeriod,jdbcType=INTEGER}, 
+      #{principalAmount,jdbcType=DECIMAL}, #{interestAmount,jdbcType=DECIMAL}, #{outstandingAmount,jdbcType=DECIMAL}, 
+      #{dueDate,jdbcType=TIMESTAMP}, #{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}, #{repayAmount,jdbcType=DECIMAL}, 
+      #{repayDate,jdbcType=TIMESTAMP}, #{timeCreatime,jdbcType=TIMESTAMP},
+      #{accountSrl,jdbcType=VARCHAR},#{depositSrl,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateStatusById">
+    update tbl_loan_repayment 
+    	<set>
+           <if test="status != null">
+          	status = #{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+          </if>
+          <if test="accountSrl != null">
+          	account_srl = #{accountSrl,jdbcType=VARCHAR},
+          </if>
+          <if test="depositSrl != null">
+          	deposit_srl = #{depositSrl,jdbcType=VARCHAR},
+          </if>
+      </set>
+     where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="update" parameterType="com.gomemyc.trade.entity.LoanRepayment">
+    update tbl_loan_repayment 
+    	<set>
+           <if test="status != null">
+          	status = #{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+          </if>
+          <if test="accountSrl != null">
+          	account_srl = #{accountSrl,jdbcType=VARCHAR},
+          </if>
+          <if test="depositSrl != null">
+          	deposit_srl = #{depositSrl,jdbcType=VARCHAR},
+          </if>
+          <if test="bjOrderNo != null">
+          	bj_order_no = #{bjOrderNo,jdbcType=VARCHAR},
+          </if>
+          <if test="localOrderNo != null">
+          	local_order_no = #{localOrderNo,jdbcType=VARCHAR},
+          </if>
+          <if test="repayDate != null">
+          	repay_date = #{repayDate,jdbcType=TIMESTAMP},
+          </if>
+      </set>
+     where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

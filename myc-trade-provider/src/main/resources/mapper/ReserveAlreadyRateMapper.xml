@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.trade.dao.ReserveAlreadyRateDao">
+   <resultMap id="BaseResultMap" type="com.gomemyc.trade.entity.ReserveAlreadyRate" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="min_rate" property="minRate" jdbcType="VARCHAR" />
+    <result column="max_rate" property="maxRate" jdbcType="VARCHAR" />
+    <result column="enable" property="enable" jdbcType="BIT" />
+    <result column="rate_desc" property="rateDesc" jdbcType="VARCHAR" />
+    <result column="deleted" property="deleted" jdbcType="BIT" />
+    <result column="recommend" property="recommend" jdbcType="BIT" />
+    <result column="coupon" property="coupon" jdbcType="BIT" />
+    <result column="max_date" property="maxDate" jdbcType="INTEGER" />
+    <result column="min_date" property="minDate" jdbcType="INTEGER" />
+  </resultMap>
+   <sql id="Base_Column_List" >
+    id, min_rate, max_rate, enable, rate_desc, deleted, recommend, coupon, max_date, 
+    min_date
+  </sql>
+  <insert id="insert" parameterType="com.gomemyc.trade.entity.ReserveAlreadyRate" >
+    insert into tbl_reserve_rate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="minRate != null" >
+        min_rate,
+      </if>
+      <if test="maxRate != null" >
+        max_rate,
+      </if>
+      <if test="enable != null" >
+        enable,
+      </if>
+      <if test="rateDesc != null" >
+        rate_desc,
+      </if>
+      <if test="deleted != null" >
+        deleted,
+      </if>
+      <if test="recommend != null" >
+        recommend,
+      </if>
+      <if test="coupon != null" >
+        coupon,
+      </if>
+      <if test="maxDate != null" >
+        max_date,
+      </if>
+      <if test="minDate != null" >
+        min_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="minRate != null" >
+        #{minRate,jdbcType=VARCHAR},
+      </if>
+      <if test="maxRate != null" >
+        #{maxRate,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null" >
+        #{enable,jdbcType=BIT},
+      </if>
+      <if test="rateDesc != null" >
+        #{rateDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null" >
+        #{deleted,jdbcType=BIT},
+      </if>
+      <if test="recommend != null" >
+        #{recommend,jdbcType=BIT},
+      </if>
+      <if test="coupon != null" >
+        #{coupon,jdbcType=BIT},
+      </if>
+      <if test="maxDate != null" >
+        #{maxDate,jdbcType=INTEGER},
+      </if>
+      <if test="minDate != null" >
+        #{minDate,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.trade.dao.ReserveRateDao">
+  <resultMap id="BaseResultMap" type="com.gomemyc.trade.entity.ReserveRate">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="min_rate" property="minRate" />
+    <result column="max_rate" property="maxRate" />
+    <result column="enable" property="enable" />
+    <result column="coupon" property="coupon" />
+    <result column="rate_desc" property="rateDesc" />
+    <result column="deleted" property="deleted" />
+    <result column="recommend" property="recommend" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, min_rate, max_rate, enable, rate_desc,deleted,recommend,coupon
+  </sql>
+
+  <select id="findById" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tbl_reserve_rate
+    where id =#{id}
+  </select>
+  
+  <select id="findByEnableList" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tbl_reserve_rate
+    where deleted = 0 and enable = 1 order by min_rate;
+  </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

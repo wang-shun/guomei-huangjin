@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.gold.dao.GoldEarningsDao">
+  <resultMap id="BaseResultMap" type="com.gomemyc.gold.entity.GoldEarnings">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="unit_price" jdbcType="DECIMAL" property="unitPrice" />
+    <result column="project_rate" jdbcType="INTEGER" property="projectRate" />
+    <result column="gold_weight" jdbcType="DECIMAL" property="goldWeight" />
+    <result column="earnings_date" jdbcType="VARCHAR" property="earningsDate" />
+    <result column="ceate_time" jdbcType="TIMESTAMP" property="ceateTime" />
+    <result column="earnings_amount" jdbcType="DECIMAL" property="earningsAmount" />
+    <result column="invest_order_id" jdbcType="VARCHAR" property="investOrderId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, unit_price, project_rate, gold_weight, earnings_date, ceate_time, earnings_amount, 
+    invest_order_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_gold_earnings
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_gold_earnings
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gomemyc.gold.entity.GoldEarnings">
+    insert into tb_gold_earnings (id, user_id, unit_price, 
+      project_rate, gold_weight, earnings_date, 
+      ceate_time, earnings_amount, invest_order_id
+      )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{unitPrice,jdbcType=DECIMAL}, 
+      #{projectRate,jdbcType=INTEGER}, #{goldWeight,jdbcType=DECIMAL}, #{earningsDate,jdbcType=VARCHAR}, 
+      #{ceateTime,jdbcType=TIMESTAMP}, #{earningsAmount,jdbcType=DECIMAL}, #{investOrderId,jdbcType=VARCHAR}
+      )
+  </insert>
+  <!-- 向表插入数据方法-->
+  <insert id="insertGoldEarnings" parameterType="com.gomemyc.gold.entity.GoldEarnings">
+    insert into tb_gold_earnings
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="unitPrice != null">
+        unit_price,
+      </if>
+      <if test="projectRate != null">
+        project_rate,
+      </if>
+      <if test="goldWeight != null">
+        gold_weight,
+      </if>
+      <if test="earningsDate != null">
+        earnings_date,
+      </if>
+      <if test="ceateTime != null">
+        ceate_time,
+      </if>
+      <if test="earningsAmount != null">
+        earnings_amount,
+      </if>
+      <if test="investOrderId != null">
+        invest_order_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPrice != null">
+        #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="projectRate != null">
+        #{projectRate,jdbcType=INTEGER},
+      </if>
+      <if test="goldWeight != null">
+        #{goldWeight,jdbcType=DECIMAL},
+      </if>
+      <if test="earningsDate != null">
+        #{earningsDate,jdbcType=VARCHAR},
+      </if>
+      <if test="ceateTime != null">
+        #{ceateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="earningsAmount != null">
+        #{earningsAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="investOrderId != null">
+        #{investOrderId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gomemyc.gold.entity.GoldEarnings">
+    update tb_gold_earnings
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPrice != null">
+        unit_price = #{unitPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="projectRate != null">
+        project_rate = #{projectRate,jdbcType=INTEGER},
+      </if>
+      <if test="goldWeight != null">
+        gold_weight = #{goldWeight,jdbcType=DECIMAL},
+      </if>
+      <if test="earningsDate != null">
+        earnings_date = #{earningsDate,jdbcType=VARCHAR},
+      </if>
+      <if test="ceateTime != null">
+        ceate_time = #{ceateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="earningsAmount != null">
+        earnings_amount = #{earningsAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="investOrderId != null">
+        invest_order_id = #{investOrderId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gomemyc.gold.entity.GoldEarnings">
+    update tb_gold_earnings
+    set user_id = #{userId,jdbcType=VARCHAR},
+      unit_price = #{unitPrice,jdbcType=DECIMAL},
+      project_rate = #{projectRate,jdbcType=INTEGER},
+      gold_weight = #{goldWeight,jdbcType=DECIMAL},
+      earnings_date = #{earningsDate,jdbcType=VARCHAR},
+      ceate_time = #{ceateTime,jdbcType=TIMESTAMP},
+      earnings_amount = #{earningsAmount,jdbcType=DECIMAL},
+      invest_order_id = #{investOrderId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <!--查询客户昨日黄金收益的sql-->
+	<select id="getYesterdayEarnings" resultMap="BaseResultMap">
+		SELECT
+      <include refid="Base_Column_List" />
+		 from tb_gold_earnings WHERE user_id = #{userId} and earnings_date = #{date}
+	</select>
+	<!--按照页数查询客户的历史收益-->
+	<select id="getHistoryEarnings" resultMap="BaseResultMap">
+		select
+      <include refid="Base_Column_List" />
+		from tb_gold_earnings where user_id = #{userId} limit #{pageStart},#{pageSize}
+	</select>
+	<!--查询客户收益总记录数-->
+	<select id="getHistoryEarningrEcord" resultType="java.lang.Integer">
+		select count(1) from tb_gold_earnings where user_id = #{userId}
+	</select>
+	<!--查询客户总收益-->
+	<select id="getHistoryTotalEarning" resultType="java.math.BigDecimal">
+		select SUM(earnings_amount) from tb_gold_earnings where user_id = #{userId}
+	</select>
+  <!--根据id和客户id查询客户总收益-->
+	<select id="getTotalEarningByInvestOrderId" resultType="java.math.BigDecimal">
+		select SUM(earnings_amount) from tb_gold_earnings where user_id = #{userId} AND invest_order_id=#{investOrderId}
+	</select>
+
+</mapper>

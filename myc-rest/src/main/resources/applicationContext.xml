@@ -1,0 +1,26 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+    http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <dubbo:application name="myc-rest" owner="${dubbo.application.owner}" organization="${dubbo.application.organization}"/>
+
+    <dubbo:registry client="zkclient" protocol="zookeeper" address="${dubbo.registry.address}"
+                    file="${dubbo.registry.file}"
+                    group="${dubbo.registry.group}"/>
+
+    <dubbo:annotation package="com.gomemyc"/>
+
+    <dubbo:consumer check="true" loadbalance="roundrobin" retries="0"/>
+
+    <context:property-placeholder
+            ignore-resource-not-found="false" ignore-unresolvable="true"
+            location="file:/opt/config/*.properties,classpath*:*.properties"/>
+
+    <import resource="applicationContext-redis.xml" />
+
+
+</beans>

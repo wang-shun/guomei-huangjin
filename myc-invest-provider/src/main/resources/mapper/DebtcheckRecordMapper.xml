@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gomemyc.invest.dao.DebtcheckRecordDao" >
+  <resultMap id="BaseResultMap" type="com.gomemyc.invest.entity.DebtcheckRecord" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="check_type" property="checkType" jdbcType="TINYINT" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler"/>
+    <result column="check_step" property="checkStep" jdbcType="TINYINT" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler"/>
+    <result column="check_state" property="checkState" jdbcType="TINYINT" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler"/>
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_Info" property="userInfo" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="source_type" property="sourceType" jdbcType="TINYINT" />
+    <result column="source_id" property="sourceId" jdbcType="VARCHAR" />
+    <result column="debt_assign_product_id" property="debtAssignProductId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, check_type, check_step, check_state, description, user_id, user_Info, create_time, 
+    source_type, source_id,debt_assign_product_id
+  </sql>
+  <insert id="add" parameterType="com.gomemyc.invest.entity.DebtcheckRecord" >
+    insert into tbl_debt_check_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        id,
+        check_type,
+        check_step,
+        check_state,
+      <if test="description != null" >
+        description,
+      </if>
+        user_id,
+        user_Info,
+        create_time,
+        source_type,
+        source_id,
+        debt_assign_product_id,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+         #{id},
+        #{checkType,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+        #{checkStep,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+        #{checkState,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+      <if test="description != null" >
+        #{description},
+      </if>
+        #{userId},
+        #{userInfo},
+        #{createTime},
+        #{sourceType},
+        #{sourceId},
+        #{debtAssignProductId},
+    </trim>
+  </insert>
+</mapper>

@@ -1,0 +1,950 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.gold.dao.GoldProductDao">
+	<resultMap id="BaseResultMap" type="com.gomemyc.gold.entity.GoldProduct">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="login_name" jdbcType="VARCHAR" property="loginName" />
+		<result column="company_name" jdbcType="VARCHAR" property="companyName" />
+		<result column="loan_id" jdbcType="VARCHAR" property="loanId" />
+		<result column="user_id" jdbcType="VARCHAR" property="userId" />
+		<result column="type_key" jdbcType="VARCHAR" property="typeKey" />
+		<result column="type_id" jdbcType="VARCHAR" property="typeId" />
+		<result column="type_name" jdbcType="VARCHAR" property="typeName" />
+		<result column="gold_product_code" jdbcType="VARCHAR" property="goldProductCode" />
+		<result column="gold_procduct_name" jdbcType="VARCHAR"
+			property="goldProcductName" />
+		<result column="gold_product_rate" jdbcType="INTEGER" property="goldProductRate" />
+		<result column="gold_product_status" jdbcType="INTEGER"
+			property="goldProductStatus" />
+		<result column="title" jdbcType="VARCHAR" property="title" />
+		<result column="amount" jdbcType="DECIMAL" property="amount" />
+		<result column="invest_amount" jdbcType="DECIMAL" property="investAmount" />
+		<result column="invest_number" jdbcType="INTEGER" property="investNumber" />
+		<result column="years" jdbcType="INTEGER" property="years" />
+		<result column="months" jdbcType="INTEGER" property="months" />
+		<result column="days" jdbcType="INTEGER" property="days" />
+		<result column="rate" jdbcType="INTEGER" property="rate" />
+		<result column="rate_plus" jdbcType="INTEGER" property="ratePlus" />
+		<result column="method" jdbcType="INTEGER" property="method" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="product_switch" jdbcType="INTEGER" property="productSwitch" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="schedule_time" jdbcType="TIMESTAMP" property="scheduleTime" />
+		<result column="open_time" jdbcType="TIMESTAMP" property="openTime" />
+		<result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+		<result column="finish_time" jdbcType="TIMESTAMP" property="finishTime" />
+		<result column="settle_time" jdbcType="TIMESTAMP" property="settleTime" />
+		<result column="clear_time" jdbcType="TIMESTAMP" property="clearTime" />
+		<result column="value_time" jdbcType="TIMESTAMP" property="valueTime" />
+		<result column="procedure_fee_type" jdbcType="INTEGER"
+			property="procedureFeeType" />
+		<result column="preservation_type" jdbcType="INTEGER" property="preservationType" />
+		<result column="deal_cost_desc" jdbcType="VARCHAR" property="dealCostDesc" />
+		<result column="earnings_desc" jdbcType="VARCHAR" property="earningsDesc" />
+		<result column="due_process_desc" jdbcType="VARCHAR" property="dueProcessDesc" />
+		<result column="daily_limit_desc" jdbcType="VARCHAR" property="dailyLimitDesc" />
+		<result column="gold_carieties_desc" jdbcType="VARCHAR"
+			property="goldCarietiesDesc" />
+		<result column="transfer_desc" jdbcType="VARCHAR" property="transferDesc" />
+		<result column="trading_desc" jdbcType="VARCHAR" property="tradingDesc" />
+		<result column="risk_desc" jdbcType="VARCHAR" property="riskDesc" />
+		<result column="project_detail" jdbcType="VARCHAR" property="projectDetail" />
+		<result column="product_detail" jdbcType="VARCHAR" property="productDetail" />
+		<result column="local_sync_status" jdbcType="TINYINT" property="localSyncStatus" />
+		<result column="sync_status" jdbcType="TINYINT" property="syncStatus" />
+	</resultMap>
+
+	<!--首页列表返回map -->
+	<resultMap id="listGoldProductMap"
+		type="com.gomemyc.gold.entity.extend.GoldProductExtend">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="rate" jdbcType="INTEGER" property="rate" />
+		<result column="rate_plus" jdbcType="INTEGER" property="ratePlus" />
+		<result column="years" jdbcType="INTEGER" property="years" />
+		<result column="months" jdbcType="INTEGER" property="months" />
+		<result column="days" jdbcType="INTEGER" property="days" />
+		<result column="method" jdbcType="INTEGER" property="method" />
+		<result column="amount" jdbcType="DECIMAL" property="amount" />
+		<result column="min_invest_amount" jdbcType="DECIMAL" property="minInvestAmount" />
+		<result column="balance" jdbcType="DECIMAL" property="balance" />
+		<result column="title" jdbcType="VARCHAR" property="title" />
+		<result column="open_time" jdbcType="TIMESTAMP" property="openTime" />
+		<result column="use_coupon" jdbcType="INTEGER" property="useCoupon" />
+		<result column="type_key" jdbcType="VARCHAR" property="typeKey" />
+		<result column="invest_amount" jdbcType="DECIMAL" property="investAmount" />
+	</resultMap>
+	<!--产品详情返回 -->
+	<resultMap id="GoldProductsExtend"
+		type="com.gomemyc.gold.entity.extend.GoldProductsExtend">
+
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="login_name" jdbcType="VARCHAR" property="loginName" />
+		<result column="company_name" jdbcType="VARCHAR" property="companyName" />
+		<result column="loan_id" jdbcType="VARCHAR" property="loanId" />
+		<result column="user_id" jdbcType="VARCHAR" property="userId" />
+		<result column="type_key" jdbcType="VARCHAR" property="typeKey" />
+		<result column="type_id" jdbcType="VARCHAR" property="typeId" />
+		<result column="type_name" jdbcType="VARCHAR" property="typeName" />
+		<result column="gold_product_code" jdbcType="VARCHAR" property="goldProductCode" />
+		<result column="gold_procduct_name" jdbcType="VARCHAR"
+			property="goldProcductName" />
+		<result column="gold_product_rate" jdbcType="INTEGER" property="goldProductRate" />
+		<result column="gold_product_status" jdbcType="INTEGER"
+			property="goldProductStatus" />
+		<result column="title" jdbcType="VARCHAR" property="title" />
+		<result column="amount" jdbcType="DECIMAL" property="amount" />
+		<result column="invest_amount" jdbcType="DECIMAL" property="investAmount" />
+		<result column="invest_number" jdbcType="INTEGER" property="investNumber" />
+		<result column="step_amount" jdbcType="DECIMAL" property="stepAmount" />
+		<result column="balance" jdbcType="DECIMAL" property="balance" />
+		<result column="years" jdbcType="INTEGER" property="years" />
+		<result column="months" jdbcType="INTEGER" property="months" />
+		<result column="days" jdbcType="INTEGER" property="days" />
+		<result column="rate" jdbcType="INTEGER" property="rate" />
+		<result column="rate_plus" jdbcType="INTEGER" property="ratePlus" />
+		<result column="method" jdbcType="INTEGER" property="method" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="product_switch" jdbcType="INTEGER" property="productSwitch" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="schedule_time" jdbcType="TIMESTAMP" property="scheduleTime" />
+		<result column="open_time" jdbcType="TIMESTAMP" property="openTime" />
+		<result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+		<result column="finish_time" jdbcType="TIMESTAMP" property="finishTime" />
+		<result column="settle_time" jdbcType="TIMESTAMP" property="settleTime" />
+		<result column="clear_time" jdbcType="TIMESTAMP" property="clearTime" />
+		<result column="min_invest_amount" jdbcType="DECIMAL" property="minAmount" />
+		<result column="max_invest_amount" jdbcType="DECIMAL" property="maxAmount" />
+		<result column="value_time" jdbcType="TIMESTAMP" property="valueTime" />
+		<result column="use_coupon" jdbcType="INTEGER" property="useCoupon" />
+		<result column="procedure_fee_type" jdbcType="INTEGER"
+			property="procedureFeeType" />
+		<result column="preservation_type" jdbcType="INTEGER" property="preservationType" />
+		<result column="deal_cost_desc" jdbcType="VARCHAR" property="dealCostDesc" />
+		<result column="earnings_desc" jdbcType="VARCHAR" property="earningsDesc" />
+		<result column="due_process_desc" jdbcType="VARCHAR" property="dueProcessDesc" />
+		<result column="daily_limit_desc" jdbcType="VARCHAR" property="dailyLimitDesc" />
+		<result column="gold_carieties_desc" jdbcType="VARCHAR"
+			property="goldCarietiesDesc" />
+		<result column="transfer_desc" jdbcType="VARCHAR" property="transferDesc" />
+		<result column="trading_desc" jdbcType="VARCHAR" property="tradingDesc" />
+		<result column="risk_desc" jdbcType="VARCHAR" property="riskDesc" />
+		<result column="project_detail" jdbcType="VARCHAR" property="projectDetail" />
+		<result column="product_detail" jdbcType="VARCHAR" property="productDetail" />
+	</resultMap>
+	<sql id="Base_ColumnAndInfo_List">
+		product.id, product.login_name, product.company_name, product.loan_id,
+		product.user_id, product.type_key, product.type_id, product.type_name,
+		product.gold_product_code,
+		product.gold_procduct_name, product.gold_product_rate, product.gold_product_status,
+		product.title, product.amount, product.invest_amount,
+		product.invest_number, product.years, product.months, product.days,
+		product.rate, product.rate_plus, product.method, product.status,
+		product.product_switch,
+		product.create_time, product.update_time, product.schedule_time, product.open_time,
+		product.end_time, product.finish_time, product.settle_time,
+		product.clear_time, product.value_time, info.min_invest_amount,
+		info.use_coupon,info.step_amount,info.balance,info.max_invest_amount,
+		product.procedure_fee_type, product.preservation_type,
+		product.deal_cost_desc, product.earnings_desc,
+		product.due_process_desc, product.daily_limit_desc,
+		product.gold_carieties_desc, product.transfer_desc,
+		product.trading_desc,
+		product.risk_desc,product.project_detail,product.product_detail
+	</sql>
+	<!-- 根据开标时间查询 返回Map -->
+	<resultMap id="selectByOpenTimeMap"
+		type="com.gomemyc.gold.entity.extend.GoldProductIdAndCode">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="gold_product_code" jdbcType="VARCHAR" property="goldProductCode" />
+	</resultMap>
+	<!-- 返回合同所需要的字段 -->
+	<resultMap type="com.gomemyc.gold.entity.extend.Contract" id="contractMap">
+		<result column="title" jdbcType="VARCHAR" property="goldName" />
+		<result column="rate" jdbcType="INTEGER" property="rate" />
+		<result column="value_time" jdbcType="TIMESTAMP" property="startTime" />
+		<result column="clear_time" jdbcType="TIMESTAMP" property="finishTime" />
+		<result column="loan_id" jdbcType="VARCHAR" property="loanId" />
+	</resultMap>
+	<sql id="Base_Column_List">
+
+		id, login_name, company_name, loan_id, user_id, type_key, type_id,
+		type_name, gold_product_code,
+		gold_procduct_name, gold_product_rate, gold_product_status, title, amount, invest_amount,
+		invest_number, years, months, days, rate, rate_plus, method, status,
+		product_switch,
+		create_time, update_time, schedule_time, open_time, end_time, finish_time,
+		settle_time,
+		clear_time, value_time, procedure_fee_type, preservation_type, deal_cost_desc,
+		earnings_desc,
+		due_process_desc, daily_limit_desc, gold_carieties_desc, transfer_desc, trading_desc,
+		risk_desc,project_detail,product_detail,local_sync_status,
+		sync_status
+	</sql>
+	<sql id="Base_Column">
+
+		pro.id,
+		pro.login_name,
+		pro.company_name,
+		pro.loan_id,
+		pro.user_id,
+		pro.type_key,
+		pro.type_id,
+		pro.type_name,
+		pro.gold_product_code,
+		pro.gold_procduct_name,
+		pro.gold_product_rate,
+		pro.gold_product_status,
+		pro.title,
+		pro.amount,
+		pro.invest_amount,
+		pro.invest_number,
+		pro.years,
+		pro.months,
+		pro.days,
+		pro.rate,
+		pro.rate_plus,
+		pro.method,
+		pro.status,
+		pro.product_switch,
+		pro.create_time,
+		pro.update_time,
+		pro.schedule_time,
+		pro.open_time,
+		pro.end_time,
+		pro.finish_time,
+		pro.settle_time,
+		pro.clear_time,
+		pro.value_time,
+		pro.procedure_fee_type,
+		pro.preservation_type,
+		pro.deal_cost_desc,
+		pro.earnings_desc,
+		pro.due_process_desc,
+		pro.daily_limit_desc,
+		pro.gold_carieties_desc,
+		pro.transfer_desc,
+		pro.trading_desc,
+		pro.risk_desc,
+		pro.project_detail,
+		pro.product_detail,
+		pro.local_sync_status,
+		pro.sync_status
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+
+		select
+		<include refid="Base_Column_List" />
+		from tb_gold_product
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+
+		delete from tb_gold_product
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.gomemyc.gold.entity.GoldProduct">
+
+		insert into tb_gold_product (id, login_name, company_name,
+		loan_id, user_id, type_key,
+		type_id, type_name, gold_product_code,
+		gold_procduct_name, gold_product_rate, gold_product_status,
+		title, amount, invest_amount,
+		invest_number, years, months,
+		days, rate, rate_plus,
+		method, status, product_switch,
+		create_time, update_time, schedule_time,
+		open_time, end_time, finish_time,
+		settle_time, clear_time, value_time,
+		procedure_fee_type, preservation_type, deal_cost_desc,
+		earnings_desc, due_process_desc, daily_limit_desc,
+		gold_carieties_desc, transfer_desc, trading_desc,
+		risk_desc, local_sync_status,
+		sync_status)
+		values (#{id,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR},
+		#{companyName,jdbcType=VARCHAR},
+		#{loanId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{typeKey,jdbcType=VARCHAR},
+		#{typeId,jdbcType=VARCHAR}, #{typeName,jdbcType=VARCHAR},
+		#{goldProductCode,jdbcType=VARCHAR},
+		#{goldProcductName,jdbcType=VARCHAR},
+		#{goldProductRate,jdbcType=INTEGER},
+		#{goldProductStatus,jdbcType=INTEGER},
+		#{title,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{investAmount,jdbcType=DECIMAL},
+		#{investNumber,jdbcType=INTEGER}, #{years,jdbcType=INTEGER},
+		#{months,jdbcType=INTEGER},
+		#{days,jdbcType=INTEGER}, #{rate,jdbcType=INTEGER}, #{ratePlus,jdbcType=INTEGER},
+		#{method,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+		#{productSwitch,jdbcType=INTEGER},
+		#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{scheduleTime,jdbcType=TIMESTAMP},
+		#{openTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP},
+		#{finishTime,jdbcType=TIMESTAMP},
+		#{settleTime,jdbcType=TIMESTAMP}, #{clearTime,jdbcType=TIMESTAMP}, #{valueTime,jdbcType=TIMESTAMP},
+		#{procedureFeeType,jdbcType=INTEGER},
+		#{preservationType,jdbcType=INTEGER},
+		#{dealCostDesc,jdbcType=VARCHAR},
+		#{earningsDesc,jdbcType=VARCHAR}, #{dueProcessDesc,jdbcType=VARCHAR},
+		#{dailyLimitDesc,jdbcType=VARCHAR},
+		#{goldCarietiesDesc,jdbcType=VARCHAR},
+		#{transferDesc,jdbcType=VARCHAR}, #{tradingDesc,jdbcType=VARCHAR},
+		#{riskDesc,jdbcType=VARCHAR}, #{localSyncStatus,jdbcType=TINYINT},
+		#{syncStatus,jdbcType=TINYINT})
+	</insert>
+	<insert id="insertSelective" parameterType="com.gomemyc.gold.entity.GoldProduct">
+
+		insert into tb_gold_product
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="loginName != null">
+				login_name,
+			</if>
+			<if test="companyName != null">
+				company_name,
+			</if>
+			<if test="loanId != null">
+				loan_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="typeKey != null">
+				type_key,
+			</if>
+			<if test="typeId != null">
+				type_id,
+			</if>
+			<if test="typeName != null">
+				type_name,
+			</if>
+			<if test="goldProductCode != null">
+				gold_product_code,
+			</if>
+			<if test="goldProcductName != null">
+				gold_procduct_name,
+			</if>
+			<if test="goldProductRate != null">
+				gold_product_rate,
+			</if>
+			<if test="goldProductStatus != null">
+				gold_product_status,
+			</if>
+			<if test="title != null">
+				title,
+			</if>
+			<if test="amount != null">
+				amount,
+			</if>
+			<if test="investAmount != null">
+				invest_amount,
+			</if>
+			<if test="investNumber != null">
+				invest_number,
+			</if>
+			<if test="years != null">
+				years,
+			</if>
+			<if test="months != null">
+				months,
+			</if>
+			<if test="days != null">
+				days,
+			</if>
+			<if test="rate != null">
+				rate,
+			</if>
+			<if test="ratePlus != null">
+				rate_plus,
+			</if>
+			<if test="method != null">
+				method,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="productSwitch != null">
+				product_switch,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="scheduleTime != null">
+				schedule_time,
+			</if>
+			<if test="openTime != null">
+				open_time,
+			</if>
+			<if test="endTime != null">
+				end_time,
+			</if>
+			<if test="finishTime != null">
+				finish_time,
+			</if>
+			<if test="settleTime != null">
+				settle_time,
+			</if>
+			<if test="clearTime != null">
+				clear_time,
+			</if>
+			<if test="valueTime != null">
+				value_time,
+			</if>
+			<if test="procedureFeeType != null">
+				procedure_fee_type,
+			</if>
+			<if test="preservationType != null">
+				preservation_type,
+			</if>
+			<if test="dealCostDesc != null">
+				deal_cost_desc,
+			</if>
+			<if test="earningsDesc != null">
+				earnings_desc,
+			</if>
+			<if test="dueProcessDesc != null">
+				due_process_desc,
+			</if>
+			<if test="dailyLimitDesc != null">
+				daily_limit_desc,
+			</if>
+			<if test="goldCarietiesDesc != null">
+				gold_carieties_desc,
+			</if>
+			<if test="transferDesc != null">
+				transfer_desc,
+			</if>
+			<if test="tradingDesc != null">
+				trading_desc,
+			</if>
+			<if test="riskDesc != null">
+				risk_desc,
+			</if>
+			<if test="localSyncStatus != null">
+				local_sync_status,
+			</if>
+			<if test="syncStatus != null">
+				sync_status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="loginName != null">
+				#{loginName,jdbcType=VARCHAR},
+			</if>
+			<if test="companyName != null">
+				#{companyName,jdbcType=VARCHAR},
+			</if>
+			<if test="loanId != null">
+				#{loanId,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="typeKey != null">
+				#{typeKey,jdbcType=VARCHAR},
+			</if>
+			<if test="typeId != null">
+				#{typeId,jdbcType=VARCHAR},
+			</if>
+			<if test="typeName != null">
+				#{typeName,jdbcType=VARCHAR},
+			</if>
+			<if test="goldProductCode != null">
+				#{goldProductCode,jdbcType=VARCHAR},
+			</if>
+			<if test="goldProcductName != null">
+				#{goldProcductName,jdbcType=VARCHAR},
+			</if>
+			<if test="goldProductRate != null">
+				#{goldProductRate,jdbcType=INTEGER},
+			</if>
+			<if test="goldProductStatus != null">
+				#{goldProductStatus,jdbcType=INTEGER},
+			</if>
+			<if test="title != null">
+				#{title,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="investAmount != null">
+				#{investAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="investNumber != null">
+				#{investNumber,jdbcType=INTEGER},
+			</if>
+			<if test="years != null">
+				#{years,jdbcType=INTEGER},
+			</if>
+			<if test="months != null">
+				#{months,jdbcType=INTEGER},
+			</if>
+			<if test="days != null">
+				#{days,jdbcType=INTEGER},
+			</if>
+			<if test="rate != null">
+				#{rate,jdbcType=INTEGER},
+			</if>
+			<if test="ratePlus != null">
+				#{ratePlus,jdbcType=INTEGER},
+			</if>
+			<if test="method != null">
+				#{method,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="productSwitch != null">
+				#{productSwitch,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="scheduleTime != null">
+				#{scheduleTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="openTime != null">
+				#{openTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endTime != null">
+				#{endTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="finishTime != null">
+				#{finishTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="settleTime != null">
+				#{settleTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="clearTime != null">
+				#{clearTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="valueTime != null">
+				#{valueTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="procedureFeeType != null">
+				#{procedureFeeType,jdbcType=INTEGER},
+			</if>
+			<if test="preservationType != null">
+				#{preservationType,jdbcType=INTEGER},
+			</if>
+			<if test="dealCostDesc != null">
+				#{dealCostDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="earningsDesc != null">
+				#{earningsDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="dueProcessDesc != null">
+				#{dueProcessDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="dailyLimitDesc != null">
+				#{dailyLimitDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="goldCarietiesDesc != null">
+				#{goldCarietiesDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="transferDesc != null">
+				#{transferDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="tradingDesc != null">
+				#{tradingDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="riskDesc != null">
+				#{riskDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="localSyncStatus != null">
+				#{localSyncStatus,jdbcType=TINYINT},
+			</if>
+			<if test="syncStatus != null">
+				#{syncStatus,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.gomemyc.gold.entity.GoldProduct">
+
+		update tb_gold_product
+		<set>
+			<if test="loginName != null">
+				login_name = #{loginName,jdbcType=VARCHAR},
+			</if>
+			<if test="companyName != null">
+				company_name = #{companyName,jdbcType=VARCHAR},
+			</if>
+			<if test="loanId != null">
+				loan_id = #{loanId,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="typeKey != null">
+				type_key = #{typeKey,jdbcType=VARCHAR},
+			</if>
+			<if test="typeId != null">
+				type_id = #{typeId,jdbcType=VARCHAR},
+			</if>
+			<if test="typeName != null">
+				type_name = #{typeName,jdbcType=VARCHAR},
+			</if>
+			<if test="goldProductCode != null">
+				gold_product_code = #{goldProductCode,jdbcType=VARCHAR},
+			</if>
+			<if test="goldProcductName != null">
+				gold_procduct_name = #{goldProcductName,jdbcType=VARCHAR},
+			</if>
+			<if test="goldProductRate != null">
+				gold_product_rate = #{goldProductRate,jdbcType=INTEGER},
+			</if>
+			<if test="goldProductStatus != null">
+				gold_product_status = #{goldProductStatus,jdbcType=INTEGER},
+			</if>
+			<if test="title != null">
+				title = #{title,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="investAmount != null">
+				invest_amount = #{investAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="investNumber != null">
+				invest_number = #{investNumber,jdbcType=INTEGER},
+			</if>
+			<if test="years != null">
+				years = #{years,jdbcType=INTEGER},
+			</if>
+			<if test="months != null">
+				months = #{months,jdbcType=INTEGER},
+			</if>
+			<if test="days != null">
+				days = #{days,jdbcType=INTEGER},
+			</if>
+			<if test="rate != null">
+				rate = #{rate,jdbcType=INTEGER},
+			</if>
+			<if test="ratePlus != null">
+				rate_plus = #{ratePlus,jdbcType=INTEGER},
+			</if>
+			<if test="method != null">
+				method = #{method,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="productSwitch != null">
+				product_switch = #{productSwitch,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="scheduleTime != null">
+				schedule_time = #{scheduleTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="openTime != null">
+				open_time = #{openTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="endTime != null">
+				end_time = #{endTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="finishTime != null">
+				finish_time = #{finishTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="settleTime != null">
+				settle_time = #{settleTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="clearTime != null">
+				clear_time = #{clearTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="valueTime != null">
+				value_time = #{valueTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="procedureFeeType != null">
+				procedure_fee_type = #{procedureFeeType,jdbcType=INTEGER},
+			</if>
+			<if test="preservationType != null">
+				preservation_type = #{preservationType,jdbcType=INTEGER},
+			</if>
+			<if test="dealCostDesc != null">
+				deal_cost_desc = #{dealCostDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="earningsDesc != null">
+				earnings_desc = #{earningsDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="dueProcessDesc != null">
+				due_process_desc = #{dueProcessDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="dailyLimitDesc != null">
+				daily_limit_desc = #{dailyLimitDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="goldCarietiesDesc != null">
+				gold_carieties_desc = #{goldCarietiesDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="transferDesc != null">
+				transfer_desc = #{transferDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="tradingDesc != null">
+				trading_desc = #{tradingDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="riskDesc != null">
+				risk_desc = #{riskDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="localSyncStatus != null">
+				local_sync_status = #{localSyncStatus,jdbcType=TINYINT},
+			</if>
+			<if test="syncStatus != null">
+				sync_status = #{syncStatus,jdbcType=TINYINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.gomemyc.gold.entity.GoldProduct">
+
+		update tb_gold_product
+		set login_name = #{loginName,jdbcType=VARCHAR},
+		company_name = #{companyName,jdbcType=VARCHAR},
+		loan_id = #{loanId,jdbcType=VARCHAR},
+		user_id = #{userId,jdbcType=VARCHAR},
+		type_key = #{typeKey,jdbcType=VARCHAR},
+		type_id = #{typeId,jdbcType=VARCHAR},
+		type_name = #{typeName,jdbcType=VARCHAR},
+		gold_product_code = #{goldProductCode,jdbcType=VARCHAR},
+		gold_procduct_name = #{goldProcductName,jdbcType=VARCHAR},
+		gold_product_rate = #{goldProductRate,jdbcType=INTEGER},
+		gold_product_status = #{goldProductStatus,jdbcType=INTEGER},
+		title = #{title,jdbcType=VARCHAR},
+		amount = #{amount,jdbcType=DECIMAL},
+		invest_amount = #{investAmount,jdbcType=DECIMAL},
+		invest_number = #{investNumber,jdbcType=INTEGER},
+		years = #{years,jdbcType=INTEGER},
+		months = #{months,jdbcType=INTEGER},
+		days = #{days,jdbcType=INTEGER},
+		rate = #{rate,jdbcType=INTEGER},
+		rate_plus = #{ratePlus,jdbcType=INTEGER},
+		method = #{method,jdbcType=INTEGER},
+		status = #{status,jdbcType=INTEGER},
+		product_switch = #{productSwitch,jdbcType=INTEGER},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		schedule_time = #{scheduleTime,jdbcType=TIMESTAMP},
+		open_time = #{openTime,jdbcType=TIMESTAMP},
+		end_time = #{endTime,jdbcType=TIMESTAMP},
+		finish_time = #{finishTime,jdbcType=TIMESTAMP},
+		settle_time = #{settleTime,jdbcType=TIMESTAMP},
+		clear_time = #{clearTime,jdbcType=TIMESTAMP},
+		value_time = #{valueTime,jdbcType=TIMESTAMP},
+		procedure_fee_type = #{procedureFeeType,jdbcType=INTEGER},
+		preservation_type = #{preservationType,jdbcType=INTEGER},
+		deal_cost_desc = #{dealCostDesc,jdbcType=VARCHAR},
+		earnings_desc = #{earningsDesc,jdbcType=VARCHAR},
+		due_process_desc = #{dueProcessDesc,jdbcType=VARCHAR},
+		daily_limit_desc = #{dailyLimitDesc,jdbcType=VARCHAR},
+		gold_carieties_desc = #{goldCarietiesDesc,jdbcType=VARCHAR},
+		transfer_desc = #{transferDesc,jdbcType=VARCHAR},
+		trading_desc = #{tradingDesc,jdbcType=VARCHAR},
+		risk_desc = #{riskDesc,jdbcType=VARCHAR},
+		local_sync_status = #{localSyncStatus,jdbcType=TINYINT},
+		sync_status = #{syncStatus,jdbcType=TINYINT}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<!-- 查询记录总数 -->
+	<select id="getGoldProductAmount" resultType="java.lang.Integer">
+		select count(1) from tb_gold_product WHERE open_time = #{openTime}
+	</select>
+	<!-- 按找页数查询产品列表 -->
+	<select id="listGoldProduct" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_gold_product
+		WHERE open_time = #{openTime}
+		limit #{pageStart},#{pageSize}
+	</select>
+	<!--根据产品id查询产品详情 -->
+	<select id="getByProductId" resultMap="GoldProductsExtend">
+		select
+		<include refid="Base_ColumnAndInfo_List" />
+		from tb_gold_product product,tb_gold_product_info info
+		where product.id =info.id
+		AND product.id=#{productId}
+	</select>
+	<!--根据产品id查询产品详情 -->
+	<select id="getInfoByProduct" resultMap="GoldProductsExtend">
+		select
+		<include refid="Base_ColumnAndInfo_List" />
+		from tb_gold_product product,tb_gold_product_info info
+		where product.id
+		= #{productId} AND info.id=#{productId}
+	</select>
+	<!--根据当前时间查询介于开标时间和还清时间的产品id和code -->
+	<select id="selectIdAndCodeByOpenTime" resultMap="selectByOpenTimeMap">
+		SELECT p.id , p.gold_product_code FROM tb_gold_product AS p,tbl_loan AS loan
+		WHERE p.loan_id = loan.id
+		AND  #{openTime} > p.open_time
+		AND loan.due_time > #{openTime}
+	</select>
+<!--根据开标时间查询所有的昨天开标时产品的id和code-->
+	<select id="getIdAndCodeByOpenTime" resultMap="selectByOpenTimeMap">
+		<!--
+                SELECT id ,gold_product_code FROM tb_gold_product
+                WHERE  #{openTime} BETWEEN open_time AND end_time
+                   -->
+                SELECT id ,gold_product_code FROM tb_gold_product
+                WHERE  #{openTime} = open_time
+
+	</select>
+	<select id="getIdAndCodeByClearTime" resultMap="selectByOpenTimeMap">
+		SELECT p.id , p.gold_product_code FROM tb_gold_product AS p,tbl_loan AS loan
+		WHERE p.loan_id = loan.id
+		AND loan.due_time = #{clearTime}
+	</select>
+	<!--根据还清时间查询所有需要还清的商品 -->
+	<select id="getGoldProductByClearTime" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column" />
+		FROM tb_gold_product AS pro,tbl_loan AS loan
+		WHERE pro.loan_id = loan.id
+		AND loan.due_time = #{clearTime}
+	</select>
+
+	<!--根据页数查询产品列表 -->
+	<select id="getListGoldProduct" resultMap="listGoldProductMap">
+		SELECT
+		product.id,
+		product.`status`,
+		product.rate,
+		product.rate_plus,
+		product.years,
+		product.months,
+		product.days,
+		product.method,
+		product.amount,
+		info.min_invest_amount,
+		info.balance,
+		product.title,
+		product.open_time,
+		info.use_coupon,
+		product.type_key,
+		product.invest_amount
+		FROM
+		tb_gold_product AS product left join
+		tb_gold_product_info AS info
+		ON
+		product.id = info.id
+		WHERE
+		DATE_FORMAT(product.open_time, "%Y-%m-%d") = #{openTime}
+		AND product.status>1
+		AND 8>product.status
+		limit #{pageStart},#{pageSize}
+	</select>
+	
+	<!--根据产品id，更新产品参数 -->
+	<update id="updateStatusByProductId">
+		UPDATE tb_gold_product
+		SET status=#{status},
+		<if test="settleTime != null">
+		settle_time=#{settleTime},
+		</if>
+		<if test="valueTime != null">
+		value_time=#{valueTime},
+		</if>
+		WHERE id=#{productId}
+	</update>
+
+	<!--查询产品信息根据结标时间 -->
+	<select id="findProductsBySettleTime" resultMap="GoldProductsExtend">
+		SELECT
+		<include refid="Base_ColumnAndInfo_List" />
+		FROM
+		tb_gold_product product,tb_gold_product_info info
+		where product.id =info.id
+		AND product.settle_time = #{settleTime}
+	</select>
+
+	<!--根据当前时间，查询当天开标的产品 -->
+	<select id="findProductsByCurrentTime" resultMap="GoldProductsExtend">
+		SELECT
+		<include refid="Base_ColumnAndInfo_List" />
+		FROM
+		tb_gold_product product,tb_gold_product_info info
+		where
+		product.id = info.id
+		and
+		DATE_FORMAT(product.open_time,'%Y-%m-%d') = #{currentTime}
+	</select>
+
+	<!--根据产品id，更新产品状态-->
+	<update id="updateStatusById">
+		UPDATE tb_gold_product
+		SET status=#{status}
+		WHERE id=#{productId}
+	</update>
+	<!--根据当前时间和状态区间查询产品数量-->
+	<select id="selectProductCountByCurrentTimeAndStatusStartAndStatusEnd" resultType="java.lang.Integer">
+		SELECT
+		count(1)
+		FROM
+		tb_gold_product
+		where
+		status
+		between
+		#{statusStart}
+		and
+		#{statusEnd}
+		<if test="currentTime != null">
+		and DATE_FORMAT(open_time,'%Y-%m-%d') = #{currentTime}
+		</if>
+	</select>
+	<!--根据产品id，查询部分参数 -->
+	<select id="getContractByProductId" resultMap="contractMap">
+		SELECT
+		product.title,
+		product.rate,
+		product.value_time,
+		product.clear_time,
+		product.loan_id
+		FROM
+		tb_gold_product AS product
+		WHERE
+		product.id = #{productId}
+	</select>
+	<select id="listRegularProductIdsToSettle" resultType="java.lang.String" >
+	<![CDATA[
+	    select id
+	      from tb_gold_product
+	     where status = 4
+	       and (product_switch & 8 = 8 or (product_switch & 16 = 16 and end_time <= now()))
+     ]]>
+	</select>
+<!--根据产品状态查询产品id-->
+	<select id="findIdByStatus" resultMap="GoldProductsExtend">
+		SELECT
+		<include refid="Base_ColumnAndInfo_List"/>
+		FROM
+		tb_gold_product AS product left join
+		tb_gold_product_info AS info
+		ON
+		product.id = info.id
+	     where product.status = #{status}
+	</select>
+
+	<!--根据当前时间查询介于开标时间和还清时间的产品 -->
+	<select id="productsByCurrentTime" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column" />
+		FROM tb_gold_product AS pro,tbl_loan AS loan
+		WHERE pro.loan_id = loan.id
+		AND  #{currentTime} > pro.open_time
+		AND loan.due_time > #{currentTime}
+	</select>
+</mapper>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.invest.dao.LoanDao">
+  <resultMap id="BaseResultMap" type="com.gomemyc.invest.entity.Loan">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="portfolio_no" jdbcType="VARCHAR" property="portfolioNo" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="company_name" jdbcType="VARCHAR" property="companyName" />
+    <result column="type_id" jdbcType="VARCHAR" property="loanTypeId" />
+    <result column="type_key" jdbcType="VARCHAR" property="loanTypeKey" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" javaType="java.math.BigDecimal"/>
+    <result column="years" jdbcType="INTEGER" property="years" javaType="int" />
+    <result column="months" jdbcType="INTEGER" property="months" javaType="int"/>
+    <result column="days" jdbcType="INTEGER" property="days" javaType="int" />
+    <result column="rate" jdbcType="INTEGER" property="rate" javaType="int" />
+    <result column="rate_plus" jdbcType="INTEGER" property="plusRate" javaType="int" />
+    <result column="method" jdbcType="INTEGER" property="method" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="purpose" jdbcType="INTEGER" property="purpose" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler" />
+    <result column="status" jdbcType="INTEGER" property="status" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler" />
+    <result column="value_time" jdbcType="TIMESTAMP" property="valueTime" javaType="java.util.Date" />
+    <result column="due_time" jdbcType="TIMESTAMP" property="dueTime" javaType="java.util.Date" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" javaType="java.util.Date" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" javaType="java.util.Date" />
+    <result column="sync_order_no" jdbcType="VARCHAR" property="syncOrderNo" />
+    <result column="sync_status" jdbcType="INTEGER" property="syncStatus" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler" />
+    <result column="local_sync_status" jdbcType="INTEGER" property="localSyncStatus" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler" />
+    <result column="sync_return_time" jdbcType="TIMESTAMP" property="syncReturnTime" javaType="java.util.Date" />
+    <result column="source" jdbcType="INTEGER" property="source" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, portfolio_no, login_name, company_name, type_id, type_key, title,
+    amount, years, months, days, rate, rate_plus, method, user_id, purpose,
+    status, value_time, due_time, create_time, update_time, sync_order_no,
+    sync_status, local_sync_status, sync_return_time, source
+  </sql>
+
+  <select id="findById" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tbl_loan
+    where id =#{id,jdbcType=VARCHAR}
+  </select>
+
+
+
+  <select id="findByPortfolioNo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tbl_loan
+    where portfolio_no = #{portfolioNo,jdbcType=VARCHAR}
+  </select>
+
+  <select id="listByLoanStatus" resultType="java.lang.String" >
+    select id
+    from tbl_loan
+    where status =#{status, jdbcType=INTEGER, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+  </select>
+
+
+    <insert id="save" parameterType="com.gomemyc.invest.entity.Loan" >
+    insert into tbl_loan (<include refid="Base_Column_List"/>) values
+    (#{id,jdbcType=VARCHAR}, #{portfolioNo,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR},
+    #{companyName,jdbcType=VARCHAR}, #{loanTypeId,jdbcType=VARCHAR},
+    #{loanTypeKey,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, 
+    #{years,jdbcType=INTEGER}, #{months,jdbcType=INTEGER}, #{days,jdbcType=INTEGER},
+    #{rate,jdbcType=INTEGER}, #{plusRate,jdbcType=INTEGER}, #{method, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}, 
+    #{userId,jdbcType=VARCHAR}, #{purpose, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}, 
+    #{status, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}, 
+    #{valueTime,jdbcType=TIMESTAMP}, #{dueTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+    #{updateTime,jdbcType=TIMESTAMP}, #{syncOrderNo,jdbcType=VARCHAR}, 
+    #{syncStatus,jdbcType=INTEGER, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+    #{localSyncStatus,jdbcType=INTEGER, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+    #{syncReturnTime,jdbcType=TIMESTAMP},
+    #{source,jdbcType=INTEGER, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler} )
+  </insert>
+  <update id="updateSyncStatus"  >
+    update tbl_loan set 
+        sync_status = #{syncStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+        sync_return_time = #{syncReturnTime,jdbcType=TIMESTAMP}        
+    where id = #{id, jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectInvestCountByProductId" resultType="java.lang.Integer">
+    select count(1)
+    from tbl_invest
+    where product_id =#{productId,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 流标，更新投资记录(根据产品id) -->
+  <update id="updateInvestStatusByProductId"  >
+    update tbl_invest set
+    status = #{status, jdbcType=INTEGER}
+    where product_id = #{productId, jdbcType=VARCHAR} and status = #{oldStatus, jdbcType=INTEGER}
+  </update>
+
+  <update id="updateLocalSyncStatus"  >
+    update tbl_loan set 
+        local_sync_status = #{localSyncStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+    where id = #{id, jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateSyncOrderNo"  >
+    update tbl_loan set 
+        sync_order_no = #{syncOrderNo,jdbcType=VARCHAR},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}        
+    where id = #{id, jdbcType=VARCHAR} and (sync_status != 1 or sync_status is null)
+  </update>
+  
+  <update id="updateLoanStatus"  >
+    update tbl_loan set 
+        status = #{status, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+    where id = #{id, jdbcType=VARCHAR} 
+      and status = #{originStatus, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+  </update>
+  
+  <update id="settleLoanValueDate"  >
+    update tbl_loan 
+       set status = #{status, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+           settle_time = #{settleTime,jdbcType=TIMESTAMP},
+           value_time = #{valueTime,jdbcType=TIMESTAMP},
+           due_time = #{dueTime,jdbcType=TIMESTAMP}
+     where id = #{loanId, jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateStatus">
+
+     update tbl_loan set
+        status = #{status, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+        where id = #{id, jdbcType=VARCHAR}
+  </update>
+
+  <select id="findInvestStatusCountByProductId" resultType="java.lang.Integer">
+    select count(1) from tbl_invest t where
+    t.status in
+    <foreach collection="investStatusList" item="investStatus" index="index"
+             open="(" close=")" separator=",">
+      #{investStatus}
+    </foreach>
+    and t.product_id=#{productId,jdbcType=VARCHAR}
+  </select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

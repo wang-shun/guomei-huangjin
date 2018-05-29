@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gomemyc.invest.dao.ProductBillDao" >
+  <resultMap id="BaseResultMap" type="com.gomemyc.invest.entity.ProductBill" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="loan_id" property="loanId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="type_key" property="typeKey" jdbcType="VARCHAR" />
+    <result column="type_id" property="typeId" jdbcType="VARCHAR" />
+    <result column="type_name" property="typeName" jdbcType="VARCHAR" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="amount" property="amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+    <result column="invest_amount" property="investAmount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+    <result column="invest_number" property="investNum" jdbcType="INTEGER" javaType="int" />
+    <result column="years" property="years" jdbcType="INTEGER" javaType="int" />
+    <result column="months" property="months" jdbcType="INTEGER" javaType="int" />
+    <result column="days" property="days" jdbcType="INTEGER" javaType="int" />
+    <result column="rate" property="rate" jdbcType="INTEGER" javaType="int" />
+    <result column="rate_plus" property="plusRate" jdbcType="INTEGER" javaType="int"/>
+    <result column="method" property="method" jdbcType="INTEGER" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler" />
+    <result column="status" property="status" jdbcType="INTEGER" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler" />
+    <result column="product_switch" property="productSwitch" jdbcType="INTEGER" javaType="int" />
+    <result column="root_product_id" property="rootProductId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    <result column="schedule_time" property="scheduleTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    <result column="open_time" property="openTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    <result column="settle_time" property="settleTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    <result column="clear_time" property="clearTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    <result column="debt_plan_id" property="debtPlanId" jdbcType="VARCHAR"  />
+    <result column="value_time" property="valueTime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    <result column="debted" property="debted" jdbcType="TINYINT" javaType="boolean" />
+    <result column="sync_status" property="syncStatus" jdbcType="INTEGER" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler" />
+    <result column="local_sync_status" property="localSyncStatus" jdbcType="INTEGER" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler" />
+    <result column="risk_type" property="riskType" jdbcType="TINYINT" />
+    <result column="product_tag_key" property="productTagKey" jdbcType="VARCHAR" />
+    <result column="product_tag_value" property="productTagValue" jdbcType="VARCHAR" />
+    <result column="product_tag_color" property="productTagColor" jdbcType="VARCHAR" />
+    <result column="company_name" property="companyName" jdbcType="VARCHAR" />
+    <result column="bill_type" property="billType" jdbcType="VARCHAR" />
+    <result column="acceptance_bank" property="acceptanceBank" jdbcType="VARCHAR" />
+    <result column="extend_deadline" property="extendDeadline" jdbcType="INTEGER" />
+    <result column="extend_expire_date" property="extendExpireDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.gomemyc.invest.entity.ProductBill" extends="BaseResultMap" >
+    <result column="project_detail" property="projectDetail" jdbcType="LONGVARCHAR" />
+    <result column="product_detail" property="productDetail" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, loan_id, user_id, type_key, type_id, type_name, title, amount, invest_amount, invest_number, years, months, 
+    days, rate, rate_plus, method, status, product_switch, root_product_id, create_time, 
+    update_time, schedule_time, open_time, end_time, finish_time, settle_time, clear_time, 
+    debt_plan_id, value_time, debted, sync_status, local_sync_status, risk_type, product_tag_key, product_tag_value, product_tag_color,company_name,
+    bill_type, acceptance_bank, extend_deadline, extend_expire_date
+  </sql>
+  <sql id="Blob_Column_List" >
+    project_detail, product_detail
+  </sql>
+  <select id="findById" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from tbl_product_bill
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="findPageByByUserIdAndStatus" resultMap="BaseResultMap"  >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_product_bill
+    where user_id = #{userId,jdbcType=VARCHAR} and status=#{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+        order by id asc
+        limit #{startRow,jdbcType=INTEGER} , #{pageSize,jdbcType=INTEGER}
+  </select>
+  <select id="getCountByByUserIdAndStatus" resultType="java.lang.Integer"  >
+    select count(id)
+    from tbl_product_bill
+    where user_id = #{userId,jdbcType=VARCHAR} and status=#{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+  </select>
+  <update id="updateProductStatus">
+  update tbl_product_bill set status=#{productStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+  where  id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateProductStatusAndSettleTime">
+  update tbl_product_bill set status=#{productStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+    settle_time = #{settleTime,jdbcType=TIMESTAMP},value_time = #{valueTime,jdbcType=TIMESTAMP}
+  where  id = #{id,jdbcType=VARCHAR}
+  </update>
+  <insert id="save" parameterType="com.gomemyc.invest.entity.ProductBill" >
+    insert into tbl_product_bill
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="loanId != null" >
+        loan_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="typeKey != null" >
+        type_key,
+      </if>
+      <if test="typeId != null" >
+        type_id,
+      </if>
+      <if test="typeName != null" >
+        type_name,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="investAmount != null" >
+        invest_amount,
+      </if>
+      <if test="investNum != null" >
+        invest_number,
+      </if>
+      <if test="years != null" >
+        years,
+      </if>
+      <if test="months != null" >
+        months,
+      </if>
+      <if test="days != null" >
+        days,
+      </if>
+      <if test="rate != null" >
+        rate,
+      </if>
+      <if test="plusRate != null" >
+        rate_plus,
+      </if>
+      <if test="method != null" >
+        method,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="productSwitch != null" >
+        product_switch,
+      </if>
+      <if test="rootProductId != null" >
+        root_product_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="scheduleTime != null" >
+        schedule_time,
+      </if>
+      <if test="openTime != null" >
+        open_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="finishTime != null" >
+        finish_time,
+      </if>
+      <if test="settleTime != null" >
+        settle_time,
+      </if>
+      <if test="clearTime != null" >
+        clear_time,
+      </if>
+      <if test="debtPlanId != null" >
+        debt_plan_id,
+      </if>
+      <if test="valueTime != null" >
+        value_time,
+      </if>
+      <if test="debted != null" >
+        debted,
+      </if>
+      <if test="syncStatus != null" >
+        sync_status,
+      </if>
+      <if test="riskType != null" >
+        risk_type,
+      </if>
+      <if test="productTagKey != null" >
+        product_tag_key,
+      </if>
+      <if test="productTagValue != null" >
+        product_tag_value,
+      </if>
+      <if test="productTagColor != null" >
+        product_tag_color,
+      </if>
+      <if test="acceptanceBank != null" >
+        acceptance_bank,
+      </if>
+      <if test="extendDeadline != null" >
+        extend_deadline,
+      </if>
+      <if test="extendExpireDate != null" >
+        extend_expire_date,
+      </if>
+      <if test="billType != null" >
+        bill_type,
+      </if>
+      <if test="projectDetail != null" >
+        project_detail,
+      </if>
+      <if test="productDetail != null" >
+        product_detail,
+      </if>
+      <if test="companyName != null" >
+        company_name,
+      </if>
+      <if test="loginName != null" >
+        login_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="loanId != null" >
+        #{loanId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeKey != null" >
+        #{typeKey,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null" >
+        #{typeId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeName != null" >
+        #{typeName,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="investAmount != null" >
+        #{investAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="investNum != null" >
+        #{investNum,jdbcType=INTEGER},
+      </if>
+      <if test="years != null" >
+        #{years,jdbcType=INTEGER},
+      </if>
+      <if test="months != null" >
+        #{months,jdbcType=INTEGER},
+      </if>
+      <if test="days != null" >
+        #{days,jdbcType=INTEGER},
+      </if>
+      <if test="rate != null" >
+        #{rate,jdbcType=INTEGER},
+      </if>
+      <if test="plusRate != null" >
+        #{plusRate,jdbcType=INTEGER},
+      </if>
+      <if test="method != null" >
+        #{method,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+      </if>
+      <if test="status != null" >
+        #{status, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+      </if>
+      <if test="productSwitch != null" >
+        #{productSwitch,jdbcType=INTEGER},
+      </if>
+      <if test="rootProductId != null" >
+        #{rootProductId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="scheduleTime != null" >
+        #{scheduleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="openTime != null" >
+        #{openTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finishTime != null" >
+        #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="settleTime != null" >
+        #{settleTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clearTime != null" >
+        #{clearTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="debtPlanId != null" >
+        #{debtPlanId,jdbcType=VARCHAR},
+      </if>
+      <if test="valueTime != null" >
+        #{valueTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="debted != null" >
+        #{debted,jdbcType=TINYINT},
+      </if>
+      <if test="syncStatus != null" >
+        #{syncStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+      </if>
+      <if test="riskType != null" >
+        #{riskType,jdbcType=TINYINT},
+      </if>
+      <if test="productTagKey != null" >
+        #{productTagKey,jdbcType=VARCHAR},
+      </if>
+      <if test="productTagValue != null" >
+        #{productTagValue,jdbcType=VARCHAR},
+      </if>
+      <if test="productTagColor != null" >
+        #{productTagColor,jdbcType=VARCHAR},
+      </if>
+      <if test="acceptanceBank != null" >
+        #{acceptanceBank,jdbcType=VARCHAR},
+      </if>
+      <if test="extendDeadline != null" >
+        #{extendDeadline,jdbcType=INTEGER},
+      </if>
+      <if test="extendExpireDate != null" >
+        #{extendExpireDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="billType != null" >
+        #{billType,jdbcType=VARCHAR},
+      </if>
+      <if test="projectDetail != null" >
+        #{projectDetail,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="productDetail != null" >
+        #{productDetail,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="companyName != null" >
+        #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="loginName != null" >
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <sql id="opentimeDescAndStatusAsc" >
+    status asc, open_time desc, id desc
+  </sql>  
+  <sql id="rateAscAndStatusAsc" >
+    status asc, rate asc, open_time desc, id desc
+  </sql>  
+  <sql id="rateDescAndStatusAsc" >
+    status asc, rate desc, open_time desc, id desc 
+  </sql> 
+  <sql id="durationAscAndStatusAsc" >
+    status asc, years*365 + months*30 + days asc, open_time desc, id desc 
+  </sql> 
+  <sql id="durationDescAndStatusAsc" >
+    status asc, years*365 + months*30 + days desc, open_time desc, id desc 
+  </sql> 
+  <select id="listIdsByTypeAndStatusLimit" resultType="java.lang.String" >
+    select id
+    from tbl_product_bill
+    where 1=1 
+        <if test="typeKeys != null">
+            and type_key in 
+            <foreach item="item" index="index" collection="typeKeys" open="("
+               separator="," close=")">
+               #{item,jdbcType=VARCHAR}  
+            </foreach>
+         </if>
+         <if test="productStatus != null">
+            and status in
+            <foreach item="item" index="index" collection="productStatus" open="("
+               separator="," close=")">
+               #{item, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+            </foreach>
+         </if>
+         
+         <if test="debted != null">
+            and debted = #{debted, jdbcType=TINYINT}
+         </if>
+          
+         <if test="orderPlan != null">
+            order by
+            <choose>
+                <when test="orderPlan.name() == 'OPENTIME_DESC_STATUS_ASC' ">
+                    <include refid="opentimeDescAndStatusAsc" />
+                </when>
+                <when test="orderPlan.name() == 'RATE_ASC_STATUS_ASC' ">
+                    <include refid="rateAscAndStatusAsc" />
+                </when>
+                <when test="orderPlan.name() == 'RATE_DESC_STATUS_ASC' ">
+                    <include refid="rateDescAndStatusAsc" />
+                </when>
+                <when test="orderPlan.name() == 'DURATION_ASC_STATUS_ASC' ">
+                    <include refid="durationAscAndStatusAsc" />
+                </when>
+                <when test="orderPlan.name() == 'DURATION_DESC_STATUS_ASC' ">
+                    <include refid="durationDescAndStatusAsc" />
+                </when>
+                <otherwise>  
+                    <include refid="opentimeDescAndStatusAsc" />
+                </otherwise>
+            </choose>
+         </if>
+         
+    limit #{start}, #{size}
+  </select>
+  <select id="listByTypeAndStatusLimit" resultMap="ResultMapWithBLOBs" >
+    select 
+    <include refid="Base_Column_List" />,
+    <include refid="Blob_Column_List" />
+    from tbl_product_bill
+    where 1=1  
+        <if test="typeKeys != null">
+            and type_key in 
+            <foreach item="item" index="index" collection="typeKeys" open="("
+               separator="," close=")">
+               #{item,jdbcType=VARCHAR}  
+            </foreach>
+         </if>
+         <if test="productStatus != null">
+            and status in
+            <foreach item="item" index="index" collection="productStatus" open="("
+               separator="," close=")">
+               #{item, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+            </foreach>
+         </if>
+         <if test="debted != null">
+            and debted = #{debted, jdbcType=TINYINT}
+         </if>
+         <if test="orderPlan != null">
+            order by
+            <choose>
+                <when test="orderPlan.name() == 'OPENTIME_DESC_STATUS_ASC' ">
+                    <include refid="opentimeDescAndStatusAsc" />
+                </when>
+                <when test="orderPlan.name() == 'RATE_ASC_STATUS_ASC' ">
+                    <include refid="rateAscAndStatusAsc" />
+                </when>
+                <when test="orderPlan.name() == 'RATE_DESC_STATUS_ASC' ">
+                    <include refid="rateDescAndStatusAsc" />
+                </when>
+                <when test="orderPlan.name() == 'DURATION_ASC_STATUS_ASC' ">
+                    <include refid="durationAscAndStatusAsc" />
+                </when>
+                <when test="orderPlan.name() == 'DURATION_DESC_STATUS_ASC' ">
+                    <include refid="durationDescAndStatusAsc" />
+                </when>
+                <otherwise>  
+                    <include refid="opentimeDescAndStatusAsc" />
+                </otherwise>
+            </choose>
+         </if>
+    limit #{start}, #{size}
+  </select>
+  <select id="countByTypeAndStatusLimit" resultType="java.lang.Long" >
+    select count(1)
+    from tbl_product_bill
+    where 1=1  
+        <if test="typeKeys != null">
+            and type_key in 
+            <foreach item="item" index="index" collection="typeKeys" open="("
+               separator="," close=")">
+               #{item,jdbcType=VARCHAR}  
+            </foreach>
+         </if>
+         <if test="productStatus != null">
+            and status in
+            <foreach item="item" index="index" collection="productStatus" open="("
+               separator="," close=")">
+               #{item, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+            </foreach>
+         </if>
+         <if test="debted != null">
+            and debted = #{debted, jdbcType=TINYINT}
+         </if>         
+  </select>
+  
+  <select id="listBillProductIdsToPublish" resultType="java.lang.String" >
+    select id
+    from tbl_product_bill
+    where status = 1
+    and debted = 0
+    and (sync_status != 1 or sync_status is null or local_sync_status != 1 or local_sync_status is null )
+  </select>
+  
+  <update id="updateSyncStatus"  >
+    update tbl_product_bill set 
+        sync_status = #{syncStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+    where id = #{id, jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateLocalSyncStatus"  >
+    update tbl_product_bill set 
+        local_sync_status = #{localSyncStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+    where id = #{id}
+  </update>
+  
+  <select id="findByTitle" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tbl_product_bill
+    where title = #{title,jdbcType=VARCHAR}
+  </select>
+  <update id="updateInvestById" parameterType="Object" >
+    update tbl_product_bill
+    set invest_amount = #{investAmount,jdbcType=DECIMAL},
+    invest_number = #{investNumber,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateFinshAndStatusById" parameterType="Object" >
+    update tbl_product_bill
+    set finish_time = #{finishTime,jdbcType=TIMESTAMP},
+    status = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="listBillProductIdsToSchedule" resultType="java.lang.String" >
+    select id
+    from tbl_product_bill
+    where status = 1 and 
+          sync_status = 1 and 
+          local_sync_status = 1 and
+          schedule_time <![CDATA[ <= ]]> #{nowDate,jdbcType=TIMESTAMP}
+  </select>
+  <update id="updateProductStatusAtCycle">
+      update tbl_product_bill 
+           set status=#{status, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+      where  id = #{id,jdbcType=VARCHAR}
+         and status=#{preStatus, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+         and sync_status = #{syncStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+         and local_sync_status = #{localSyncStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+  </update>
+  <select id="listByIds" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_product_bill
+    where 1=1  
+        <if test="productIds != null">
+            and id in 
+            <foreach item="ids" index="index" collection="productIds" open="("
+               separator="," close=")">
+               #{ids,jdbcType=VARCHAR}  
+            </foreach>
+         </if>
+   </select>
+   <select id="listBillProductIdsToOpen" resultType="java.lang.String" >
+    select id
+    from tbl_product_bill
+    where status = 2 and 
+          sync_status = 1 and 
+          local_sync_status = 1 and
+          open_time <![CDATA[ <= ]]> #{nowDate,jdbcType=TIMESTAMP}
+  </select>
+  
+  
+  <select id="listBillProductIdsToSettle" resultType="java.lang.String" >
+    <![CDATA[
+	    select id 
+	      from tbl_product_bill 
+	     where status = 4 
+	       and (product_switch & 8 = 8 or product_switch & 16 = 16)
+	       and debted = 0
+     ]]>
+  </select>
+
+    <!-- 查询待流标产品 -->
+    <select id="findWaitFailRegular" resultType="java.lang.String" >
+	    select id
+	      from tbl_product_bill
+	     where status = #{status,jdbcType=INTEGER}
+	     and product_switch <![CDATA[ & ]]>#{productSwitch,jdbcType=INTEGER}=#{productSwitch,jdbcType=INTEGER}
+    </select>
+  
+  <update id="updateBjAndLocalSyncStatus"  >
+    update tbl_product_bill set 
+        local_sync_status = #{localSyncStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+        sync_status = #{syncStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+    where id = #{id}
+  </update>
+  <select id="listBillProductIdsToFinish" resultType="java.lang.String" >
+    select id
+    from tbl_product_bill
+    where status = 3
+  </select>
+  <select id="listByLoanId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tbl_product_bill
+    where loan_id = #{loanId,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="getProductById" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tbl_product_bill
+    where id = #{productId,jdbcType=VARCHAR}
+  </select>
+  
+  <update id="finishAndFailed">
+      update tbl_product_bill 
+           set status=#{status, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+               finish_time = #{finishTime,jdbcType=TIMESTAMP}
+      where id = #{id,jdbcType=VARCHAR} and status = 3
+  </update>
+  
+  <update id="increaseInvestAmount">
+      update tbl_product_bill 
+           set invest_amount = ifnull(invest_amount, 0) + #{amount,jdbcType=DECIMAL},
+               invest_number = ifnull(invest_number, 0) + 1
+      where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+</mapper>

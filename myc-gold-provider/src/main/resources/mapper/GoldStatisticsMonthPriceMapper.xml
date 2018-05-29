@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.gold.dao.GoldStatisticsMonthPriceDao">
+  <resultMap id="BaseResultMap" type="com.gomemyc.gold.entity.GoldStatisticsMonthPrice">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="price_years" jdbcType="INTEGER" property="priceYears" />
+    <result column="price_month" jdbcType="INTEGER" property="priceMonth" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  
+  <resultMap id="ExtendBaseResultMap" type="com.gomemyc.gold.entity.extend.GoldStatisticsMonthPriceExtend" extends="BaseResultMap">
+        <result column="total_price" jdbcType="DECIMAL" property="totalPrice" />
+	    <result column="total_date" jdbcType="INTEGER" property="totalDate" />
+  </resultMap>
+  
+  
+  <sql id="Base_Column_List">
+    id, price_years, price_month, price, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_gold_statistics_month_price
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from tb_gold_statistics_month_price
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.gomemyc.gold.entity.GoldStatisticsMonthPrice">
+    insert into tb_gold_statistics_month_price (id, price_years, price_month, 
+      price, create_time)
+    values (#{id,jdbcType=BIGINT}, #{priceYears,jdbcType=INTEGER}, #{priceMonth,jdbcType=INTEGER}, 
+      #{price,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gomemyc.gold.entity.GoldStatisticsMonthPrice">
+    insert into tb_gold_statistics_month_price
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="priceYears != null">
+        price_years,
+      </if>
+      <if test="priceMonth != null">
+        price_month,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="priceYears != null">
+        #{priceYears,jdbcType=INTEGER},
+      </if>
+      <if test="priceMonth != null">
+        #{priceMonth,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gomemyc.gold.entity.GoldStatisticsMonthPrice">
+    update tb_gold_statistics_month_price
+    <set>
+      <if test="priceYears != null">
+        price_years = #{priceYears,jdbcType=INTEGER},
+      </if>
+      <if test="priceMonth != null">
+        price_month = #{priceMonth,jdbcType=INTEGER},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gomemyc.gold.entity.GoldStatisticsMonthPrice">
+    update tb_gold_statistics_month_price
+    set price_years = #{priceYears,jdbcType=INTEGER},
+      price_month = #{priceMonth,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <!-- 根据开始日期查询统计数据-->
+  <select id="selectListPageBeforePriceDate" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_gold_statistics_month_price
+    where #{currentDate} >= create_time limit #{offset},#{pageSize}
+  </select>
+
+  <select id="selectCountBeforePriceDate"  resultType="java.lang.Integer">
+     select  count(1) from tb_gold_statistics_month_price  where #{currentDate} >= create_time
+  </select>
+
+  <!--统计年的金价-->
+  <select id="selectMonthObjByPriceDate" resultMap="ExtendBaseResultMap">
+    select  COALESCE(SUM(price),0.0) AS total_price ,COUNT(price_years) AS total_date,price_years
+    from tb_gold_statistics_month_price  where  price_years=#{currentYears}
+  </select>
+
+ 
+
+</mapper>

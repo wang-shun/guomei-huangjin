@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.gold.dao.GoldInvestOrderInfoDao">
+	<resultMap id="BaseResultMap" type="com.gomemyc.gold.entity.GoldInvestOrderInfo">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="remain_amount" jdbcType="DECIMAL" property="remainAmount" />
+		<result column="req_no" jdbcType="VARCHAR" property="reqNo" />
+		<result column="balance_paid_amount" jdbcType="DECIMAL"
+			property="balancePaidAmount" />
+		<result column="coupon_amount" jdbcType="DECIMAL" property="couponAmount" />
+		<result column="coupon_id" jdbcType="VARCHAR" property="couponId" />
+		<result column="amount" jdbcType="DECIMAL" property="amount" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, create_time, remain_amount, req_no,
+		balance_paid_amount,
+		coupon_amount, coupon_id,
+		amount
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_gold_invest_order_info
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		tb_gold_invest_order_info
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.gomemyc.gold.entity.GoldInvestOrderInfo">
+		insert into
+		tb_gold_invest_order_info (id, create_time, remain_amount,
+		req_no,
+		balance_paid_amount, coupon_amount,
+		coupon_id, amount)
+		values
+		(#{id,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+		#{remainAmount,jdbcType=DECIMAL},
+		#{reqNo,jdbcType=VARCHAR},
+		#{balancePaidAmount,jdbcType=DECIMAL},
+		#{couponAmount,jdbcType=DECIMAL},
+		#{couponId,jdbcType=VARCHAR},
+		#{amount,jdbcType=DECIMAL})
+	</insert>
+	<insert id="insertSelective" parameterType="com.gomemyc.gold.entity.GoldInvestOrderInfo">
+		insert into tb_gold_invest_order_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="remainAmount != null">
+				remain_amount,
+			</if>
+			<if test="reqNo != null">
+				req_no,
+			</if>
+			<if test="balancePaidAmount != null">
+				balance_paid_amount,
+			</if>
+			<if test="couponAmount != null">
+				coupon_amount,
+			</if>
+			<if test="couponId != null">
+				coupon_id,
+			</if>
+			<if test="amount != null">
+				amount,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remainAmount != null">
+				#{remainAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="reqNo != null">
+				#{reqNo,jdbcType=VARCHAR},
+			</if>
+			<if test="balancePaidAmount != null">
+				#{balancePaidAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="couponAmount != null">
+				#{couponAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="couponId != null">
+				#{couponId,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=DECIMAL},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.gomemyc.gold.entity.GoldInvestOrderInfo">
+		update tb_gold_invest_order_info
+		<set>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="remainAmount != null">
+				remain_amount = #{remainAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="reqNo != null">
+				req_no = #{reqNo,jdbcType=VARCHAR},
+			</if>
+			<if test="balancePaidAmount != null">
+				balance_paid_amount =
+				#{balancePaidAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="couponAmount != null">
+				coupon_amount = #{couponAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="couponId != null">
+				coupon_id = #{couponId,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.gomemyc.gold.entity.GoldInvestOrderInfo">
+		update
+		tb_gold_invest_order_info
+		set create_time =
+		#{createTime,jdbcType=TIMESTAMP},
+		remain_amount =
+		#{remainAmount,jdbcType=DECIMAL},
+		req_no = #{reqNo,jdbcType=VARCHAR},
+		balance_paid_amount = #{balancePaidAmount,jdbcType=DECIMAL},
+		coupon_amount = #{couponAmount,jdbcType=DECIMAL},
+		coupon_id =
+		#{couponId,jdbcType=VARCHAR},
+		amount = #{amount,jdbcType=DECIMAL}
+		where
+		id = #{id,jdbcType=VARCHAR}
+	</update>
+	
+	<!-- 根据订单号查询对象 -->
+	<select id="selectByReqNo" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_gold_invest_order_info
+		where req_no = #{reqNo,jdbcType=VARCHAR}
+	</select>
+	
+</mapper>

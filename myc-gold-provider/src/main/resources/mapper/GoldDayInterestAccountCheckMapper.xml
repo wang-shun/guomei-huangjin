@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.gold.dao.GoldDayInterestAccountCheckDao">
+	<resultMap id="BaseResultMap"
+		type="com.gomemyc.gold.entity.GoldDayInterestAccountCheck">
+
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="req_no" jdbcType="VARCHAR" property="reqNo" />
+		<result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+		<result column="gold_interest_date" jdbcType="DATE" property="goldInterestDate" />
+		<result column="gold_weight" jdbcType="DECIMAL" property="goldWeight" />
+		<result column="gold_price" jdbcType="DECIMAL" property="goldPrice" />
+		<result column="clear_rate" jdbcType="INTEGER" property="clearRate" />
+		<result column="day_interest_money" jdbcType="DECIMAL"
+			property="dayInterestMoney" />
+		<result column="product_code" jdbcType="VARCHAR" property="productCode" />
+		<result column="product_name" jdbcType="VARCHAR" property="productName" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="data_check_type" jdbcType="INTEGER" property="dataCheckType" />
+		<result column="mobile" jdbcType="VARCHAR" property="mobile" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="comparing_status" jdbcType="TINYINT" property="comparingStatus" />
+	</resultMap>
+	<!--根据日期查询 返回Map -->
+	<resultMap id="ResultMap"
+		type="com.gomemyc.gold.entity.extend.GoldDayInterestAccountCheckExtend">
+		<result column="gold_price" jdbcType="DECIMAL" property="goldPrice" />
+		<result column="clear_rate" jdbcType="INTEGER" property="clearRate" />
+		<result column="product_code" jdbcType="VARCHAR" property="productCode" />
+		<result column="product_name" jdbcType="VARCHAR" property="productName" />
+	</resultMap>
+	<sql id="Base_Column_List">
+
+		id, req_no, order_no, gold_interest_date, gold_weight, gold_price,
+		clear_rate, day_interest_money,
+		product_code, product_name, create_time, data_check_type, mobile, update_time,
+		comparing_status
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+
+		select
+		<include refid="Base_Column_List" />
+		from tb_gold_day_interest_account_check
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+
+		delete from tb_gold_day_interest_account_check
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.gomemyc.gold.entity.GoldDayInterestAccountCheck">
+
+		insert into tb_gold_day_interest_account_check (id, req_no, order_no,
+		gold_interest_date, gold_weight, gold_price,
+		clear_rate, day_interest_money, product_code,
+		product_name, create_time, data_check_type,
+		mobile, update_time, comparing_status
+		)
+		values (#{id,jdbcType=VARCHAR}, #{reqNo,jdbcType=VARCHAR},
+		#{orderNo,jdbcType=VARCHAR},
+		#{goldInterestDate,jdbcType=DATE}, #{goldWeight,jdbcType=DECIMAL}, #{goldPrice,jdbcType=DECIMAL},
+		#{clearRate,jdbcType=INTEGER}, #{dayInterestMoney,jdbcType=DECIMAL},
+		#{productCode,jdbcType=VARCHAR},
+		#{productName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{dataCheckType,jdbcType=INTEGER},
+		#{mobile,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},
+		#{comparingStatus,jdbcType=TINYINT}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.gomemyc.gold.entity.GoldDayInterestAccountCheck">
+
+		insert into tb_gold_day_interest_account_check
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="reqNo != null">
+				req_no,
+			</if>
+			<if test="orderNo != null">
+				order_no,
+			</if>
+			<if test="goldInterestDate != null">
+				gold_interest_date,
+			</if>
+			<if test="goldWeight != null">
+				gold_weight,
+			</if>
+			<if test="goldPrice != null">
+				gold_price,
+			</if>
+			<if test="clearRate != null">
+				clear_rate,
+			</if>
+			<if test="dayInterestMoney != null">
+				day_interest_money,
+			</if>
+			<if test="productCode != null">
+				product_code,
+			</if>
+			<if test="productName != null">
+				product_name,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="dataCheckType != null">
+				data_check_type,
+			</if>
+			<if test="mobile != null">
+				mobile,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="comparingStatus != null">
+				comparing_status,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="reqNo != null">
+				#{reqNo,jdbcType=VARCHAR},
+			</if>
+			<if test="orderNo != null">
+				#{orderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="goldInterestDate != null">
+				#{goldInterestDate,jdbcType=DATE},
+			</if>
+			<if test="goldWeight != null">
+				#{goldWeight,jdbcType=DECIMAL},
+			</if>
+			<if test="goldPrice != null">
+				#{goldPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="clearRate != null">
+				#{clearRate,jdbcType=INTEGER},
+			</if>
+			<if test="dayInterestMoney != null">
+				#{dayInterestMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="productCode != null">
+				#{productCode,jdbcType=VARCHAR},
+			</if>
+			<if test="productName != null">
+				#{productName,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="dataCheckType != null">
+				#{dataCheckType,jdbcType=INTEGER},
+			</if>
+			<if test="mobile != null">
+				#{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="comparingStatus != null">
+				#{comparingStatus,jdbcType=TINYINT},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.gomemyc.gold.entity.GoldDayInterestAccountCheck">
+
+		update tb_gold_day_interest_account_check
+		<set>
+			<if test="reqNo != null">
+				req_no = #{reqNo,jdbcType=VARCHAR},
+			</if>
+			<if test="orderNo != null">
+				order_no = #{orderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="goldInterestDate != null">
+				gold_interest_date = #{goldInterestDate,jdbcType=DATE},
+			</if>
+			<if test="goldWeight != null">
+				gold_weight = #{goldWeight,jdbcType=DECIMAL},
+			</if>
+			<if test="goldPrice != null">
+				gold_price = #{goldPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="clearRate != null">
+				clear_rate = #{clearRate,jdbcType=INTEGER},
+			</if>
+			<if test="dayInterestMoney != null">
+				day_interest_money = #{dayInterestMoney,jdbcType=DECIMAL},
+			</if>
+			<if test="productCode != null">
+				product_code = #{productCode,jdbcType=VARCHAR},
+			</if>
+			<if test="productName != null">
+				product_name = #{productName,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="dataCheckType != null">
+				data_check_type = #{dataCheckType,jdbcType=INTEGER},
+			</if>
+			<if test="mobile != null">
+				mobile = #{mobile,jdbcType=VARCHAR},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="comparingStatus != null">
+				comparing_status = #{comparingStatus,jdbcType=TINYINT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.gomemyc.gold.entity.GoldDayInterestAccountCheck">
+
+		update tb_gold_day_interest_account_check
+		set req_no = #{reqNo,jdbcType=VARCHAR},
+		order_no = #{orderNo,jdbcType=VARCHAR},
+		gold_interest_date = #{goldInterestDate,jdbcType=DATE},
+		gold_weight = #{goldWeight,jdbcType=DECIMAL},
+		gold_price = #{goldPrice,jdbcType=DECIMAL},
+		clear_rate = #{clearRate,jdbcType=INTEGER},
+		day_interest_money = #{dayInterestMoney,jdbcType=DECIMAL},
+		product_code = #{productCode,jdbcType=VARCHAR},
+		product_name = #{productName,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=TIMESTAMP},
+		data_check_type = #{dataCheckType,jdbcType=INTEGER},
+		mobile = #{mobile,jdbcType=VARCHAR},
+		update_time = #{updateTime,jdbcType=TIMESTAMP},
+		comparing_status = #{comparingStatus,jdbcType=TINYINT}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<!--通过收益日期查询对象 -->
+	<select id="selectByInterestDate" resultMap="ResultMap">
+		select
+		distinct
+		product_code, gold_price, clear_rate, product_name
+		from
+		tb_gold_day_interest_account_check
+		where
+		DATE_FORMAT(gold_interest_date,"%Y-%m-%d") = #{interestDate}
+	</select>
+	<!--根据订单号，查询这个订单的每日利息对账 -->
+	<select id="listByReqNo" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_gold_day_interest_account_check
+		where req_no = #{reqNo}
+	</select>
+	<update id="updateComparingStatusByOrderNo">
+		update tb_gold_day_interest_account_check
+		set comparing_status = #{comparingStatus}
+		WHERE order_no = #{orderNo}
+	</update>
+	<!--查询当前日期下创建的所有订单-->
+	<select id="getBycreateTime" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM tb_gold_day_interest_account_check
+		WHERE DATE_FORMAT(create_time, "%Y-%m-%d") = #{createTime}
+
+	</select>
+	<!--查询当前日期下相关订单-->
+	<select id="getBycreateTimeAndReqNo" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM tb_gold_day_interest_account_check
+		WHERE DATE_FORMAT(create_time, "%Y-%m-%d") = #{createTime}
+		AND req_no = #{reqNo}
+	</select>
+	<select id="getInterestByOrderNo" resultType="java.math.BigDecimal">
+		SELECT
+		sum(day_interest_money) FROM tb_gold_day_interest_account_check
+		WHERE
+		order_no=#{orderNo} AND data_check_type = #{dataCheckType}
+	</select>
+
+</mapper>

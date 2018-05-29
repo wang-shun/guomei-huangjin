@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gomemyc.trade.dao.ReserveQueueDao" >
+  <resultMap id="BaseResultMap" type="com.gomemyc.trade.entity.ReserveQueue" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="record_id" property="recordId" jdbcType="VARCHAR" />
+    <result column="loan_id" property="loanId" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="BIT" />
+    <result column="matched_amount" property="matchedAmount" jdbcType="DECIMAL" />
+    <result column="loan_type_id" property="loanTypeId" jdbcType="VARCHAR" />
+    <result column="loan_type_name" property="loanTypeName" jdbcType="VARCHAR" />
+    <result column="rate_range_id" property="rateRangeId" jdbcType="VARCHAR" />
+    <result column="rate_period_desc" property="ratePeriodDesc" jdbcType="VARCHAR" />
+    <result column="invest_period_id" property="investPeriodId" jdbcType="VARCHAR" />
+    <result column="invest_period_desc" property="investPeriodDesc" jdbcType="VARCHAR" />
+    <result column="loan_name" property="loanName" jdbcType="VARCHAR" />
+    <result column="asset_id" property="assetId" jdbcType="VARCHAR" />
+    <result column="loan_request_serial" property="loanRequestSerial" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, record_id, loan_id, product_id, create_time, status, matched_amount, loan_type_id, 
+    loan_type_name, rate_range_id, rate_period_desc, invest_period_id, invest_period_desc, 
+    loan_name, asset_id, loan_request_serial
+  </sql>
+  <sql id="Base_Column_List_Queue" >
+    q.id, q.record_id, q.loan_id, q.product_id, q.create_time, q.status, q.matched_amount, q.loan_type_id,
+    q.loan_type_name, q.rate_range_id, q.rate_period_desc, q.invest_period_id, q.invest_period_desc,
+    q.loan_name, q.asset_id, q.loan_request_serial
+  </sql>
+
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_reserve_queue
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <!-- 插入投资队列，使用Generator生成id，数据库id相关的字段需要设置为50 -->
+  <insert id="insert" parameterType="com.gomemyc.trade.entity.ReserveQueue" >
+    insert into tbl_reserve_queue (id, record_id, loan_id,
+      product_id, create_time, status, 
+      matched_amount, loan_type_id, loan_type_name, 
+      rate_range_id, rate_period_desc, invest_period_id, 
+      invest_period_desc, loan_name, asset_id, 
+      loan_request_serial)
+    values (#{id,jdbcType=VARCHAR}, #{recordId,jdbcType=VARCHAR}, #{loanId,jdbcType=VARCHAR}, 
+      #{productId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=BIT}, 
+      #{matchedAmount,jdbcType=DECIMAL}, #{loanTypeId,jdbcType=VARCHAR}, #{loanTypeName,jdbcType=VARCHAR}, 
+      #{rateRangeId,jdbcType=VARCHAR}, #{ratePeriodDesc,jdbcType=VARCHAR}, #{investPeriodId,jdbcType=VARCHAR}, 
+      #{investPeriodDesc,jdbcType=VARCHAR}, #{loanName,jdbcType=VARCHAR}, #{assetId,jdbcType=VARCHAR}, 
+      #{loanRequestSerial,jdbcType=VARCHAR})
+  </insert>
+
+  <!-- 根据Id,更新队列状态 -->
+  <update id="updateStatusById"  >
+    update tbl_reserve_queue set
+    status = #{status,jdbcType=INTEGER}
+    where id=#{id,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateBySelective" parameterType="com.gomemyc.trade.entity.ReserveQueue" >
+    update tbl_reserve_queue
+    <set >
+      <if test="recordId != null" >
+        record_id = #{recordId,jdbcType=VARCHAR},
+      </if>
+      <if test="loanId != null" >
+        loan_id = #{loanId,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=BIT},
+      </if>
+      <if test="matchedAmount != null" >
+        matched_amount = #{matchedAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="loanTypeId != null" >
+        loan_type_id = #{loanTypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="loanTypeName != null" >
+        loan_type_name = #{loanTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="rateRangeId != null" >
+        rate_range_id = #{rateRangeId,jdbcType=VARCHAR},
+      </if>
+      <if test="ratePeriodDesc != null" >
+        rate_period_desc = #{ratePeriodDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="investPeriodId != null" >
+        invest_period_id = #{investPeriodId,jdbcType=VARCHAR},
+      </if>
+      <if test="investPeriodDesc != null" >
+        invest_period_desc = #{investPeriodDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="loanName != null" >
+        loan_name = #{loanName,jdbcType=VARCHAR},
+      </if>
+      <if test="assetId != null" >
+        asset_id = #{assetId,jdbcType=VARCHAR},
+      </if>
+      <if test="loanRequestSerial != null" >
+        loan_request_serial = #{loanRequestSerial,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="listByRequestIdAndStatus" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List_Queue" />
+    from tbl_reserve_queue q join tbl_reserve_queue_detail d
+    where q.id = d.invest_queue_id
+    and  d.reserve_apply_id = #{requestId,jdbcType=VARCHAR}
+    and q.status=#{status,jdbcType=INTEGER}
+  </select>
+
+
+</mapper>

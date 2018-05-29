@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gomemyc.invest.dao.DebtPlanDao" >
+  <resultMap id="BaseResultMap" type="com.gomemyc.invest.entity.DebtPlan" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="plan_name" property="planName" jdbcType="VARCHAR" />
+    <result column="apply_red_packet" property="applyRedPacket" jdbcType="TINYINT" />
+    <result column="manual_audit_flag" property="manualAuditFlag" jdbcType="TINYINT" />
+    <result column="preferential_debt" property="preferentialDebt" jdbcType="TINYINT" />
+    <result column="max_collect_deadline" property="maxCollectDeadline" jdbcType="INTEGER" />
+    <result column="min_collect_time_limit" property="minCollectTimeLimit" jdbcType="INTEGER" />
+    <result column="max_cancel_count" property="maxCancelCount" jdbcType="INTEGER" />
+    <result column="first_debt_date" property="firstDebtDate" jdbcType="INTEGER" />
+    <result column="second_debt_date" property="secondDebtDate" jdbcType="INTEGER" />
+    <result column="overplus_deadline" property="overplusDeadline" jdbcType="INTEGER" />
+    <result column="transfer_rate" property="transferRate" jdbcType="INTEGER" />
+    <result column="max_price_rate" property="maxPriceRate" jdbcType="INTEGER" />
+    <result column="min_price_rate" property="minPriceRate" jdbcType="INTEGER" />
+    <result column="people_count" property="peopleCount" jdbcType="TINYINT" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler"/>
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="opr_id" property="oprId" jdbcType="VARCHAR" />
+    <result column="debt_count" property="debtCount" jdbcType="INTEGER" />
+    <result column="min_expected_rate" property="minExpectedRate" jdbcType="INTEGER" />
+    <result column="max_expected_rate" property="maxExpectedRate" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, plan_name, apply_red_packet, manual_audit_flag, preferential_debt, max_collect_deadline, 
+    min_collect_time_limit, max_cancel_count, first_debt_date, second_debt_date, overplus_deadline, 
+    transfer_rate, max_price_rate, min_price_rate, people_count, create_time, update_time, 
+    opr_id, debt_count, min_expected_rate, max_expected_rate
+  </sql>
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_debt_plan
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="findByIds" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_debt_plan
+    where ID in 
+     <foreach collection="ids" item="id" index="index"
+                 open="(" close=")" separator=",">
+            #{id,jdbcType=VARCHAR}
+    </foreach>
+     
+  </select>
+</mapper>

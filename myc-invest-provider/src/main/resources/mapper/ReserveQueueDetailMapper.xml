@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gomemyc.invest.dao.ReserveQueueDetailDao" >
+  <resultMap id="BaseResultMap" type="com.gomemyc.invest.entity.ReserveQueueDetail" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="invest_id" property="investId" jdbcType="VARCHAR" />
+    <result column="invest_queue_id" property="investQueueId" jdbcType="VARCHAR" />
+    <result column="Investment_interval" property="investmentInterval" jdbcType="VARCHAR" />
+    <result column="loan_type_name" property="loanTypeName" jdbcType="VARCHAR" />
+    <result column="matching_funds" property="matchingFunds" jdbcType="DECIMAL" />
+    <result column="rate_date" property="rateDate" jdbcType="VARCHAR" />
+    <result column="reserve_apply_id" property="reserveApplyId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, invest_id, invest_queue_id, Investment_interval, loan_type_name, matching_funds, 
+    rate_date, reserve_apply_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_reserve_queue_detail
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tbl_reserve_queue_detail
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gomemyc.invest.entity.ReserveQueueDetail" >
+    insert into tbl_reserve_queue_detail (id, invest_id, invest_queue_id, 
+      Investment_interval, loan_type_name, matching_funds, 
+      rate_date, reserve_apply_id)
+    values (#{id,jdbcType=VARCHAR}, #{investId,jdbcType=VARCHAR}, #{investQueueId,jdbcType=VARCHAR}, 
+      #{investmentInterval,jdbcType=VARCHAR}, #{loanTypeName,jdbcType=VARCHAR}, #{matchingFunds,jdbcType=DECIMAL}, 
+      #{rateDate,jdbcType=VARCHAR}, #{reserveApplyId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gomemyc.invest.entity.ReserveQueueDetail" >
+    insert into tbl_reserve_queue_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="investId != null" >
+        invest_id,
+      </if>
+      <if test="investQueueId != null" >
+        invest_queue_id,
+      </if>
+      <if test="investmentInterval != null" >
+        Investment_interval,
+      </if>
+      <if test="loanTypeName != null" >
+        loan_type_name,
+      </if>
+      <if test="matchingFunds != null" >
+        matching_funds,
+      </if>
+      <if test="rateDate != null" >
+        rate_date,
+      </if>
+      <if test="reserveApplyId != null" >
+        reserve_apply_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="investId != null" >
+        #{investId,jdbcType=VARCHAR},
+      </if>
+      <if test="investQueueId != null" >
+        #{investQueueId,jdbcType=VARCHAR},
+      </if>
+      <if test="investmentInterval != null" >
+        #{investmentInterval,jdbcType=VARCHAR},
+      </if>
+      <if test="loanTypeName != null" >
+        #{loanTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="matchingFunds != null" >
+        #{matchingFunds,jdbcType=DECIMAL},
+      </if>
+      <if test="rateDate != null" >
+        #{rateDate,jdbcType=VARCHAR},
+      </if>
+      <if test="reserveApplyId != null" >
+        #{reserveApplyId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gomemyc.invest.entity.ReserveQueueDetail" >
+    update tbl_reserve_queue_detail
+    <set >
+      <if test="investId != null" >
+        invest_id = #{investId,jdbcType=VARCHAR},
+      </if>
+      <if test="investQueueId != null" >
+        invest_queue_id = #{investQueueId,jdbcType=VARCHAR},
+      </if>
+      <if test="investmentInterval != null" >
+        Investment_interval = #{investmentInterval,jdbcType=VARCHAR},
+      </if>
+      <if test="loanTypeName != null" >
+        loan_type_name = #{loanTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="matchingFunds != null" >
+        matching_funds = #{matchingFunds,jdbcType=DECIMAL},
+      </if>
+      <if test="rateDate != null" >
+        rate_date = #{rateDate,jdbcType=VARCHAR},
+      </if>
+      <if test="reserveApplyId != null" >
+        reserve_apply_id = #{reserveApplyId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gomemyc.invest.entity.ReserveQueueDetail" >
+    update tbl_reserve_queue_detail
+    set invest_id = #{investId,jdbcType=VARCHAR},
+      invest_queue_id = #{investQueueId,jdbcType=VARCHAR},
+      Investment_interval = #{investmentInterval,jdbcType=VARCHAR},
+      loan_type_name = #{loanTypeName,jdbcType=VARCHAR},
+      matching_funds = #{matchingFunds,jdbcType=DECIMAL},
+      rate_date = #{rateDate,jdbcType=VARCHAR},
+      reserve_apply_id = #{reserveApplyId,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

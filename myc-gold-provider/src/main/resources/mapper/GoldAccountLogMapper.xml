@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gomemyc.gold.dao.GoldAccountLogDao" >
+  <resultMap id="BaseResultMap" type="com.gomemyc.gold.entity.GoldAccountLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="VARCHAR" />
+    <result column="referenced_id" property="referencedId" jdbcType="VARCHAR" />
+    <result column="check_time" property="checkTime" jdbcType="TIMESTAMP" />
+    <result column="check_status" property="checkStatus" jdbcType="INTEGER" />
+    <result column="check_opinion" property="checkOpinion" jdbcType="INTEGER" />
+    <result column="check_type" property="checkType" jdbcType="VARCHAR" />
+    <result column="orders_sum" property="orderSum" jdbcType="INTEGER" />
+    <result column="money_diff" property="moneyDiff" jdbcType="DECIMAL" />
+    <result column="gold_weight_diff" property="goldWeightDiff" jdbcType="DECIMAL" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, product_id, referenced_id, check_time, check_status, check_opinion,
+    check_type, orders_sum, money_diff, gold_weight_diff, description
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_gold_handle_account_check_log
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from tb_gold_handle_account_check_log
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gomemyc.gold.entity.GoldAccountLog" >
+    insert into tb_gold_handle_account_check_log (id, user_id, product_id,
+    referenced_id, check_time, check_status,
+    check_opinion, check_type, orders_sum, money_diff, gold_weight_diff, description
+    )
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR},
+    #{referencedId,jdbcType=VARCHAR}, #{checkTime,jdbcType=TIMESTAMP}, #{checkStatus,jdbcType=INTEGER},
+    #{checkOpinion,jdbcType=INTEGER}, #{checkType,jdbcType=VARCHAR}, #{orderSum,jdbcType=INTEGER},
+    #{moneyDiff,jdbcType=DECIMAL}, #{goldWeightDiff,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.gomemyc.gold.entity.GoldAccountLog" >
+    insert into tb_gold_handle_account_check_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="referencedId != null" >
+        referenced_id,
+      </if>
+      <if test="checkTime != null" >
+        check_time,
+      </if>
+      <if test="checkStatus != null" >
+        check_status,
+      </if>
+      <if test="checkOpinion != null" >
+        check_opinion,
+      </if>
+      <if test="checkType != null" >
+        check_type,
+      </if> <if test="orderSum != null" >
+      order_sum,
+    </if> <if test="moneyDiff != null" >
+      money_diff,
+    </if> <if test="goldWeightDiff != null" >
+      gold_weight_diff,
+    </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="referencedId != null" >
+        #{referencedId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null" >
+        #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkStatus != null" >
+        #{checkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="checkOpinion != null" >
+        #{checkOpinion,jdbcType=INTEGER},
+      </if>
+      <if test="checkType != null" >
+        #{checkType,jdbcType=VARCHAR},
+      </if>
+      <if test="orderSum != null" >
+        #{orderSum,jdbcType=INTEGER},
+      </if>
+      <if test="moneyDiff != null" >
+        #{moneyDiff,jdbcType=DECIMAL},
+      </if>
+      <if test="goldWeightDiff != null" >
+        #{goldWeightDiff,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gomemyc.gold.entity.GoldAccountLog" >
+    update tb_gold_handle_account_check_log
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        product_id = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="referencedId != null" >
+        referenced_id = #{referencedId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTime != null" >
+        check_time = #{checkTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkStatus != null" >
+        check_status = #{checkStatus,jdbcType=INTEGER},
+      </if>
+      <if test="checkOpinion != null" >
+        check_opinion = #{checkOpinion,jdbcType=INTEGER},
+      </if>
+      <if test="checkType != null" >
+        check_type = #{checkType,jdbcType=VARCHAR},
+      </if>
+      <if test="orderSum != null" >
+        order_sum = #{orderSum,jdbcType=INTEGER},
+      </if>
+      <if test="moneyDiff != null" >
+        money_diff = #{moneyDiff,jdbcType=DECIMAL},
+      </if>
+      <if test="goldWeightDiff != null" >
+        gold_weight_diff = #{goldWeightDiff,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gomemyc.gold.entity.GoldAccountLog" >
+    update tb_gold_handle_account_check_log
+    set user_id = #{userId,jdbcType=VARCHAR},
+    product_id = #{productId,jdbcType=VARCHAR},
+    referenced_id = #{referencedId,jdbcType=VARCHAR},
+    check_time = #{checkTime,jdbcType=TIMESTAMP},
+    check_status = #{checkStatus,jdbcType=INTEGER},
+    check_opinion = #{checkOpinion,jdbcType=INTEGER},
+    check_type = #{checkType,jdbcType=VARCHAR},
+    order_sum = #{orderSum,jdbcType=INTEGER},
+    money_diff =  #{moneyDiff,jdbcType=DECIMAL},
+    gold_weight_diff = #{goldWeightDiff,jdbcType=DECIMAL},
+    description = #{description,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <!--查询指定用户记录  -->
+  <select id="countRecord"  resultType="java.lang.Integer">
+   select
+    count(1)
+    from tb_gold_handle_account_check_log
+    where user_id = #{userId}
+  </select>
+  <select id="selectAllRecord" resultMap="BaseResultMap">
+   select
+   <include refid="Base_Column_List" />
+    from tb_gold_handle_account_check_log
+  </select>
+</mapper>

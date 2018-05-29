@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.trade.dao.InvestRepaymentDao">
+  <resultMap id="BaseResultMap" type="com.gomemyc.trade.entity.InvestRepayment">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="loan_id" jdbcType="VARCHAR" property="loanId" />
+    <result column="invest_id" jdbcType="VARCHAR" property="investId" />
+    <result column="principal_amount" jdbcType="DECIMAL" property="principalAmount" />
+    <result column="interest_amount" jdbcType="DECIMAL" property="interestAmount" />
+    <result column="interest_plus_amount" jdbcType="DECIMAL" property="interestPlusAmount" />
+    <result column="interest_coupon_amount" jdbcType="DECIMAL" property="interestCouponAmount" />
+    <result column="outstanding_amount" jdbcType="DECIMAL" property="outstandingAmount" />
+    <result column="due_date" jdbcType="TIMESTAMP" property="dueDate" />
+    <result column="status" jdbcType="TINYINT" property="status" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler"/>
+    <result column="repay_amount" jdbcType="DECIMAL" property="repayAmount" />
+    <result column="repay_date" jdbcType="TIMESTAMP" property="repayDate" />
+    <result column="surplus_amount" jdbcType="DECIMAL" property="surplusAmount" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, loan_id, invest_id, principal_amount, interest_amount, interest_plus_amount, 
+    interest_coupon_amount, outstanding_amount, due_date, status, repay_amount, repay_date,surplus_amount,user_id
+  </sql>
+  <select id="findById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_invest_repayment
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="findByInvestId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_invest_repayment
+    where invest_id = #{investId,jdbcType=VARCHAR}
+  </select>
+  <select id="sumByMonth" resultType="Map"  >
+   	select sum(ir.principal_amount) as principal,sum(ir.interest_amount)+sum(ir.interest_plus_amount) as interest from tbl_invest_repayment ir
+   	left join tbl_invest i on ir.invest_id=i.id
+   	where i.user_id =#{userId,jdbcType=VARCHAR}
+   	and ir.due_date like  CONCAT('%', #{dueDate,jdbcType=VARCHAR},'%')  
+   	and ir.status in 
+   	 <foreach collection="statusList" item="investStatus" index="index"
+                 open="(" close=")" separator=",">
+            #{investStatus}
+        </foreach>
+  </select>
+  
+  <insert id="insert" parameterType="com.gomemyc.trade.entity.InvestRepayment">
+    insert into tbl_invest_repayment (id, loan_id, invest_id, 
+      principal_amount, interest_amount, interest_plus_amount, 
+      interest_coupon_amount, outstanding_amount, 
+      due_date, status, repay_amount, 
+      repay_date,surplus_amount,user_id,years,months,days,value_time)
+    values (#{id,jdbcType=VARCHAR}, #{loanId,jdbcType=VARCHAR}, #{investId,jdbcType=VARCHAR}, 
+      #{principalAmount,jdbcType=DECIMAL}, #{interestAmount,jdbcType=DECIMAL}, #{interestPlusAmount,jdbcType=DECIMAL}, 
+      #{interestCouponAmount,jdbcType=DECIMAL}, #{outstandingAmount,jdbcType=DECIMAL}, 
+      #{dueDate,jdbcType=TIMESTAMP}, #{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}, #{repayAmount,jdbcType=DECIMAL}, 
+      #{repayDate,jdbcType=TIMESTAMP}, #{surplusAmount,jdbcType=DECIMAL},#{userId,jdbcType=VARCHAR},#{years,jdbcType=INTEGER},
+      #{months,jdbcType=INTEGER},#{days,jdbcType=INTEGER},#{valueTime,jdbcType=TIMESTAMP})
+  </insert>
+   <update id="update" parameterType="com.gomemyc.trade.entity.InvestRepayment">
+    update tbl_invest_repayment
+    <set>
+      <if test="loanId != null">
+        loan_id = #{loanId,jdbcType=VARCHAR},
+      </if>
+      <if test="investId != null">
+        invest_id = #{investId,jdbcType=VARCHAR},
+      </if>
+      <if test="principalAmount != null">
+        principal_amount = #{principalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="interestAmount != null">
+        interest_amount = #{interestAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="interestPlusAmount != null">
+        interest_plus_amount = #{interestPlusAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="interestCouponAmount != null">
+        interest_coupon_amount = #{interestCouponAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="outstandingAmount != null">
+        outstanding_amount = #{outstandingAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="dueDate != null">
+        due_date = #{dueDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        status = #{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+      </if>
+      <if test="repayAmount != null">
+        repay_amount = #{repayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="repayDate != null">
+        repay_date = #{repayDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="surplusAmount != null">
+        surplus_amount = #{surplusAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <insert id="insertBatch" parameterType="java.util.List">
+    insert into tbl_invest_repayment 
+                (id, loan_id, invest_id, principal_amount, interest_amount, interest_plus_amount, 
+      			 interest_coupon_amount, outstanding_amount, due_date, status, repay_amount, 
+      			 repay_date,surplus_amount,user_id,years,months,days,value_time) values 
+    <foreach collection="list" item="obj" index="index" separator="," >
+    (#{obj.id,jdbcType=VARCHAR}, #{obj.loanId,jdbcType=VARCHAR}, #{obj.investId,jdbcType=VARCHAR}, 
+      #{obj.principalAmount,jdbcType=DECIMAL}, #{obj.interestAmount,jdbcType=DECIMAL}, #{obj.interestPlusAmount,jdbcType=DECIMAL}, 
+      #{obj.interestCouponAmount,jdbcType=DECIMAL}, #{obj.outstandingAmount,jdbcType=DECIMAL}, 
+      #{obj.dueDate,jdbcType=TIMESTAMP}, #{obj.status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}, #{obj.repayAmount,jdbcType=DECIMAL}, 
+      #{obj.repayDate,jdbcType=TIMESTAMP}, #{obj.surplusAmount,jdbcType=DECIMAL},#{obj.userId,jdbcType=DECIMAL},#{obj.years,jdbcType=INTEGER},
+      #{obj.months,jdbcType=INTEGER},#{obj.days,jdbcType=INTEGER},#{obj.valueTime,jdbcType=TIMESTAMP})
+    </foreach>
+   </insert>
+   
+   <select id="findByLoanId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+      from tbl_invest_repayment
+     where loan_id = #{loanId,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="findByLoanIdAndStatuses" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+      from tbl_invest_repayment
+     where loan_id = #{loanId,jdbcType=VARCHAR}
+     and status in 
+   	 <foreach collection="statuses" item="investStatus" index="index"
+                 open="(" close=")" separator=",">
+            #{investStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+        </foreach>
+  </select>
+  
+  <select id="findByInvestIds" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+      from tbl_invest_repayment
+     where  invest_id in 
+   	 <foreach collection="investIds" item="investId" index="index"
+                 open="(" close=")" separator=",">
+            #{investId,jdbcType=VARCHAR}
+        </foreach>
+  </select>
+  <update id="updateStatus">
+    update tbl_invest_repayment 
+       set status = #{status,jdbcType=INTEGER}
+     where loan_id = #{loanId,jdbcType=VARCHAR}
+  </update>
+  <insert id="insertSelective" parameterType="com.gomemyc.trade.entity.InvestRepayment" >
+    insert into tbl_invest_repayment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="loanId != null" >
+        loan_id,
+      </if>
+      <if test="investId != null" >
+        invest_id,
+      </if>
+      <if test="principalAmount != null" >
+        principal_amount,
+      </if>
+      <if test="interestAmount != null" >
+        interest_amount,
+      </if>
+      <if test="interestPlusAmount != null" >
+        interest_plus_amount,
+      </if>
+      <if test="interestCouponAmount != null" >
+        interest_coupon_amount,
+      </if>
+      <if test="outstandingAmount != null" >
+        outstanding_amount,
+      </if>
+      <if test="dueDate != null" >
+        due_date,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="repayAmount != null" >
+        repay_amount,
+      </if>
+      <if test="repayDate != null" >
+        repay_date,
+      </if>
+      <if test="surplusAmount != null" >
+        surplus_amount,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="years != null" >
+        years,
+      </if>
+      <if test="months != null" >
+        months,
+      </if>
+      <if test="days != null" >
+        days,
+      </if>
+      <if test="valueTime != null" >
+        value_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="loanId != null" >
+        #{loanId,jdbcType=VARCHAR},
+      </if>
+      <if test="investId != null" >
+        #{investId,jdbcType=VARCHAR},
+      </if>
+      <if test="principalAmount != null" >
+        #{principalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="interestAmount != null" >
+        #{interestAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="interestPlusAmount != null" >
+        #{interestPlusAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="interestCouponAmount != null" >
+        #{interestCouponAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="outstandingAmount != null" >
+        #{outstandingAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="dueDate != null" >
+        #{dueDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="repayAmount != null" >
+        #{repayAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="repayDate != null" >
+        #{repayDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="surplusAmount != null" >
+        #{surplusAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="years != null" >
+        #{years,jdbcType=INTEGER},
+      </if>
+      <if test="months != null" >
+        #{months,jdbcType=INTEGER},
+      </if>
+      <if test="days != null" >
+        #{days,jdbcType=INTEGER},
+      </if>
+      <if test="valueTime != null" >
+        #{valueTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="findListByInvest" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+     from tbl_invest_repayment
+     where  invest_id  = #{investId,jdbcType=VARCHAR}
+   	 and status in 
+   	 <foreach collection="statuses" item="investStatus" index="index"
+                 open="(" close=")" separator=",">
+            #{investStatus}
+     </foreach>
+  </select>
+  
+  <select id="getPrincipalPaid"  resultType="java.math.BigDecimal" >
+    select sum(principal_amount)
+    from tbl_invest_repayment
+    where  user_id = #{userId,jdbcType=VARCHAR}
+   	and status <![CDATA[ <= ]]> #{status,jdbcType=TINYINT}
+  </select>
+  
+  <select id="getIncomeReceived"  resultType="java.math.BigDecimal" >
+    select sum(interest_amount+interest_plus_amount+interest_coupon_amount)
+    from tbl_invest_repayment
+    where  user_id = #{userId,jdbcType=VARCHAR}
+   	and status <![CDATA[ <= ]]> #{status,jdbcType=TINYINT}
+  </select>
+  
+  <select id="getInvestRepayment" parameterType="java.lang.String" resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+     from tbl_invest_repayment
+     where  user_id  = #{userId,jdbcType=VARCHAR}
+     and due_date like  CONCAT('%', #{dueDate,jdbcType=VARCHAR},'%')
+   	 and status in 
+   	 <foreach collection="statuses" item="investStatus" index="index"
+                 open="(" close=")" separator=",">
+            #{investStatus}
+     </foreach>
+  </select>
+  
+  <select id="sumAverageDayInterest" resultType="java.math.BigDecimal">
+     select 
+        sum((IFNULL(interest_amount, 0) + IFNULL(interest_plus_amount, 0) + IFNULL(interest_coupon_amount, 0)) / (years * 365 + months * 30 + days)) 
+     from tbl_invest_repayment
+     where user_id  = #{userId,jdbcType=VARCHAR}
+     and value_time <![CDATA[ < ]]> #{valueDate, jdbcType=TIMESTAMP}     
+  </select>
+  
+  <select id="getPrincipalPaidByUserId"  resultType="java.math.BigDecimal" >
+    select sum(principal_amount)
+    from tbl_invest_repayment
+    where  user_id = #{userId,jdbcType=VARCHAR}
+   	and  0 <![CDATA[ <= ]]> status and status <![CDATA[ < ]]> 5
+  </select>
+  
+  <select id="getIncomeReceivedByUserId"  resultType="java.math.BigDecimal" >
+    select sum(interest_amount+interest_plus_amount+interest_coupon_amount)
+    from tbl_invest_repayment
+    where  user_id = #{userId,jdbcType=VARCHAR}
+   	and  0 <![CDATA[ <= ]]> status and status <![CDATA[ < ]]> 5
+  </select>
+  
+  <select id="sumTototalAverageDayInterest" resultType="java.math.BigDecimal">
+     select 
+        sum((IFNULL(interest_amount, 0) + IFNULL(interest_plus_amount, 0) + IFNULL(interest_coupon_amount, 0)) * IFNULL(datediff(NOW(),value_time), 0) / (years * 365 + months * 30 + days)) 
+     from tbl_invest_repayment
+     where user_id  = #{userId,jdbcType=VARCHAR}
+     and value_time <![CDATA[ < ]]> #{valueDate, jdbcType=TIMESTAMP}     
+  </select>
+</mapper>

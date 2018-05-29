@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.invest.dao.LoanTypeRulesDao">
+  <resultMap id="BaseResultMap" type="com.gomemyc.invest.entity.LoanTypeRules">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="loan_type_id" jdbcType="VARCHAR" property="loanTypeId" />
+    <result column="rules_id" jdbcType="VARCHAR" property="rulesId" />
+    <result column="type" jdbcType="INTEGER" property="type" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler"/>
+    <result column="value" jdbcType="VARCHAR" property="value" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, loan_type_id, rules_id, type, value
+  </sql>
+
+  <select id="listByLoanTypeId" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tbl_loan_type_rules
+    where loan_type_id =#{loanTypeId,jdbcType=VARCHAR} 
+  </select>
+  
+  <insert id="save" parameterType="com.gomemyc.invest.entity.LoanTypeRules">
+    insert into tbl_loan_type_rules (<include refid="Base_Column_List"/>) values
+    (<![CDATA[ uuid() ]]>, #{loanTypeId,jdbcType=VARCHAR}, #{rulesId,jdbcType=VARCHAR}, 
+    #{type, typeHandler = com.gomemyc.common.mybatis.EnumIndexHandler}, #{value,jdbcType=VARCHAR})
+  </insert>
+  
+  <select id="getByLoanTypeIdAndRulesType" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tbl_loan_type_rules
+    where loan_type_id =#{loanTypeId,jdbcType=VARCHAR} 
+          and type = #{type, typeHandler = com.gomemyc.common.mybatis.EnumIndexHandler}
+    limit 1
+  </select>
+  
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <bean id="producer" class="com.alibaba.rocketmq.client.producer.DefaultMQProducer" init-method="start" destroy-method="shutdown">
+        <property name="instanceName" value="${mq.producer.name}"/>
+        <property name="namesrvAddr" value="${mq.nameservAdd}"/>
+        <property name="producerGroup" value="${mq.producer.group}"/>
+    </bean>
+
+
+<!--
+
+    <bean id="eventProducer" class="com.alibaba.rocketmq.client.producer.DefaultMQProducer" init-method="start" destroy-method="shutdown">
+        <property name="instanceName" value="${mq.eventProducer.name}"/>
+        <property name="namesrvAddr" value="${mq.nameservAdd}"/>
+        <property name="producerGroup" value="${mq.eventProducer.group}"/>
+    </bean>-->
+
+    <!--<bean id="enentMessageListener" class="com.gomemyc.user.biz.mq.MessageListener"/>
+
+    <bean id="eventConsumer" class="com.alibaba.rocketmq.client.consumer.DefaultMQPushConsumer" init-method="start"
+          destroy-method="shutdown">
+        <property name="consumerGroup" value="${mq.eventConsumer.group}"/>
+        <property name="namesrvAddr" value="${mq.nameservAdd}"/>
+        <property name="subscription">
+            <map>
+                <entry key="${mq.eventTopic}" value="*"/>
+            </map>
+        </property>
+        <property name="messageListener" ref="enentMessageListener"/>
+    </bean>-->
+
+
+</beans>

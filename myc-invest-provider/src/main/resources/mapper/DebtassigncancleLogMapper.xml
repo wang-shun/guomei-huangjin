@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gomemyc.invest.dao.DebtassigncancleLogDao" >
+  <resultMap id="BaseResultMap" type="com.gomemyc.invest.entity.DebtassigncancleLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="VARCHAR" />
+    <result column="loan_id" property="loanId" jdbcType="VARCHAR" />
+    <result column="debtassign_id" property="debtassignId" jdbcType="VARCHAR" />
+    <result column="debtassign_product_id" property="debtassignProductId" jdbcType="VARCHAR" />
+    <result column="invest_id" property="investId" jdbcType="VARCHAR" />
+    <result column="assign_apply_user_id" property="assignApplyUserId" jdbcType="VARCHAR" />
+    <result column="assign_apply_user_mobile" property="assignApplyUserMobile" jdbcType="VARCHAR" />
+    <result column="expact_roll_back_money" property="expactRollBackMoney" jdbcType="DECIMAL" />
+    <result column="assign_loan_cancel_type" property="assignLoanCancelType" jdbcType="TINYINT"  typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler"/>
+    <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP" />
+    <result column="operator_id" property="operatorId" jdbcType="VARCHAR" />
+    <result column="operator_name" property="operatorName" jdbcType="VARCHAR" />
+    <result column="result" property="result" jdbcType="TINYINT"  typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler"/>
+    <result column="cancle_reason" property="cancleReason" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, product_id, loan_id, debtassign_id, debtassign_product_id, invest_id, assign_apply_user_id, 
+    assign_apply_user_mobile, expact_roll_back_money, assign_loan_cancel_type, operate_time, 
+    operator_id, operator_name, result, cancle_reason, description
+  </sql>
+  <select id="findListByUserIdAndProductId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+ 	select 
+    <include refid="Base_Column_List" />
+    from tbl_debtassigncancle_log
+    where assign_apply_user_id = #{assignApplyUserId,jdbcType=VARCHAR} and product_id= #{productId,jdbcType=VARCHAR} 
+  </select>
+  
+  <select id="countByOperatorType"  parameterType="java.lang.String" resultType="java.lang.Integer">
+ 	select 
+    count(invest_id)
+    from tbl_debtassigncancle_log
+    where assign_apply_user_id = #{assignApplyUserId,jdbcType=VARCHAR} and invest_id= #{investId,jdbcType=VARCHAR} 
+     and product_id= #{productId,jdbcType=VARCHAR} and assign_loan_cancel_type=#{cancelType,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+     and result=#{cancelStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+  </select>
+  
+   <select id="countConcelLogByUserIdAndRootLoanIds" resultType="Map" >
+ 	select p.invest_id,count(p.product_id) as count,p.product_id from tbl_debtassigncancle_log p where 1=1
+ 	<if test="operatorId != null" >
+        and  p.operator_id = #{operatorId,jdbcType=VARCHAR}
+    </if>
+    <if test="assignLoanCancelType != null" >
+        and p.assign_loan_cancel_type = #{assignLoanCancelType,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+    </if>
+    <if test="result != null" >
+       	and p.result= #{result,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+    </if>
+    <if test="beginDate != null" >
+       	and p.operate_time &gt;= #{beginDate}
+    </if>
+    <if test="endDate != null" >
+       	and p.operate_time &lt;= #{endDate}
+    </if>
+    <if test="tmp_rootLoanIds != null" >
+   		and p.product_id in
+       <foreach collection="tmp_rootLoanIds" item="rootLoanId" index="index"
+                 open="(" close=")" separator=",">
+            #{rootLoanId,jdbcType=VARCHAR}
+    </foreach>
+    </if>
+    <if test="tmp_investIds != null" >
+    	and p.invest_id in
+       <foreach collection="tmp_investIds" item="investId" index="index"
+                 open="(" close=")" separator=",">
+            #{investId,jdbcType=VARCHAR}
+    </foreach>
+    </if>
+    group by p.product_id,p.invest_id 
+  </select>
+  
+  <insert id="add" parameterType="com.gomemyc.invest.entity.DebtassigncancleLog" >
+    insert into tbl_debtassigncancle_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+        id,
+        product_id,
+        loan_id,
+        debtassign_id,
+        debtassign_product_id,
+        invest_id,
+        assign_apply_user_id,
+        assign_apply_user_mobile,
+      <if test="expactRollBackMoney != null" >
+        expact_roll_back_money,
+      </if>
+        assign_loan_cancel_type,
+        operate_time,
+        operator_id,
+        operator_name,
+        result,
+      <if test="cancleReason != null" >
+        cancle_reason,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+        #{id},
+        #{productId},
+        #{loanId},
+        #{debtassignId},
+        #{debtassignProductId},
+        #{investId},
+        #{assignApplyUserId},
+        #{assignApplyUserMobile},
+      <if test="expactRollBackMoney != null" >
+        #{expactRollBackMoney,jdbcType=DECIMAL},
+      </if>
+        #{assignLoanCancelType,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+        #{operateTime},
+        #{operatorId},
+        #{operatorName},
+        #{result,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+      <if test="cancleReason != null" >
+        #{cancleReason,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

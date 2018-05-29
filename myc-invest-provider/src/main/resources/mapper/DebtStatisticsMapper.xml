@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gomemyc.invest.dao.DebtStatisticsDao" >
+  <resultMap id="BaseResultMap" type="com.gomemyc.invest.entity.DebtStatistics" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="request_sum" property="requestSum" jdbcType="DECIMAL" />
+    <result column="request_count" property="requestCount" jdbcType="INTEGER" />
+    <result column="request_user_count" property="requestUserCount" jdbcType="INTEGER" />
+    <result column="success_sum" property="successSum" jdbcType="DECIMAL" />
+    <result column="success_count" property="successCount" jdbcType="INTEGER" />
+    <result column="success_user_count" property="successUserCount" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, time, request_sum, request_count, request_user_count, success_sum, success_count, 
+    success_user_count
+  </sql>
+  <insert id="save" parameterType="com.gomemyc.invest.entity.DebtStatistics" >
+    insert into tbl_debt_statistics (id, time, request_sum, 
+      request_count, request_user_count, success_sum, 
+      success_count, success_user_count)
+    values (#{id,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{requestSum,jdbcType=DECIMAL}, 
+      #{requestCount,jdbcType=INTEGER}, #{requestUserCount,jdbcType=INTEGER}, #{successSum,jdbcType=DECIMAL}, 
+      #{successCount,jdbcType=INTEGER}, #{successUserCount,jdbcType=INTEGER})
+  </insert>
+</mapper>

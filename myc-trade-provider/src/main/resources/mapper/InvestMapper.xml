@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.trade.dao.InvestDao">
+  <resultMap id="BaseResultMap" type="com.gomemyc.trade.entity.Invest">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type_key" jdbcType="VARCHAR" property="loanTypeKey" />
+    <result column="type_id" jdbcType="VARCHAR" property="loanTypeId" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="loan_id" jdbcType="VARCHAR" property="loanId" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" javaType="java.math.BigDecimal"/>
+    <result column="rate" jdbcType="INTEGER" property="rate" javaType="int"/>
+    <result column="rate_plus" jdbcType="INTEGER" property="plusRate" javaType="int"/>
+    <result column="years" jdbcType="INTEGER" property="years" javaType="int" />
+    <result column="months" jdbcType="INTEGER" property="months" javaType="int"/>
+    <result column="days" jdbcType="INTEGER" property="days" javaType="int" />
+    <result column="method" jdbcType="INTEGER" property="repaymentMethod" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler" />
+    <result column="status" jdbcType="INTEGER" property="status" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler" />
+    <result column="submit_time" jdbcType="TIMESTAMP" property="submitTime" javaType="java.util.Date" />
+    <result column="debt_amount" jdbcType="DECIMAL" property="debtAmount" javaType="java.math.BigDecimal"/>
+    <result column="source" jdbcType="INTEGER" property="source" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler"/>
+    <result column="equipment_channel" jdbcType="VARCHAR" property="equipmentChannel" />
+    <result column="source_channel" jdbcType="VARCHAR" property="sourceChannel" />
+    <result column="coupon_placement_id" jdbcType="VARCHAR" property="couponPlacememtId" />
+    <result column="root_invest_id" jdbcType="VARCHAR" property="rootInvestId" />
+    <result column="local_freeze_no" jdbcType="VARCHAR" property="localFreezeNo" />
+    <result column="bj_df_code" jdbcType="VARCHAR" property="bjDfCode" />
+    <result column="bj_syn_code" jdbcType="VARCHAR" property="bjSynCode" />
+    <result column="local_df_code" jdbcType="VARCHAR" property="localDfCode" />
+    <result column="debted" property="debted" jdbcType="TINYINT" javaType="boolean" />
+    <result column="reward" property="reward" jdbcType="TINYINT" javaType="boolean" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, mobile, name, type_key, type_id, user_id, loan_id, product_id, amount, rate, rate_plus, years,
+    months, days, method, status, submit_time, debt_amount, source, equipment_channel, 
+    source_channel, coupon_placement_id, root_invest_id,local_freeze_no,bj_df_code,bj_syn_code,local_df_code,
+    debted, reward
+  </sql>
+  
+   <!-- 不要乱加了，加完后请测试后再提交 -->
+  <sql id="Insert_Base_Column_List">
+    id, mobile, name, type_key, type_id, user_id, loan_id, product_id, amount, rate, rate_plus, years,
+    months, days, method, status, submit_time, debt_amount, source, equipment_channel,
+    source_channel, coupon_placement_id, root_invest_id
+  </sql>
+  
+  <sql id="Invest_Base_Column_List">
+    id, mobile, name, type_key, type_id, user_id, loan_id, product_id, amount, rate, rate_plus, years,
+    months, days, method, status, submit_time, debt_amount, source, equipment_channel,
+    source_channel, coupon_placement_id, root_invest_id, debted, reward
+  </sql>
+  
+  <select id="findById" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tbl_invest
+    where id =#{id,jdbcType=VARCHAR}
+  </select>
+  <select id="findListByProductIdAndStatus" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_invest
+    where product_id = #{productId,jdbcType=VARCHAR} 
+    <if test="statuss != null">
+      and status in
+        <foreach collection="statuss" item="investStatus" index="index"
+                 open="(" close=")" separator=",">
+            #{investStatus, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+        </foreach>
+    </if>
+  </select>
+ <select id="findByUserAndProductAndLoanAndStatus" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_invest
+    where user_id = #{userID,jdbcType=VARCHAR} and product_id = #{productId,jdbcType=VARCHAR} 
+     and loan_id = #{loanId,jdbcType=VARCHAR}  and status = #{status,typeHandler=com.gomemyc.common.mybatis.EnumIndexHandler} 
+  </select>
+
+  <!-- 根据Id,跟新订单状态 -->
+  <update id="updateStatusById"  >
+    update tbl_invest set
+    status = #{status,jdbcType=INTEGER}
+    where id=#{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateBjDfCodeById"  >
+    update tbl_invest set
+    bj_df_code = #{bjDfCode,jdbcType=INTEGER}
+    where id=#{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateBjSynCodeById"  >
+    update tbl_invest set
+    bj_syn_code = #{bjSynCode,jdbcType=INTEGER}
+    where id=#{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateLocalDfCodeById"  >
+    update tbl_invest set
+    local_df_code = #{localDfCode,jdbcType=INTEGER}
+    where id=#{id,jdbcType=VARCHAR}
+  </update>
+
+  <insert id="save" parameterType="com.gomemyc.trade.entity.Invest">
+    insert into tbl_invest (<include refid="Insert_Base_Column_List"/>) values
+    (#{id}, #{mobile,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+    #{loanTypeKey,jdbcType=VARCHAR}, #{loanTypeId,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR}, 
+    #{loanId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR},
+    #{amount,jdbcType=DECIMAL}, #{rate,jdbcType=INTEGER}, #{plusRate,jdbcType=INTEGER}, 
+    #{years,jdbcType=INTEGER}, #{months,jdbcType=INTEGER}, #{days,jdbcType=INTEGER},
+    #{repaymentMethod,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}, 
+    #{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}, 
+    #{submitTime,jdbcType=TIMESTAMP}, #{debtAmount,jdbcType=DECIMAL}, 
+    #{source, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}, 
+    #{equipmentChannel,jdbcType=VARCHAR}, #{sourceChannel,jdbcType=VARCHAR},
+    #{couponPlacememtId,jdbcType=VARCHAR}, #{rootInvestId,jdbcType=VARCHAR}
+    )
+  </insert>
+  <insert id="invest" parameterType="com.gomemyc.trade.entity.Invest">
+    insert into tbl_invest (<include refid="Invest_Base_Column_List"/>) values
+    (#{id}, #{mobile,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+    #{loanTypeKey,jdbcType=VARCHAR}, #{loanTypeId,jdbcType=VARCHAR},#{userId,jdbcType=VARCHAR}, 
+    #{loanId,jdbcType=VARCHAR}, #{productId,jdbcType=VARCHAR},
+    #{amount,jdbcType=DECIMAL}, #{rate,jdbcType=INTEGER}, #{plusRate,jdbcType=INTEGER}, 
+    #{years,jdbcType=INTEGER}, #{months,jdbcType=INTEGER}, #{days,jdbcType=INTEGER},
+    #{repaymentMethod,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}, 
+    #{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}, 
+    #{submitTime,jdbcType=TIMESTAMP}, #{debtAmount,jdbcType=DECIMAL}, 
+    #{source, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}, 
+    #{equipmentChannel,jdbcType=VARCHAR}, #{sourceChannel,jdbcType=VARCHAR},
+    #{couponPlacememtId,jdbcType=VARCHAR}, #{rootInvestId,jdbcType=VARCHAR},
+    #{debted,jdbcType=TINYINT}, #{reward,jdbcType=TINYINT}
+    )
+  </insert>
+  <update id="update" parameterType="com.gomemyc.trade.entity.Invest">
+    update tbl_invest
+    <set>
+      <if test="loanTypeKey != null">
+        type_key = #{loanTypeKey,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="loanId != null">
+        loan_id = #{loanId,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="rate != null">
+        rate = #{rate,jdbcType=INTEGER},
+      </if>
+      <if test="plusRate != null">
+        rate_plus = #{plusRate,jdbcType=INTEGER},
+      </if>
+      <if test="years != null">
+        years = #{years,jdbcType=INTEGER},
+      </if>
+      <if test="months != null">
+        months = #{months,jdbcType=INTEGER},
+      </if>
+      <if test="days != null">
+        days = #{days,jdbcType=INTEGER},
+      </if>
+      <if test="repaymentMethod != null">
+        method = #{repaymentMethod,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+      </if>
+      <if test="status != null">
+        status = #{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+      </if>
+      <if test="submitTime != null">
+        submit_time = #{submitTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="debtAmount != null">
+        debt_amount = #{debtAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="source != null">
+        source = #{source,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler},
+      </if>
+      <if test="equipmentChannel != null">
+        equipment_channel = #{equipmentChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceChannel != null">
+        source_channel = #{sourceChannel,jdbcType=VARCHAR},
+      </if>
+      <if test="rootInvestId != null">
+        root_invest_id = #{rootInvestId,jdbcType=VARCHAR},
+      </if>
+       <if test="localFreezeNo != null">
+        local_freeze_no = #{localFreezeNo,jdbcType=VARCHAR},
+      </if>
+       <if test="bjDfCode != null">
+        bj_df_code = #{bjDfCode,jdbcType=VARCHAR},
+      </if>
+       <if test="bjSynCode != null">
+        bj_syn_code = #{bjSynCode,jdbcType=VARCHAR},
+      </if>
+       <if test="localDfCode != null">
+        local_df_code = #{localDfCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <select id="sumAmountAndTimesByLoan" resultType="java.util.HashMap">
+    select IFNULL(sum(IFNULL(amount,0)),0) totalAmount, count(1) num 
+    from tbl_invest
+    where product_id =#{productId,jdbcType=VARCHAR} 
+        and user_id =#{userId,jdbcType=VARCHAR}  
+        and status > 0
+  </select>
+  
+  <select id="sumAmountAndTimesByLoanType" resultType="java.util.HashMap">
+    select IFNULL(sum(IFNULL(amount,0)),0) totalAmount, count(1) num 
+    from tbl_invest
+    where type_key = #{loanType,jdbcType=VARCHAR} 
+        and user_id = #{userId,jdbcType=VARCHAR}  
+        and status > 0
+  </select>
+  
+  <update id="updateInvestStatus"  >
+    update tbl_invest set 
+        status = #{status,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler} 
+    where id = #{id}
+  </update>
+  
+  <select id="checkInvestByProduct" resultType="java.lang.Integer">
+	  <![CDATA[ 
+		  select count(1) num
+		    from tbl_invest
+		   where product_id = #{productId,jdbcType=VARCHAR} 
+		     and status  >= #{begStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler} 
+		     and status <= #{endStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler} 
+	  ]]>
+  </select>
+  
+  <select id="findAmountListByProduct" resultType="java.math.BigDecimal">
+    select IFNULL(sum(IFNULL(AMOUNT,0)),0) amount
+      from tbl_invest
+     where product_id = #{productId,jdbcType=VARCHAR} 
+       and status = #{status,typeHandler = com.gomemyc.common.mybatis.EnumIndexHandler} 
+  </select>
+
+
+    <!-- 查投资记录 -->
+
+    <select id="findListByLoanAndStatus" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_invest
+        where loan_id = #{loanId,jdbcType=VARCHAR}
+        and status in
+        <foreach collection="investStatusList" item="investStatus" index="index"
+                 open="(" close=")" separator=",">
+            #{investStatus}
+        </foreach>
+        order by submit_time DESC
+        LIMIT #{startRow,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+  </select>
+  
+  <select id="findByLoanAndStatus" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_invest
+        where loan_id = #{loanId,jdbcType=VARCHAR}
+        <if test="statusList != null">
+        and status in
+        <foreach collection="statusList" item="investStatus" index="index"
+                 open="(" close=")" separator=",">
+            #{investStatus,typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}
+        </foreach>
+        </if>
+  </select>
+
+    <select id="findCountByLoanAndStatus" resultType="java.lang.Integer"  >
+        select count(1)
+        from tbl_invest
+        where loan_id = #{loanId,jdbcType=VARCHAR}
+        and status in
+        <foreach collection="investStatusList" item="investStatus" index="index"
+                 open="(" close=")" separator=",">
+            #{investStatus}
+        </foreach>
+    </select>
+    
+	<select id="findListInvestByUserIdAndInvestStatus" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_invest
+        where user_id = #{userId,jdbcType=VARCHAR}
+        and   status = #{investStatus}
+        and   type_key=#{loanTypeKey}
+        order by submit_time DESC
+        LIMIT #{startRow,jdbcType=INTEGER},#{pageSize,jdbcType=INTEGER}
+   </select>
+   <select id="findInvestByUserIdAndStatus" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_invest
+        where user_id = #{userId,jdbcType=VARCHAR}
+        and   status = #{investStatus}
+        and   type_key=#{loanTypeKey}
+  	</select>
+  	<update id="updateLocalFrozenNo" >
+	    update tbl_invest set
+	    local_freeze_no = #{localFreezeNo, jdbcType=VARCHAR},
+	    status = 1
+	    where id=#{id, jdbcType=VARCHAR}
+    </update>
+	<select id="finByUserIdAndLoanId" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_invest
+        where user_id = #{userId,jdbcType=VARCHAR}
+        and loan_id in
+        <foreach collection="loanIdsList" item="loanIds" index="index"
+                 open="(" close=")" separator=",">
+            #{loanIds}
+        </foreach>
+        order by submit_time desc
+  	</select>
+  	<update id="updateLocalDfCodeAndStatus" >
+        update tbl_invest set
+        local_df_code = #{localDfCode, jdbcType=VARCHAR},
+        status = #{status,typeHandler = com.gomemyc.common.mybatis.EnumIndexHandler} 
+        where id=#{id, jdbcType=VARCHAR}
+    </update>
+    <select id="listByUserIdAndStatus" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_invest
+        where user_id = #{userId,jdbcType=VARCHAR}
+        and status in 
+        <foreach item="item" index="index" collection="statuslist" open="("  separator="," close=")">
+               #{item, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+        </foreach>
+        LIMIT #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+   </select>
+   <select id="listByUserIdAndStatusNotGold" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_invest
+        where user_id = #{userId,jdbcType=VARCHAR}
+        and type_key != 'GOLD'
+        and status in 
+        <foreach item="item" index="index" collection="statuslist" open="("  separator="," close=")">
+               #{item, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+        </foreach>
+        LIMIT #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+   </select>
+   <select id="countByUserIdAndStatus" resultType="java.lang.Long">
+        select count(1)
+        from tbl_invest
+        where user_id = #{userId,jdbcType=VARCHAR}
+        and status in 
+        <foreach item="item" index="index" collection="statuslist" open="("  separator="," close=")">
+               #{item, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+        </foreach>
+   </select>
+   
+   <select id="countByUserIdAndStatusNotGold" resultType="java.lang.Long">
+        select count(1)
+        from tbl_invest
+        where user_id = #{userId,jdbcType=VARCHAR}
+        and type_key != 'GOLD'
+        and status in 
+        <foreach item="item" index="index" collection="statuslist" open="("  separator="," close=")">
+               #{item, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+        </foreach>
+   </select>
+   <select id="countUserInvest" resultType="java.lang.Long">
+        select count(1)
+        from tbl_invest
+        where user_id = #{userId,jdbcType=VARCHAR}
+        and type_key = #{loanTypeKey, jdbcType=VARCHAR}
+   </select>
+   <select id="findListByProduct" resultMap="BaseResultMap">
+   	select 
+   	<include refid="Base_Column_List"/>
+      from tbl_invest
+     where product_id = #{productId,jdbcType=VARCHAR} 
+       and status = #{status,typeHandler = com.gomemyc.common.mybatis.EnumIndexHandler}
+   </select>
+   <select id="sumInvestAmountByProductAndStatus" resultType="java.math.BigDecimal">
+    select sum(amount)
+      from tbl_invest
+     where product_id = #{productId,jdbcType=VARCHAR} 
+       and status in 
+        <foreach item="item" index="index" collection="statusList" open="("  separator="," close=")">
+               #{item, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+        </foreach>
+   </select>
+   
+   <select id="getInvestStatusTotalAmount" resultType="java.math.BigDecimal">
+    select sum(amount)
+      from tbl_invest
+     where product_id = #{productId,jdbcType=VARCHAR} 
+     and user_id=#{userId,jdbcType=VARCHAR}
+       and status in 
+        <foreach item="item" index="index" collection="statusList" open="("  separator="," close=")">
+               #{item, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+        </foreach>
+   </select>
+   
+   <select id="getInvestTimes" resultType="java.lang.Integer">
+    select sum(id)
+      from tbl_invest
+     where product_id = #{productId,jdbcType=VARCHAR} 
+     and user_id=#{userId,jdbcType=VARCHAR}
+       and status in 
+        <foreach item="item" index="index" collection="statusList" open="("  separator="," close=")">
+               #{item, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+        </foreach>
+   </select>
+   
+   
+   <select id="countByStatusAndSubmitTime" resultType="java.lang.Integer">
+   	  select count(id)
+      from tbl_invest
+      where user_id = #{userId,jdbcType=VARCHAR} 
+       <if test="statusList!=null">
+       	and status in 
+       		<foreach item="item" index="index" collection="statusList" open="("  separator="," close=")">
+               #{item, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+        	</foreach>
+        </if> 
+        and submit_time = #{endSubmitTime,jdbcType=TIMESTAMP}
+   </select>
+   
+   
+   <select id="sumByUserAndDate" resultType="java.lang.Integer">
+   	select count(id)
+      from tbl_invest 
+      where   1=1
+      <if test="userIds!=null">
+      and  user_id in
+   	  	<foreach item="item" index="index" collection="userIds" open="("  separator="," close=")">
+               #{item,jdbcType=VARCHAR}  
+        </foreach>
+      </if>
+      
+      <if test="statusList!=null">
+      	and  status in 
+       <foreach item="item" index="index" collection="statusList" open="("  separator="," close=")">
+               #{item, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+        </foreach>
+       </if> 
+      <if test=" from!=null ">
+　　		and  submit_time &gt;=#{from,jdbcType=VARCHAR} 
+	  </if> 
+	  <if test="to!=null">
+ 　        　and    submit_time &lt;=#{to,jdbcType=VARCHAR} 
+	  </if>
+   </select>
+   
+    <select id="countByLoanRewardAndStatusExCludeCuurentInvest" resultType="java.lang.Integer">
+    	select count(id)
+      	from tbl_invest
+      	where id=#{investId,jdbcType=VARCHAR}
+      	and user_id=#{userId,jdbcType=VARCHAR}
+      	and reward=#{userIsGetReward}
+      	and status in 
+       	<foreach item="item" index="index" collection="statusList" open="("  separator="," close=")">
+               #{item, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+        </foreach>
+    </select>
+    <update id="updateLocalBjDfCodeAndStatus" >
+        update tbl_invest set
+        bj_df_code = #{bjFreezeCode, jdbcType=VARCHAR},
+        status = #{status,typeHandler = com.gomemyc.common.mybatis.EnumIndexHandler} 
+        where id=#{id, jdbcType=VARCHAR}
+    </update>
+    <update id="updateByProductId">
+    	update tbl_invest
+    	   set status = #{status,typeHandler = com.gomemyc.common.mybatis.EnumIndexHandler}
+	     where product_id = #{productId,jdbcType=VARCHAR} 
+	       and status = #{oldStatus,typeHandler = com.gomemyc.common.mybatis.EnumIndexHandler}
+    </update>
+    
+    <select id="listByProductIdAndStatus" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_invest
+        where product_id = #{productId,jdbcType=VARCHAR}
+        and status in 
+        <foreach item="item" index="index" collection="statuslist" open="("  separator="," close=")">
+               #{item, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+        </foreach>
+        LIMIT #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+   </select>
+   
+   <select id="countByProductIdAndStatus" resultType="java.lang.Long">
+        select count(1)
+        from tbl_invest
+        where product_id = #{productId,jdbcType=VARCHAR}
+        and status in 
+        <foreach item="item" index="index" collection="statuslist" open="("  separator="," close=")">
+               #{item, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+        </foreach>
+   </select>
+   <select id="countInvestNumByProductAndStatus" resultType="java.lang.Long">
+    select count(1)
+      from tbl_invest
+     where product_id = #{productId,jdbcType=VARCHAR} 
+       and status in 
+        <foreach item="item" index="index" collection="statusList" open="("  separator="," close=")">
+               #{item, typeHandler= com.gomemyc.common.mybatis.EnumIndexHandler}  
+        </foreach>
+   </select>
+   
+    <select id="getInvestment" resultMap="BaseResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_invest
+        where id = #{investId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="getFirstInvestment" resultType="java.lang.String" >
+        SELECT
+			id
+		FROM
+			tbl_invest
+		WHERE
+			user_id = #{userId,jdbcType=VARCHAR}
+		AND STATUS > 0 
+		ORDER BY submit_time asc
+		LIMIT 1
+    </select>
+    <select id="sumAmountByLoanType" resultType="java.math.BigDecimal">
+	    select IFNULL(sum(IFNULL(amount,0)),0) 
+	    from tbl_invest
+	    where type_key = #{loanType,jdbcType=VARCHAR} 
+	        and user_id = #{userId,jdbcType=VARCHAR}  
+	        and status > 0
+    </select>
+    
+    <select id="sumAmountByStatusAndDebted" resultType="java.math.BigDecimal">
+	    select sum(amount)
+	    from tbl_invest
+	    where user_id = #{userId,jdbcType=VARCHAR}  
+	        and status =5
+	        and debted=0
+    </select>
+    
+</mapper>

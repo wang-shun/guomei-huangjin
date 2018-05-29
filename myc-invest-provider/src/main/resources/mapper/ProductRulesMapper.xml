@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.invest.dao.ProductRulesDao">
+  <resultMap id="BaseResultMap" type="com.gomemyc.invest.entity.ProductRules">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="product_id" jdbcType="VARCHAR" property="productId" />
+    <result column="rules_id" jdbcType="VARCHAR" property="rulesId" />
+    <result column="type" jdbcType="INTEGER" property="type" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler"/>
+    <result column="value" jdbcType="VARCHAR" property="value" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, product_id, rules_id, type, value
+  </sql>
+
+  <select id="listByProductId" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tbl_product_rules
+    where product_id =#{productId,jdbcType=VARCHAR} 
+  </select>
+  
+  <insert id="save" parameterType="com.gomemyc.invest.entity.ProductRules">
+    insert into tbl_product_rules (<include refid="Base_Column_List"/>) values
+    (<![CDATA[ uuid() ]]>, #{productId,jdbcType=VARCHAR}, #{rulesId,jdbcType=VARCHAR}, 
+    #{type, typeHandler = com.gomemyc.common.mybatis.EnumIndexHandler}, #{value,jdbcType=VARCHAR})
+  </insert>
+  
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

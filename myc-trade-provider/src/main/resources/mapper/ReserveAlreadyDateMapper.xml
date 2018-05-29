@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.gomemyc.trade.dao.ReserveAlreadyDateDao" >
+  <resultMap id="BaseResultMap" type="com.gomemyc.trade.entity.ReserveAlreadyDate" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="max_date" property="maxDate" jdbcType="INTEGER" />
+    <result column="min_date" property="minDate" jdbcType="INTEGER" />
+    <result column="reserve_date_id" property="reserveDateId" jdbcType="VARCHAR" />
+    <result column="reserve_id" property="reserveId" jdbcType="VARCHAR" />
+    <result column="term_desc" property="termDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, max_date, min_date, reserve_date_id, reserve_id, term_desc
+  </sql>
+   <insert id="save" parameterType="com.gomemyc.trade.entity.ReserveAlreadyDate">
+   insert into tbl_reserve_already_date
+   <trim prefix="(" suffix=")" suffixOverrides="," >
+     <if test="id != null" >
+       id,
+     </if>
+     <if test="maxDate != null" >
+       max_date,
+     </if>
+     <if test="minDate != null" >
+       min_date,
+     </if>
+     <if test="reserveDateId != null" >
+       reserve_date_id,
+     </if>
+     <if test="reserveId != null" >
+       reserve_id,
+     </if>
+     <if test="termDesc != null" >
+       term_desc,
+     </if>
+   </trim>
+   <trim prefix="values (" suffix=")" suffixOverrides="," >
+     <if test="id != null" >
+       #{id,jdbcType=VARCHAR},
+     </if>
+     <if test="maxDate != null" >
+       #{maxDate,jdbcType=INTEGER},
+     </if>
+     <if test="minDate != null" >
+       #{minDate,jdbcType=INTEGER},
+     </if>
+     <if test="reserveDateId != null" >
+       #{reserveDateId,jdbcType=VARCHAR},
+     </if>
+     <if test="reserveId != null" >
+       #{reserveId,jdbcType=VARCHAR},
+     </if>
+     <if test="termDesc != null" >
+       #{termDesc,jdbcType=VARCHAR},
+     </if>
+   </trim>
+ </insert>
+</mapper>

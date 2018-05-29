@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.invest.dao.RulesDao">
+  <resultMap id="BaseResultMap" type="com.gomemyc.invest.entity.Rules">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="INTEGER" property="type" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler"/>
+    <result column="clazz" jdbcType="INTEGER" property="clazz" typeHandler="com.gomemyc.common.mybatis.EnumIndexHandler" />
+    <result column="filter_clazz" jdbcType="VARCHAR" property="filterClazz" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, name, type, clazz, filter_clazz
+  </sql>
+
+  <select id="findByTypeAndClazz" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from tbl_rules
+    where type =#{type, typeHandler = com.gomemyc.common.mybatis.EnumIndexHandler} and
+    clazz =#{clazz, typeHandler = com.gomemyc.common.mybatis.EnumIndexHandler}
+  </select>
+  
+  <insert id="save" parameterType="com.gomemyc.invest.entity.Rules">
+    insert into tbl_rules (<include refid="Base_Column_List"/>) values
+    (<![CDATA[ uuid() ]]>, #{name}, #{type, typeHandler = com.gomemyc.common.mybatis.EnumIndexHandler}, #{clazz, typeHandler = com.gomemyc.common.mybatis.EnumIndexHandler}, #{filterClazz} )
+  </insert>
+  
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

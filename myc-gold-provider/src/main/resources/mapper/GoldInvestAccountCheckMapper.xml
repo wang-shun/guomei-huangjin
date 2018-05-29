@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.gold.dao.GoldInvestAccountCheckDao">
+  <resultMap id="BaseResultMap" type="com.gomemyc.gold.entity.GoldInvestAccountCheck">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="req_no" jdbcType="VARCHAR" property="reqNo" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="gold_order_time" jdbcType="TIMESTAMP" property="goldOrderTime" />
+    <result column="gold_finish_time" jdbcType="TIMESTAMP" property="goldFinishTime" />
+    <result column="gold_weight" jdbcType="DECIMAL" property="goldWeight" />
+    <result column="real_price" jdbcType="DECIMAL" property="realPrice" />
+    <result column="order_amount" jdbcType="DECIMAL" property="orderAmount" />
+    <result column="product_code" jdbcType="VARCHAR" property="productCode" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="data_check_type" jdbcType="INTEGER" property="dataCheckType" />
+    <result column="comparing_status" jdbcType="TINYINT" property="comparingStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, req_no, order_no, gold_order_time, gold_finish_time, gold_weight, real_price,
+    order_amount, product_code, product_name, create_time, data_check_type, comparing_status
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_gold_invest_account_check
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_gold_invest_account_check
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.gomemyc.gold.entity.GoldInvestAccountCheck">
+    insert into tb_gold_invest_account_check (id, req_no, order_no,
+      gold_order_time, gold_finish_time, gold_weight, 
+      real_price, order_amount, product_code, 
+      product_name, create_time, data_check_type, 
+      comparing_status)
+    values (#{id,jdbcType=VARCHAR}, #{reqNo,jdbcType=VARCHAR}, #{orderNo,jdbcType=VARCHAR}, 
+      #{goldOrderTime,jdbcType=TIMESTAMP}, #{goldFinishTime,jdbcType=TIMESTAMP}, #{goldWeight,jdbcType=DECIMAL}, 
+      #{realPrice,jdbcType=DECIMAL}, #{orderAmount,jdbcType=DECIMAL}, #{productCode,jdbcType=VARCHAR}, 
+      #{productName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{dataCheckType,jdbcType=INTEGER}, 
+      #{comparingStatus,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gomemyc.gold.entity.GoldInvestAccountCheck">
+    insert into tb_gold_invest_account_check
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="reqNo != null">
+        req_no,
+      </if>
+      <if test="orderNo != null">
+        order_no,
+      </if>
+      <if test="goldOrderTime != null">
+        gold_order_time,
+      </if>
+      <if test="goldFinishTime != null">
+        gold_finish_time,
+      </if>
+      <if test="goldWeight != null">
+        gold_weight,
+      </if>
+      <if test="realPrice != null">
+        real_price,
+      </if>
+      <if test="orderAmount != null">
+        order_amount,
+      </if>
+      <if test="productCode != null">
+        product_code,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="dataCheckType != null">
+        data_check_type,
+      </if>
+      <if test="comparingStatus != null">
+        comparing_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="reqNo != null">
+        #{reqNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null">
+        #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="goldOrderTime != null">
+        #{goldOrderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goldFinishTime != null">
+        #{goldFinishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goldWeight != null">
+        #{goldWeight,jdbcType=DECIMAL},
+      </if>
+      <if test="realPrice != null">
+        #{realPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderAmount != null">
+        #{orderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="productCode != null">
+        #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataCheckType != null">
+        #{dataCheckType,jdbcType=INTEGER},
+      </if>
+      <if test="comparingStatus != null">
+        #{comparingStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gomemyc.gold.entity.GoldInvestAccountCheck">
+    update tb_gold_invest_account_check
+    <set>
+      <if test="reqNo != null">
+        req_no = #{reqNo,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNo != null">
+        order_no = #{orderNo,jdbcType=VARCHAR},
+      </if>
+      <if test="goldOrderTime != null">
+        gold_order_time = #{goldOrderTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goldFinishTime != null">
+        gold_finish_time = #{goldFinishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="goldWeight != null">
+        gold_weight = #{goldWeight,jdbcType=DECIMAL},
+      </if>
+      <if test="realPrice != null">
+        real_price = #{realPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="orderAmount != null">
+        order_amount = #{orderAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="productCode != null">
+        product_code = #{productCode,jdbcType=VARCHAR},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dataCheckType != null">
+        data_check_type = #{dataCheckType,jdbcType=INTEGER},
+      </if>
+      <if test="comparingStatus != null">
+        comparing_status = #{comparingStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gomemyc.gold.entity.GoldInvestAccountCheck">
+    update tb_gold_invest_account_check
+    set req_no = #{reqNo,jdbcType=VARCHAR},
+      order_no = #{orderNo,jdbcType=VARCHAR},
+      gold_order_time = #{goldOrderTime,jdbcType=TIMESTAMP},
+      gold_finish_time = #{goldFinishTime,jdbcType=TIMESTAMP},
+      gold_weight = #{goldWeight,jdbcType=DECIMAL},
+      real_price = #{realPrice,jdbcType=DECIMAL},
+      order_amount = #{orderAmount,jdbcType=DECIMAL},
+      product_code = #{productCode,jdbcType=VARCHAR},
+      product_name = #{productName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      data_check_type = #{dataCheckType,jdbcType=INTEGER},
+      comparing_status = #{comparingStatus,jdbcType=TINYINT}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <!--查询前一天订单-->
+  <select id="getGoldInvestAccountChecklist" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List" />
+     FROM tb_gold_invest_account_check WHERE DATE_FORMAT(create_time,"%Y-%m-%d") = #{createTime}
+  </select>
+  <update id="updateComparingStatusByOrderNo" >
+    update tb_gold_invest_account_check SET comparing_status = #{comparingStatus} WHERE order_no=#{orderNo}
+
+  </update>
+  <select id="getRealPriceByDataCheckType" resultType="java.math.BigDecimal">
+    SELECT real_price
+    from tb_gold_invest_account_check
+    WHERE req_no = #{reqNo}
+    AND data_check_type = #{dataCheckType}
+  </select>
+  <select id="getByCreateTime" resultMap="BaseResultMap" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM tb_gold_invest_account_check
+    WHERE DATE_FORMAT(create_time,"%Y-%m-%d") = #{createTime}
+  </select>
+</mapper>

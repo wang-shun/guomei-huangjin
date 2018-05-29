@@ -1,0 +1,749 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gomemyc.gold.dao.GoldInvestOrderDao">
+	<resultMap id="BaseResultMap" type="com.gomemyc.gold.entity.GoldInvestOrder">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="buy_type" jdbcType="INTEGER" property="buyType" />
+		<result column="user_id" jdbcType="VARCHAR" property="userId" />
+		<result column="user_mobile" jdbcType="VARCHAR" property="userMobile" />
+		<result column="amount" jdbcType="DECIMAL" property="amount" />
+		<result column="real_price" jdbcType="DECIMAL" property="realPrice" />
+		<result column="real_weight" jdbcType="DECIMAL" property="realWeight" />
+		<result column="real_amount" jdbcType="DECIMAL" property="realAmount" />
+		<result column="finish_time" jdbcType="TIMESTAMP" property="finishTime" />
+		<result column="real_finish_time" jdbcType="TIMESTAMP"	property="realFinishTime" />
+		<result column="expire_time" jdbcType="TIMESTAMP" property="expireTime" />
+		<result column="req_no" jdbcType="VARCHAR" property="reqNo" />
+		<result column="gold_order_no" jdbcType="VARCHAR" property="goldOrderNo" />
+		<result column="order_type" jdbcType="INTEGER" property="orderType" />
+		<result column="order_status" jdbcType="INTEGER" property="orderStatus" />
+		<result column="invest_id" jdbcType="VARCHAR" property="investId" />
+		<result column="product_name" jdbcType="VARCHAR" property="productName" />
+		<result column="product_id" jdbcType="VARCHAR" property="productId" />
+		<result column="err_code" jdbcType="VARCHAR" property="errCode" />
+		<result column="err_msg" jdbcType="VARCHAR" property="errMsg" />
+	</resultMap>
+
+	<resultMap id="BaseInfoMap" type="com.gomemyc.gold.entity.extend.GoldInvestOrderAndInfoExtend">
+		<id column="id" jdbcType="VARCHAR" property="id" />
+		<result column="buy_type" jdbcType="INTEGER" property="buyType" />
+		<result column="user_id" jdbcType="VARCHAR" property="userId" />
+		<result column="user_mobile" jdbcType="VARCHAR" property="userMobile" />
+		<result column="amount" jdbcType="DECIMAL" property="amount" />
+		<result column="real_price" jdbcType="DECIMAL" property="realPrice" />
+		<result column="real_weight" jdbcType="DECIMAL" property="realWeight" />
+		<result column="real_amount" jdbcType="DECIMAL" property="realAmount" />
+		<result column="finish_time" jdbcType="TIMESTAMP" property="finishTime" />
+		<result column="real_finish_time" jdbcType="TIMESTAMP"	property="realFinishTime" />
+		<result column="expire_time" jdbcType="TIMESTAMP" property="expireTime" />
+		<result column="req_no" jdbcType="VARCHAR" property="reqNo" />
+		<result column="gold_order_no" jdbcType="VARCHAR" property="goldOrderNo" />
+		<result column="order_type" jdbcType="INTEGER" property="orderType" />
+		<result column="order_status" jdbcType="INTEGER" property="orderStatus" />
+		<result column="invest_id" jdbcType="VARCHAR" property="investId" />
+		<result column="product_name" jdbcType="VARCHAR" property="productName" />
+		<result column="product_id" jdbcType="VARCHAR" property="productId" />
+		<result column="err_code" jdbcType="VARCHAR" property="errCode" />
+		<result column="err_msg" jdbcType="VARCHAR" property="errMsg" />
+		<result column="coupon_amount" jdbcType="DECIMAL" property="couponAmount" />
+		<result column="balance_paid_amount" jdbcType="DECIMAL" property="balancePaidAmount" />
+		<result column="remain_amount" jdbcType="DECIMAL" property="remainAmount" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, buy_type, user_id, user_mobile, amount, real_price,
+		real_weight,
+		real_amount,
+		finish_time, real_finish_time, expire_time,
+		req_no, gold_order_no, order_type,
+		order_status,
+		invest_id,
+		product_name, product_id,
+		err_code, err_msg
+	</sql>
+<!--Base_ColumnAndInfo_List查询结果-->
+	<sql id="Base_ColumnAndInfo_List">
+		orders.id, orders.buy_type, orders.user_id, orders.user_mobile, orders.amount, orders.real_price,
+		orders.real_weight,
+		orders.real_amount,
+		orders.finish_time, orders.real_finish_time, orders.expire_time,
+		orders.req_no, orders.gold_order_no, orders.order_type,
+		orders.order_status,
+		orders.invest_id,
+		orders.product_name, orders.product_id,
+		orders.err_code, orders.err_msg,info.coupon_amount,info.balance_paid_amount,info.remain_amount
+	</sql>
+	<!-- 根据当前时间查询产品列表和投资订单表 对应的resultMap -->
+	<resultMap id="ResultMap"
+		type="com.gomemyc.gold.entity.extend.GoldInvestOrderExtend">
+		<result column="real_weight" jdbcType="DECIMAL" property="realWeight" />
+		<result column="req_no" jdbcType="VARCHAR" property="reqNo" />
+		<result column="gold_order_no" jdbcType="VARCHAR" property="goldOrderNo" />
+		<result column="id" jdbcType="VARCHAR" property="productId" />
+		<result column="gold_product_code" jdbcType="VARCHAR" property="productCode" />
+	</resultMap>
+	<!--FinishOrdersDTO返回结果 -->
+	<resultMap type="com.gomemyc.gold.entity.extend.FinishOrders"
+		id="finishOrders">
+		<result column="id" jdbcType="VARCHAR" property="id" />
+		<result column="product_id" property="loanId" />
+		<result column="gold_procduct_name" property="loanTitle" />
+		<result column="method" property="method" />
+		<result column="rate" property="rate" />
+		<result column="rate_plus" property="raisePlus" />
+		<result column="accrued_income_amount" property="accruedIncomeAmount" />
+		<result column="real_weight" property="realWeight" />
+		<result column="real_price" property="realPrice" />
+		<result column="real_amount" property="realAmount" />
+		<result column="value_time" property="valueDate" />
+		<result column="clear_time" property="dueDate" />
+	</resultMap>
+	<!-- 对账查询返回数据-->
+	<resultMap id="GoldInvestAccountCheckMap" type="com.gomemyc.gold.entity.GoldInvestAccountCheck">
+		<result column="req_no" jdbcType="VARCHAR" property="reqNo" />
+		<result column="gold_order_no" jdbcType="VARCHAR" property="orderNo" />
+		<result column="finish_time" jdbcType="TIMESTAMP" property="goldOrderTime" />
+		<result column="real_finish_time" jdbcType="TIMESTAMP" property="goldFinishTime" />
+		<result column="real_weight" jdbcType="DECIMAL" property="goldWeight" />
+		<result column="real_price" jdbcType="DECIMAL" property="realPrice" />
+		<result column="real_amount" jdbcType="DECIMAL" property="orderAmount" />
+		<result column="gold_product_code" jdbcType="VARCHAR" property="productCode" />
+		<result column="gold_procduct_name" jdbcType="VARCHAR" property="productName" />
+	</resultMap>
+	<!-- 根据id获取userId,productId及realWeight、productId对应的resultMap -->
+	<resultMap type="com.gomemyc.gold.entity.extend.ContractInvest" id="ContractInvestMap">
+		<result column="user_id" jdbcType="VARCHAR" property="userId" />
+		<result column="real_weight" jdbcType="DECIMAL" property="goldWeight" />
+		<result column="product_id" jdbcType="VARCHAR" property="productId" />
+	</resultMap>
+	<!--根据用户id和订单号查询订单的交易结果 -->
+	<select id="getResultByUserIdReqNo" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_gold_invest_order where user_id=#{userId} and
+		req_no=#{reqNo}
+		<if test="orderStatus != null">
+			AND order_status = #{orderStatus}
+		</if>
+		<if test="orderType != null">
+			AND order_type = #{orderType}
+		</if>
+	</select>
+
+	<!--根据用户id和产品id分页查询客户购买记录 -->
+	<select id="listPageByUserIdLoanId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_gold_invest_order where
+		product_id=#{productId}
+		<if test="orderStatus != null">
+			AND order_status = #{orderStatus}
+		</if>
+		<if test="orderType != null">
+			AND order_type = #{orderType}
+		</if>
+		limit #{pageStart},#{pageSize}
+	</select>
+	<!--根据用户id和产品id查询总记录数 -->
+	<select id="getRecordAmount" resultType="java.lang.Integer">
+		select count(1) from tb_gold_invest_order where user_id=#{userId} and
+		product_id=#{productId}
+		<if test="orderStatus != null">
+			AND order_status = #{orderStatus}
+		</if>
+		<if test="orderType != null">
+			AND order_type = #{orderType}
+		</if>
+	</select>
+	<!--查询已完结、招募中、收益中 订单列表 待修改 listGoldInvestProduct -->
+	<select id="listGoldInvestProduct" resultMap="finishOrders">
+		SELECT
+		orderl.id,
+		orderl.product_id,
+		product.gold_procduct_name,
+		product.method,
+		product.rate,
+		product.rate_plus,
+		orderl.real_weight,
+		orderl.real_price,
+		orderl.real_amount,
+		product.value_time,
+		product.clear_time,
+		info.use_coupon
+		FROM
+		tb_gold_invest_order orderl
+		LEFT
+		JOIN tb_gold_product product ON orderl.product_id=product.id
+		LEFT JOIN
+		tbl_invest invest ON orderl.product_id=invest.product_id
+		LEFT JOIN
+		tb_gold_product_info info ON orderl.product_id=info.id
+		where
+		orderl.user_id = #{userId}
+		<if test="orderStatus != null">
+			AND orderl.order_status =#{orderStatus}
+		</if>
+		<if test="orderType != null">
+			AND orderl.order_type =#{orderType}
+		</if>
+		<if test="tblInvestStatus != null">
+			AND invest.status =#{tblInvestStatus}
+		</if>
+		LIMIT #{pageStart},#{pageSize}
+	</select>
+	<!--查询已完结、招募中、收益中 订单列表 调用标的服务-->
+	<select id="getFinishOrders" resultMap="finishOrders">
+		SELECT
+		orderl.id,
+		orderl.product_id,
+		product.gold_procduct_name,
+		product.method,
+		product.rate,
+		product.rate_plus,
+		orderl.real_weight,
+		orderl.real_price,
+		orderl.real_amount,
+		product.value_time,
+		product.clear_time,
+		info.use_coupon
+		FROM
+		tb_gold_invest_order orderl
+		LEFT JOIN
+    	tb_gold_product product ON orderl.product_id=product.id
+		LEFT JOIN
+		tb_gold_product_info info ON orderl.product_id=info.id
+		where
+		orderl.invest_id = #{investId}
+		AND
+		orderl.user_id=#{userId}
+		<if test="orderStatus != null">
+			AND orderl.order_status =#{orderStatus}
+		</if>
+		<if test="orderType != null">
+			AND orderl.order_type =#{orderType}
+		</if>
+	</select>
+	<!--根据用户id查询所有订单总数 -->
+	<select id="getGoldInvestOrderAmount" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		select count(1) from tb_gold_invest_order where product_id= #{productId}
+		<if test="orderStatus != null">
+			AND order_status = #{orderStatus}
+		</if>
+		<if test="orderType != null">
+			AND order_type = #{orderType}
+		</if>
+	</select>
+	<!--根据用户id查询订单金重总重量 -->
+	<select id="getGoidWeight" parameterType="java.lang.String"
+		resultType="java.math.BigDecimal">
+		select sum(real_weight) from tb_gold_invest_order where user_id =
+		#{userId}
+		<if test="orderStatus != null">
+			AND order_status = #{orderStatus}
+		</if>
+		<if test="orderType != null">
+			AND order_type = #{orderType}
+		</if>
+	</select>
+	<!--查询用户募集中订单总数 -->
+	<select id="getCollectAmount" resultType="java.lang.Integer">
+		select count(1) from tb_gold_invest_order where user_id = #{userId}
+		<if test="orderStatus != null">
+			AND order_status = #{orderStatus}
+		</if>
+		<if test="orderType != null">
+			AND order_type = #{orderType}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_gold_invest_order
+		where id = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		tb_gold_invest_order
+		where id = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.gomemyc.gold.entity.GoldInvestOrder">
+		insert into
+		tb_gold_invest_order (id, buy_type, user_id,
+		user_mobile, amount,
+		real_price,
+		real_weight, real_amount, finish_time,
+		real_finish_time,
+		expire_time, req_no,
+		gold_order_no, order_type, order_status,
+		invest_id, product_name, product_id, err_code,
+		err_msg)
+		values
+		(#{id,jdbcType=VARCHAR}, #{buyType,jdbcType=TINYINT},
+		#{userId,jdbcType=VARCHAR},
+		#{userMobile,jdbcType=VARCHAR},
+		#{amount,jdbcType=DECIMAL}, #{realPrice,jdbcType=DECIMAL},
+		#{realWeight,jdbcType=DECIMAL}, #{realAmount,jdbcType=DECIMAL},
+		#{finishTime,jdbcType=TIMESTAMP},
+		#{realFinishTime,jdbcType=TIMESTAMP},
+		#{expireTime,jdbcType=TIMESTAMP}, #{reqNo,jdbcType=VARCHAR},
+		#{goldOrderNo,jdbcType=VARCHAR}, #{orderType,jdbcType=TINYINT},
+		#{orderStatus,jdbcType=TINYINT},
+		#{investId,jdbcType=VARCHAR},#{productName,jdbcType=VARCHAR},
+		#{productId,jdbcType=VARCHAR}, #{errCode,jdbcType=VARCHAR},
+		#{errMsg,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.gomemyc.gold.entity.GoldInvestOrder">
+		insert into tb_gold_invest_order
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="buyType != null">
+				buy_type,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="userMobile != null">
+				user_mobile,
+			</if>
+			<if test="amount != null">
+				amount,
+			</if>
+			<if test="realPrice != null">
+				real_price,
+			</if>
+			<if test="realWeight != null">
+				real_weight,
+			</if>
+			<if test="realAmount != null">
+				real_amount,
+			</if>
+			<if test="finishTime != null">
+				finish_time,
+			</if>
+			<if test="realFinishTime != null">
+				real_finish_time,
+			</if>
+			<if test="expireTime != null">
+				expire_time,
+			</if>
+			<if test="reqNo != null">
+				req_no,
+			</if>
+			<if test="goldOrderNo != null">
+				gold_order_no,
+			</if>
+			<if test="orderType != null">
+				order_type,
+			</if>
+			<if test="orderStatus != null">
+				order_status,
+			</if>
+			<if test="investId != null">
+				invest_id,
+			</if>
+			<if test="productName != null">
+				product_name,
+			</if>
+			<if test="productId != null">
+				product_id,
+			</if>
+			<if test="errCode != null">
+				err_code,
+			</if>
+			<if test="errMsg != null">
+				err_msg,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="buyType != null">
+				#{buyType,jdbcType=TINYINT},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="userMobile != null">
+				#{userMobile,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				#{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="realPrice != null">
+				#{realPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="realWeight != null">
+				#{realWeight,jdbcType=DECIMAL},
+			</if>
+			<if test="realAmount != null">
+				#{realAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="finishTime != null">
+				#{finishTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="realFinishTime != null">
+				#{realFinishTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="expireTime != null">
+				#{expireTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="reqNo != null">
+				#{reqNo,jdbcType=VARCHAR},
+			</if>
+			<if test="goldOrderNo != null">
+				#{goldOrderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="orderType != null">
+				#{orderType,jdbcType=TINYINT},
+			</if>
+			<if test="orderStatus != null">
+				#{orderStatus,jdbcType=TINYINT},
+			</if>
+			<if test="investId != null">
+				#{investId,jdbcType=VARCHAR},
+			</if>
+			<if test="productName != null">
+				#{productName,jdbcType=VARCHAR},
+			</if>
+			<if test="productId != null">
+				#{productId,jdbcType=VARCHAR},
+			</if>
+			<if test="errCode != null">
+				#{errCode,jdbcType=VARCHAR},
+			</if>
+			<if test="errMsg != null">
+				#{errMsg,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.gomemyc.gold.entity.GoldInvestOrder">
+		update tb_gold_invest_order
+		<set>
+			<if test="buyType != null">
+				buy_type = #{buyType,jdbcType=TINYINT},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="userMobile != null">
+				user_mobile = #{userMobile,jdbcType=VARCHAR},
+			</if>
+			<if test="amount != null">
+				amount = #{amount,jdbcType=DECIMAL},
+			</if>
+			<if test="realPrice != null">
+				real_price = #{realPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="realWeight != null">
+				real_weight = #{realWeight,jdbcType=DECIMAL},
+			</if>
+			<if test="realAmount != null">
+				real_amount = #{realAmount,jdbcType=DECIMAL},
+			</if>
+			<if test="finishTime != null">
+				finish_time = #{finishTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="realFinishTime != null">
+				real_finish_time = #{realFinishTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="expireTime != null">
+				expire_time = #{expireTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="reqNo != null">
+				req_no = #{reqNo,jdbcType=VARCHAR},
+			</if>
+			<if test="goldOrderNo != null">
+				gold_order_no = #{goldOrderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="orderType != null">
+				order_type = #{orderType,jdbcType=TINYINT},
+			</if>
+			<if test="orderStatus != null">
+				order_status = #{orderStatus,jdbcType=TINYINT},
+			</if>
+			<if test="investId != null">
+				invest_id = #{investId,jdbcType=VARCHAR},
+			</if>
+			<if test="productId != null">
+				product_name = #{productName,jdbcType=VARCHAR},
+			</if>
+			<if test="productId != null">
+				product_id = #{productId,jdbcType=VARCHAR},
+			</if>
+			<if test="errCode != null">
+				err_code = #{errCode,jdbcType=VARCHAR},
+			</if>
+			<if test="errMsg != null">
+				err_msg = #{errMsg,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.gomemyc.gold.entity.GoldInvestOrder">
+		update
+		tb_gold_invest_order
+		set buy_type = #{buyType,jdbcType=TINYINT},
+		user_id = #{userId,jdbcType=VARCHAR},
+		user_mobile =
+		#{userMobile,jdbcType=VARCHAR},
+		amount = #{amount,jdbcType=DECIMAL},
+		real_price = #{realPrice,jdbcType=DECIMAL},
+		real_weight =
+		#{realWeight,jdbcType=DECIMAL},
+		real_amount =
+		#{realAmount,jdbcType=DECIMAL},
+		finish_time =
+		#{finishTime,jdbcType=TIMESTAMP},
+		real_finish_time =
+		#{realFinishTime,jdbcType=TIMESTAMP},
+		expire_time =
+		#{expireTime,jdbcType=TIMESTAMP},
+		req_no = #{reqNo,jdbcType=VARCHAR},
+		gold_order_no = #{goldOrderNo,jdbcType=VARCHAR},
+		order_type =
+		#{orderType,jdbcType=TINYINT},
+		order_status =
+		#{orderStatus,jdbcType=TINYINT},
+		invest_id =
+		#{investId,jdbcType=VARCHAR},
+		product_name =
+		#{productName,jdbcType=VARCHAR},
+		product_id =
+		#{productId,jdbcType=VARCHAR},
+		err_code = #{errCode,jdbcType=VARCHAR},
+		err_msg = #{errMsg,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=VARCHAR}
+	</update>
+	<!-- 根据用户id和订单号查询对象 -->
+	<select id="selectObjByUserIdReqNo" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_gold_invest_order
+		where user_id = #{userId} and req_no=#{reqNo}
+		<if test="orderStatus != null">
+			AND order_status = #{orderStatus}
+		</if>
+		<if test="orderType != null">
+			AND order_type = #{orderType}
+		</if>
+	</select>
+
+	<!-- 根据用户id和订单号查询详细对象 -->
+	<select id="getObjByUserIdReqNo" resultMap="BaseInfoMap">
+		select
+		<include refid="Base_ColumnAndInfo_List" />
+		from tb_gold_invest_order AS orders, tb_gold_invest_order_info AS info
+		where orders.id = info.id AND  orders.user_id = #{userId} AND orders.req_no=#{reqNo}
+		<if test="orderStatus != null">
+			AND order_status = #{orderStatus}
+		</if>
+		<if test="orderType != null">
+			AND order_type = #{orderType}
+		</if>
+	</select>
+
+	<!-- 根据用户id和订单号查询实际金重 -->
+	<select id="sumWeightByUserId" resultType="java.math.BigDecimal">
+		select
+		SUM(real_weight) from tb_gold_invest_order where user_id =
+		#{userId}
+		<if test="orderStatus != null">
+			AND order_status = #{orderStatus}
+		</if>
+		<if test="orderType != null">
+			AND order_type = #{orderType}
+		</if>
+	</select>
+
+	<!-- 根据用户id查询对象 -->
+	<select id="selectByUseId" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_gold_invest_order
+		where user_id = #{userId,jdbcType=VARCHAR}
+		<if test="orderStatus != null">
+			AND order_status = #{orderStatus}
+		</if>
+		<if test="orderType != null">
+			AND order_type = #{orderType}
+		</if>
+	</select>
+
+	<!-- 根据当前时间查询产品列表和投资订单表 -->
+	<select id="listGoldInvestOrderAndProductByCurrentTime"
+		resultMap="ResultMap">
+		select
+		a.req_no, a.gold_order_no, a.real_weight, b.id,
+		b.gold_product_code
+		from tb_gold_invest_order a, tb_gold_product b,tbl_loan c
+		where b.id = a.product_id AND b.loan_id = c.id
+		and c.due_time > #{currentTime}
+		<if test="orderStatus != null">
+			and a.order_status = #{orderStatus}
+		</if>
+		<if test="orderType != null">
+			and a.order_type = #{orderType}
+		</if>
+	</select>
+	<!--根据产品id查询所有订单总投资金额 -->
+	<select id="getByProductId" resultType="java.math.BigDecimal">
+		SELECT SUM(amount) FROM
+		tb_gold_invest_order WHERE product_id =#{productId}
+		AND
+		order_type=#{orderType} AND order_status=#{orderStatus}
+	</select>
+	<!--根据订单的userId和productId查询所有关联订单个数 -->
+	<select id="getByUserIdAndProductId" resultType="java.lang.Integer">
+		SELECT COUNT(1)
+		FROM tb_gold_invest_order WHERE user_id=#{userId} AND product_id
+		=#{productId} AND order_type=#{orderType} AND
+		order_status=#{orderStatus}
+	</select>
+	<!--根据userId，reqNo更新预下单状态状态 -->
+	<update id="updateByUseridAndReqNo" parameterType="com.gomemyc.gold.entity.GoldInvestOrder">
+		update
+		tb_gold_invest_order
+		set
+		order_status = #{newOrderStatus}
+		where
+		user_id =
+		#{userId}
+		and
+		req_no = #{reqNo}
+		and
+		order_status = #{orderStatus}
+		and
+		order_type = #{orderType}
+	</update>
+	<!-- 根据当前时间，查询已过期的预下单订单 -->
+	<select id="listByCurrentTime" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_gold_invest_order
+		where expire_time &lt; #{currentTime}
+		and
+		order_status = #{orderStatus}
+		and order_type = #{orderType}
+	</select>
+	<!-- 根据订单状态，查询预下单订单信息 -->
+	<select id="listByOrderStatus" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_gold_invest_order
+		where
+		order_status = #{orderStatus}
+		and
+		order_type = #{orderType}
+	</select>
+	<!-- 根据订单号和订单状态，查询订单 -->
+	<select id="selectByReqNo" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_gold_invest_order
+		where
+		req_no = #{reqNo}
+		and
+		order_status = #{orderStatus}
+		and
+		order_type = #{orderType}
+	</select>
+	<!-- 根据商品id和订单状态，查询订单号-->
+	<select id="selectGoldInvestOrderByProductId" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from tb_gold_invest_order
+		where
+		product_id = #{productId}
+		and
+		order_status = #{orderStatus}
+		and
+		order_type = #{orderType}
+	</select>
+	<!-- 根据id,获得相应的userId、product_id -->
+	<select id="getUserIdAndRealWeightById" resultMap="ContractInvestMap">
+		select
+		user_id,
+		real_weight,
+		product_id
+		from tb_gold_invest_order
+		where
+		invest_id = #{investId}
+	</select>
+	<!-- 根据商品开标时间和订单状态，查询订单号-->
+	<select id="findtGoldInvestOrderByOpenTime" resultMap="GoldInvestAccountCheckMap">
+		<!--
+		SELECT
+		orders.req_no,
+		orders.gold_order_no,
+		orders.finish_time,
+		orders.real_finish_time,
+		orders.real_weight,
+		orders.real_price,
+		orders.real_amount,
+		product.gold_product_code,
+		product.gold_procduct_name
+		FROM
+		tb_gold_invest_order AS orders,
+		tb_gold_product AS product
+		WHERE
+		#{openTime} BETWEEN DATE_FORMAT(product.open_time, "%Y-%m-%d") AND DATE_FORMAT(product.end_time, "%Y-%m-%d")
+		AND
+		orders.product_id = product.id
+		AND
+		orders.order_status = #{orderStatus}
+		AND
+		orders.real_finish_time = #{openTime}
+		AND
+		orders.order_type = #{orderType}
+		-->
+
+		SELECT
+		orders.req_no,
+		orders.gold_order_no,
+		orders.finish_time,
+		orders.real_finish_time,
+		orders.real_weight,
+		orders.real_price,
+		orders.real_amount,
+		product.gold_product_code,
+		product.gold_procduct_name
+		FROM
+		tb_gold_invest_order AS orders,
+		tb_gold_product AS product
+		WHERE
+		DATE_FORMAT(product.open_time, "%Y-%m-%d")=#{openTime}
+		AND
+		orders.product_id = product.id
+		AND
+		orders.order_status = #{orderStatus}
+		AND
+		orders.order_type = #{orderType}
+
+	</select>
+	<select id="getInvestOrderByProductId" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM  tb_gold_invest_order
+		WHERE product_id=#{productId}
+		AND
+		order_status = #{orderStatus}
+		AND
+		order_type = #{orderType}
+	</select>
+	<select id="getAmountByProductId" resultType="java.math.BigDecimal">
+	SELECT
+    SUM(real_amount) AS real_amount
+		FROM  tb_gold_invest_order
+		WHERE product_id=#{productId}
+		AND
+		order_status =#{orderStatus}
+		AND
+		order_type = #{orderType}
+	</select>
+</mapper>
+ 
